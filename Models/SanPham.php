@@ -24,9 +24,7 @@ class SanPham {
         $this->nuocSanXuat = $nuocSanXuat;
         $this->thoiGianBaoHanh = $thoiGianBaoHanh;
         $this->gioiThieuSanPham = $gioiThieuSanPham;
-        $this->loaiSanPham
- = $loaiSanPham
-;
+        $this->loaiSanPham = $loaiSanPham;
         $this->doiTuong = $doiTuong;
         $this->anh = $anh;
         $this->gia = $gia;
