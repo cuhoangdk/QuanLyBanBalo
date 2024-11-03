@@ -1,52 +1,49 @@
 <?php 
-class KhachHang {
-    protected $maKhachHang;
+class NhanVien {
+    protected $maNhanVien;
     protected $username;
     protected $password;
-    protected $tenKhachHang;
+    protected $tenNhanVien;
     protected $ngaySinh;
     protected $soDienThoai;
     protected $diaChi;
-    protected $anhDaiDien;
+    protected $chucVu;
     protected $ghiChu;
-    public function __construct($maKhachHang, $username, $password, $tenKhachHang, $ngaySinh, $soDienThoai, $diaChi, $anhDaiDien, $ghiChu) 
-    {
-        $this->maKhachHang = $maKhachHang;
+     // Phương thức khởi tạo (constructor)
+     public function __construct($maNhanVien, $username, $password, $tenNhanVien, $ngaySinh, $soDienThoai, $diaChi, $chucVu, $ghiChu) {
+        $this->maNhanVien = $maNhanVien;
         $this->username = $username;
         $this->password = $password;
-        $this->tenKhachHang = $tenKhachHang;
+        $this->tenNhanVien = $tenNhanVien;
         $this->ngaySinh = $ngaySinh;
         $this->soDienThoai = $soDienThoai;
         $this->diaChi = $diaChi;
-        $this->anhDaiDien = $anhDaiDien;
+        $this->chucVu = $chucVu;
         $this->ghiChu = $ghiChu;
     }
-    public function getMaKhachHang() {
-        return $this->maKhachHang;
+    public function getMaNhanVien() {
+        return $this->maNhanVien;
     }
-
-    public function setMaKhachHang($maKhachHang) {
-        $this->maKhachHang = $maKhachHang;
+    public function setMaNhanVien($maNhanVien) {
+        $this->maNhanVien = $maNhanVien;
     }
     public function getUsername() {
         return $this->username;
     }
-
     public function setUsername($username) {
         $this->username = $username;
     }
     public function getPassword() {
         return $this->password;
     }
-
     public function setPassword($password) {
         $this->password = $password;
     }
-    public function getTenKhachHang() {
-        return $this->tenKhachHang;
+    public function getTenNhanVien() {
+        return $this->tenNhanVien;
     }
-    public function setTenKhachHang($tenKhachHang) {
-        $this->tenKhachHang = $tenKhachHang;
+    public function setTenNhanVien($tenNhanVien) {
+        $this->tenNhanVien = $tenNhanVien;
     }
     public function getNgaySinh() {
         return $this->ngaySinh;
@@ -66,11 +63,11 @@ class KhachHang {
     public function setDiaChi($diaChi) {
         $this->diaChi = $diaChi;
     }
-    public function getAnhDaiDien() {
-        return $this->anhDaiDien;
+    public function getChucVu() {
+        return $this->chucVu;
     }
-    public function setAnhDaiDien($anhDaiDien) {
-        $this->anhDaiDien = $anhDaiDien;
+    public function setChucVu($chucVu) {
+        $this->chucVu = $chucVu;
     }
     public function getGhiChu() {
         return $this->ghiChu;
