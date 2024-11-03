@@ -4,7 +4,6 @@ class SanPham {
     protected $tenSanPham;
     protected $chatLieu;
     protected $canNang;
-    protected $doNoi;
     protected $hangSanXuat;
     protected $nuocSanXuat;
     protected $thoiGianBaoHanh;
@@ -14,12 +13,11 @@ class SanPham {
     protected $anh;
     protected $gia;
     protected $soLuong;
-    public function __construct($maSanPham, $tenSanPham, $chatLieu, $canNang, $doNoi, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong) {
+    public function __construct($maSanPham, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong) {
         $this->maSanPham = $maSanPham;
         $this->tenSanPham = $tenSanPham;
         $this->chatLieu = $chatLieu;
         $this->canNang = $canNang;
-        $this->doNoi = $doNoi;
         $this->hangSanXuat = $hangSanXuat;
         $this->nuocSanXuat = $nuocSanXuat;
         $this->thoiGianBaoHanh = $thoiGianBaoHanh;
@@ -64,14 +62,6 @@ class SanPham {
 
     public function setCanNang($canNang) {
         $this->canNang = $canNang;
-    }
-
-    public function getDoNoi() {
-        return $this->doNoi;
-    }
-
-    public function setDoNoi($doNoi) {
-        $this->doNoi = $doNoi;
     }
 
     public function getHangSanXuat($connection) {
