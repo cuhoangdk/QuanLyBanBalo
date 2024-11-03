@@ -15,28 +15,32 @@ class LoginController {
 
         // Kiểm tra thông tin đăng nhập
         $nhanVien = $this->getNhanVienByUsernameAndPassword($username, $hashedPassword);
-
+        
         if ($nhanVien) {
             // Đăng nhập thành công, lưu thông tin nhân viên vào session
-            session_start();
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
             $_SESSION['nhanVien'] = [
                 'maNhanVien' => $nhanVien->getMaNhanVien(),
                 'tenNhanVien' => $nhanVien->getTenNhanVien(),
                 'chucVu' => $nhanVien->getChucVu(),
             ];
             return "Đăng nhập thành công";
-        } else {
-            // Đăng nhập thất bại
-            return "Tên đăng nhập hoặc mật khẩu không đúng";
+            } else {
+                // Đăng nhập thất bại
+                return "Tên đăng nhập hoặc mật khẩu không đúng";
+            }
         }
     }
     // Lấy thông tin nhân viên dựa trên username và password đã mã hóa
     public function getNhanVienByUsernameAndPassword($username, $hashedPassword) {
         // Tạo truy vấn SQL với tham số trực tiếp
-        $query = "SELECT * FROM tnhanvien WHERE username = '$username' AND password = '$hashedPassword'";
-        
-        // Thực hiện truy vấn
-        $result = $this->connection->query($query)->fetch_assoc();
+        // Sử dụng prepared statements để tránh SQL injection
+        $stmt = $this->connection->prepare("SELECT * FROM tnhanvien WHERE username = ? AND password = ?");
+        $stmt->bind_param("ss", $username, $hashedPassword);
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        $stmt->close();
         
         if ($result) {
             // Trả về một đối tượng NhanVien nếu tìm thấy
@@ -56,7 +60,11 @@ class LoginController {
         }
     }
     
-    // Phương thức đăng xuất
+    /**
+     * Phương thức đăng xuất
+     * Hủy bỏ session hiện tại và đăng xuất người dùng
+     * @return string Thông báo đăng xuất thành công
+     */
     public function logout() {
         session_start();
         session_unset();
