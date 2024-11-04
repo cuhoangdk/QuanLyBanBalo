@@ -17,7 +17,7 @@ class QuocGiaController{
         $danhSachQuocGia = array();
         while ($row = $result->fetch_assoc()) {
             $quocGia = new QuocGia(
-                $row['MaQuocGia'], $row['TenQuocGia']
+                $row['MaNuoc'], $row['TenNuoc']
             );
             $danhSachQuocGia[] = $quocGia;
         }

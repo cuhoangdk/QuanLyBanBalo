@@ -10,7 +10,7 @@ class HangSanXuatController{
     }
     public function layDanhSachHangSanXuat()
     {
-        $sql = "SELECT * FROM thangsanxuat";
+        $sql = "SELECT * FROM thangsx";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -18,7 +18,7 @@ class HangSanXuatController{
         $danhSachHangSanXuat = array();
         while ($row = $result->fetch_assoc()) {
             $hangSanXuat = new HangSanXuat(
-                $row['MaHangSX'], $row['TenHangSX']
+                $row['MaHangSX'], $row['HangSX']
             );
             $danhSachHangSanXuat[] = $hangSanXuat;
         }

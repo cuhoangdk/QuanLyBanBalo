@@ -9,7 +9,7 @@ class ChatLieuController{
     }
     public function layDanhSachChatLieu()
     {
-        $sql = "SELECT * FROM chatlieu";
+        $sql = "SELECT * FROM tchatlieu";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -17,7 +17,7 @@ class ChatLieuController{
         $danhSachChatLieu = array();
         while ($row = $result->fetch_assoc()) {
             $chatLieu = new ChatLieu(
-                $row['MaChatLieu'], $row['TenChatLieu']
+                $row['MaChatLieu'], $row['ChatLieu']
             );
             $danhSachChatLieu[] = $chatLieu;
         }

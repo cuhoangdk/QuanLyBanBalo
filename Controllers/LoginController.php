@@ -20,7 +20,7 @@ class LoginController {
             // Đăng nhập thành công, lưu thông tin nhân viên vào session
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
-            $_SESSION['nhanVien'] = [
+                $_SESSION['nhanVien'] = [
                 'maNhanVien' => $nhanVien->getMaNhanVien(),
                 'tenNhanVien' => $nhanVien->getTenNhanVien(),
                 'chucVu' => $nhanVien->getChucVu(),

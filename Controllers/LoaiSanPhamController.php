@@ -9,7 +9,7 @@ class LoaiSanPhamController{
     }
     public function layDanhSachLoaiSanPham()
     {
-        $sql = "SELECT * FROM tloaisanpham";
+        $sql = "SELECT * FROM tloaisp";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -17,7 +17,7 @@ class LoaiSanPhamController{
         $danhSachLoaiSanPham = array();
         while ($row = $result->fetch_assoc()) {
             $loaiSanPham = new LoaiSanPham(
-                $row['MaLoaiSP'], $row['TenLoaiSP']
+                $row['MaLoai'], $row['TenLoaiSanPham']
             );
             $danhSachLoaiSanPham[] = $loaiSanPham;
         }

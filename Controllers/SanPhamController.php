@@ -59,7 +59,7 @@ class SanPhamController
     }
 
     // Tìm kiếm sản phẩm với các tiêu chí
-    public function timKiemSanPham($tenSanPham = null, $giaMin = null, $giaMax = null, $hangSanXuat = null, $loai = null, $nuocSanXuat = null, $doiTuong = null)
+    public function timKiemSanPham($tenSanPham = null, $giaMin = null, $giaMax = null, $hangSanXuat = null, $loai = null, $nuocSanXuat = null, $doiTuong = null, $chatLieu = null)
     {
         $sql = "SELECT * FROM tdanhmucsp WHERE 1=1";
         $params = [];
@@ -98,6 +98,11 @@ class SanPhamController
         if ($doiTuong !== null) {
             $sql .= " AND MaDT = ?";
             $params[] = $doiTuong;
+            $types .= 's';
+        }
+        if ($chatLieu !== null) {
+            $sql .= " AND MaChatLieu = ?";
+            $params[] = $chatLieu;
             $types .= 's';
         }
 
