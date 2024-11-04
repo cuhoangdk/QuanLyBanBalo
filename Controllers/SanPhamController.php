@@ -187,7 +187,7 @@ class SanPhamController
     {
         $sql = "DELETE FROM tdanhmucsp WHERE MaSP = ?";
         $stmt = $this->connection->prepare($sql);
-        $stmt->bind_param("i", $maSanPham);
+        $stmt->bind_param("s", $maSanPham);
 
         if ($stmt->execute()) {
             return true;
