@@ -24,13 +24,16 @@ $loaiDoiTuongController = new LoaiDoiTuongController($connection);
 $loaiSanPhamController = new LoaiSanPhamController($connection);
 
 // Lấy dữ liệu tìm kiếm từ URL và kiểm tra giá trị null nếu là chuỗi rỗng
-$fields = ['tenSanPham', 'giaMin', 'giaMax', 'hangSanXuat', 'loai', 'nuocSanXuat', 'doiTuong'];
+$fields = ['tenSanPham', 'giaMin', 'giaMax', 'hangSanXuat', 'loai', 'nuocSanXuat', 'doiTuong', 'chatLieu'];
 foreach ($fields as $field) {
     $$field = isset($_GET[$field]) && $_GET[$field] !== '' ? $_GET[$field] : null;
 }
 
-// Lấy danh sách sản phẩm dựa trên tiêu chí tìm kiếm
-$danhMucSanPham = $sanPhamController->timKiemSanPham($tenSanPham, $giaMin, $giaMax, $hangSanXuat, $loai, $nuocSanXuat, $doiTuong);
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
+$limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int)$_GET['limit'] : 15;
+$offset = ($page - 1) * $limit;
+list($danhMucSanPham, $totalSanPham) = $sanPhamController->timKiemSanPham($tenSanPham, $giaMin, $giaMax, $hangSanXuat, $loai, $nuocSanXuat, $doiTuong, $chatLieu, $limit, $offset);
+$totalPages = ceil($totalSanPham / $limit);
 
 // Lấy danh sách cho các combo box
 $danhSachChatLieu = $chatLieuController->layDanhSachChatLieu();
@@ -119,6 +122,24 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
                 </div>
             </div>
         <?php endforeach; ?>
+    </div>
+    <!-- Pagination Component -->
+    <div class=" mb-5">
+        <?php if ($totalPages > 1): ?>
+            <nav class="flex justify-center mt-6">
+                <ul class="flex space-x-2">
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li>
+                            <a href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>"
+                            class="px-4 py-2 border rounded-md 
+                            <?= $i == $page ? 'bg-blue-500 text-white border-blue-500 cursor-not-allowed' : 'bg-white text-blue-500 border-gray-300 hover:bg-blue-100 hover:text-blue-600' ?>">
+                                <?= $i ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
     </div>
 </div>
 </body>
