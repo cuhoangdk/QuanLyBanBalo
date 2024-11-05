@@ -25,7 +25,8 @@ class LoginController {
                 'ten_nhan_vien' => $nhanVien->getTenNhanVien(),
                 'chuc_vu' => $nhanVien->getChucVu(),
             ];
-            return "Đăng nhập thành công";
+            header("Location: ThemSanPham.php");
+            exit();
             } else {
                 // Đăng nhập thất bại
                 return "Tên đăng nhập hoặc mật khẩu không đúng";

@@ -1,4 +1,13 @@
 <?php
+session_start(); // Bắt đầu phiên
+
+// Kiểm tra nếu nhân viên chưa đăng nhập
+if (!isset($_SESSION['nhanVien'])) {
+    // Chuyển hướng đến trang đăng nhập
+    header("Location: login.php");
+    exit();
+}
+
 include_once '../Config/config.php'; // Kết nối tới cơ sở dữ liệu
 include_once '../Controllers/SanPhamController.php';
 include_once '../Controllers/ChatLieuController.php';
