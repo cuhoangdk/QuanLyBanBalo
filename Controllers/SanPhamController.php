@@ -59,9 +59,9 @@ class SanPhamController
     }
 
     // Tìm kiếm sản phẩm với các tiêu chí
-    public function timKiemSanPham($tenSanPham = null, $giaMin = null, $giaMax = null, $hangSanXuat = null, $loai = null, $nuocSanXuat = null, $doiTuong = null, $chatLieu = null)
+    public function timKiemSanPham($tenSanPham = null, $giaMin = null, $giaMax = null, $hangSanXuat = null, $loai = null, $nuocSanXuat = null, $doiTuong = null, $chatLieu = null,$limit, $offset)
     {
-        $sql = "SELECT * FROM tdanhmucsp WHERE 1=1";
+        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM tdanhmucsp WHERE 1=1";
         $params = [];
         $types = '';
 
@@ -106,6 +106,11 @@ class SanPhamController
             $types .= 's';
         }
 
+        $sql .= " LIMIT ? OFFSET ?";
+        $params[] = $limit;
+        $params[] = $offset;
+        $types .= 'ii';
+
         $stmt = $this->connection->prepare($sql);
         if (!empty($params)) {
             $stmt->bind_param($types, ...$params);
@@ -125,7 +130,10 @@ class SanPhamController
             $danhMucSanPham[] = $sanPham;
         }
         $stmt->close();
-        return $danhMucSanPham;
+        // Lấy tổng số sản phẩm phù hợp với tiêu chí tìm kiếm
+        $result = $this->connection->query("SELECT FOUND_ROWS() as total");
+        $totalSanPham = $result->fetch_assoc()['total'];
+    return [$danhMucSanPham, $totalSanPham];
     }
     // Thêm sản phẩm
     public function themSanPham($tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong)
