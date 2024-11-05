@@ -66,42 +66,42 @@ class SanPhamController
         $types = '';
 
         if ($tenSanPham !== null) {
-            $sql .= " AND TenSP LIKE ?";
+            $sql .= " AND ten_san_pham LIKE ?";
             $params[] = "%" . $tenSanPham . "%";
             $types .= 's';
         }
         if ($giaMin !== null) {
-            $sql .= " AND Gia >= ?";
+            $sql .= " AND gia >= ?";
             $params[] = $giaMin;
             $types .= 'd';
         }
         if ($giaMax !== null) {
-            $sql .= " AND Gia <= ?";
+            $sql .= " AND Gigiaa <= ?";
             $params[] = $giaMax;
             $types .= 'd';
         }
         if ($hangSanXuat !== null) {
-            $sql .= " AND MaHangSX = ?";
+            $sql .= " AND ma_hang_san_xuat = ?";
             $params[] = $hangSanXuat;
             $types .= 's';
         }
         if ($loai !== null) {
-            $sql .= " AND MaLoai = ?";
+            $sql .= " AND ma_loai_san_pham = ?";
             $params[] = $loai;
             $types .= 's';
         }
         if ($nuocSanXuat !== null) {
-            $sql .= " AND MaNuocSX = ?";
+            $sql .= " AND ma_quoc_gia_san_xuat = ?";
             $params[] = $nuocSanXuat;
             $types .= 's';
         }
         if ($doiTuong !== null) {
-            $sql .= " AND MaDT = ?";
+            $sql .= " AND ma_loai_doi_tuong = ?";
             $params[] = $doiTuong;
             $types .= 's';
         }
         if ($chatLieu !== null) {
-            $sql .= " AND MaChatLieu = ?";
+            $sql .= " AND ma_chat_lieu = ?";
             $params[] = $chatLieu;
             $types .= 's';
         }
