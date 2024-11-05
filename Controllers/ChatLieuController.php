@@ -17,7 +17,7 @@ class ChatLieuController{
         $danhSachChatLieu = array();
         while ($row = $result->fetch_assoc()) {
             $chatLieu = new ChatLieu(
-                $row['MaChatLieu'], $row['ChatLieu']
+                $row['ma_chat_lieu'], $row['ten_chat_lieu']
             );
             $danhSachChatLieu[] = $chatLieu;
         }

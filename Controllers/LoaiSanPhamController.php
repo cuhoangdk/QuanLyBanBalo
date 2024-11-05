@@ -17,7 +17,7 @@ class LoaiSanPhamController{
         $danhSachLoaiSanPham = array();
         while ($row = $result->fetch_assoc()) {
             $loaiSanPham = new LoaiSanPham(
-                $row['MaLoai'], $row['TenLoaiSanPham']
+                $row['ma_loai_san_pham'], $row['ten_loai_san_pham']
             );
             $danhSachLoaiSanPham[] = $loaiSanPham;
         }

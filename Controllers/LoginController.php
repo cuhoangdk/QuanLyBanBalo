@@ -21,9 +21,9 @@ class LoginController {
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
                 $_SESSION['nhanVien'] = [
-                'maNhanVien' => $nhanVien->getMaNhanVien(),
-                'tenNhanVien' => $nhanVien->getTenNhanVien(),
-                'chucVu' => $nhanVien->getChucVu(),
+                'ma_nhan_vien' => $nhanVien->getMaNhanVien(),
+                'ten_nhan_vien' => $nhanVien->getTenNhanVien(),
+                'chuc_vu' => $nhanVien->getChucVu(),
             ];
             return "Đăng nhập thành công";
             } else {
@@ -45,15 +45,15 @@ class LoginController {
         if ($result) {
             // Trả về một đối tượng NhanVien nếu tìm thấy
             return new NhanVien(
-                $result['MaNhanVien'],
+                $result['ma_nhan_vien'],
                 $result['username'],
                 $result['password'],
-                $result['TenNhanVien'],
-                $result['NgaySinh'],
-                $result['SoDienThoai'],
-                $result['DiaChi'],
-                $result['ChucVu'],
-                $result['GhiChu']
+                $result['ten_nhan_vien'],
+                $result['ngay_sinh'],
+                $result['so_dien_thoai'],
+                $result['dia_chi'],
+                $result['chuc_vu'],
+                $result['ghi_chu']
             );
         } else {
             return null;

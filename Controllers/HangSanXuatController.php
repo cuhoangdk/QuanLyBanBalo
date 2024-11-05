@@ -18,7 +18,7 @@ class HangSanXuatController{
         $danhSachHangSanXuat = array();
         while ($row = $result->fetch_assoc()) {
             $hangSanXuat = new HangSanXuat(
-                $row['MaHangSX'], $row['HangSX']
+                $row['ma_hang_san_xuat'], $row['ten_hang_san_xuat']
             );
             $danhSachHangSanXuat[] = $hangSanXuat;
         }

@@ -21,11 +21,11 @@ class SanPhamController
         $danhMucSanPham = array();
         while ($row = $result->fetch_assoc()) {
             $sanPham = new SanPham(
-                $row['MaSP'], $row['TenSP'], $row['MaChatLieu'],
-                $row['CanNang'], $row['MaHangSX'], $row['MaNuocSX'],
-                $row['ThoiGianBaoHanh'], $row['GioiThieuSP'],
-                $row['MaLoai'], $row['MaDT'], $row['Anh'],
-                $row['Gia'], $row['SoLuong']
+                $row['ma_san_pham'], $row['ten_san_pham'], $row['ma_chat_lieu'],
+                $row['can_nang'], $row['ma_hang_san_xuat'], $row['ma_quoc_gia_san_xuat'],
+                $row['thoi_gian_bao_hanh'], $row['gioi_thieu_san_pham'],
+                $row['ma_loai_san_pham'], $row['ma_loai_doi_tuong'], $row['anh'],
+                $row['gia'], $row['so_luong']
             );
             $danhMucSanPham[] = $sanPham;
         }
@@ -46,11 +46,11 @@ class SanPhamController
         $danhMucSanPham = array();
         while ($row = $result->fetch_assoc()) {
             $sanPham = new SanPham(
-                $row['MaSP'], $row['TenSP'], $row['MaChatLieu'],
-                $row['CanNang'], $row['MaHangSX'], $row['MaNuocSX'],
-                $row['ThoiGianBaoHanh'], $row['GioiThieuSP'],
-                $row['MaLoai'], $row['MaDT'], $row['Anh'],
-                $row['Gia'], $row['SoLuong']
+                $row['ma_san_pham'], $row['ten_san_pham'], $row['ma_chat_lieu'],
+                $row['can_nang'], $row['ma_hang_san_xuat'], $row['ma_quoc_gia_san_xuat'],
+                $row['thoi_gian_bao_hanh'], $row['gioi_thieu_san_pham'],
+                $row['ma_loai_san_pham'], $row['ma_loai_doi_tuong'], $row['anh'],
+                $row['gia'], $row['so_luong']
             );
             $danhMucSanPham[] = $sanPham;
         }
@@ -116,11 +116,11 @@ class SanPhamController
         $danhMucSanPham = [];
         while ($row = $result->fetch_assoc()) {
             $sanPham = new SanPham(
-                $row['MaSP'], $row['TenSP'], $row['MaChatLieu'],
-                $row['CanNang'], $row['MaHangSX'], $row['MaNuocSX'],
-                $row['ThoiGianBaoHanh'], $row['GioiThieuSP'],
-                $row['MaLoai'], $row['MaDT'], $row['Anh'],
-                $row['Gia'], $row['SoLuong']
+                $row['ma_san_pham'], $row['ten_san_pham'], $row['ma_chat_lieu'],
+                $row['can_nang'], $row['ma_hang_san_xuat'], $row['ma_quoc_gia_san_xuat'],
+                $row['thoi_gian_bao_hanh'], $row['gioi_thieu_san_pham'],
+                $row['ma_loai_san_pham'], $row['ma_loai_doi_tuong'], $row['anh'],
+                $row['gia'], $row['so_luong']
             );
             $danhMucSanPham[] = $sanPham;
         }
@@ -169,7 +169,7 @@ class SanPhamController
     // Thêm sản phẩm
     public function themSanPham($tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong)
     {
-        $sql = "INSERT INTO tdanhmucsp (MaSP, TenSP, MaChatLieu, CanNang, MaHangSX, MaNuocSX, ThoiGianBaoHanh, GioiThieuSP, MaLoai, MaDT, Anh, Gia, SoLuong)
+        $sql = "INSERT INTO tdanhmucsp (ma_san_pham, ten_san_pham, ma_chat_lieu, can_nang, ma_hang_san_xuat, ma_quoc_gia_san_xuat, thoi_gian_bao_hanh, gioi_thieu_san_pham, ma_loai_san_pham, ma_loai_doi_tuong, anh, gia, so_luong)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $maSP = $this->taoMaSanPham($tenSanPham);        
         $stmt = $this->connection->prepare($sql);
@@ -200,9 +200,9 @@ class SanPhamController
     public function chinhSuaSanPham($maSanPham, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong)
     {
         $sql = "UPDATE tdanhmucsp SET 
-                    TenSP = ?, MaChatLieu = ?, CanNang = ?, MaHangSX = ?, MaNuocSX = ?, 
-                    ThoiGianBaoHanh = ?, GioiThieuSP = ?, MaLoai = ?, MaDT = ?, Anh = ?, Gia = ?, SoLuong = ? 
-                WHERE MaSP = ?";
+                    ten_san_pham = ?, ma_chat_lieu = ?, can_nang = ?, ma_hang_san_xuat = ?, ma_quoc_gia_san_xuat = ?, 
+                    thoi_gian_bao_hanh = ?, gioi_thieu_san_pham = ?, ma_loai_san_pham = ?, ma_loai_doi_tuong = ?, anh = ?, gia = ?, so_luong = ? 
+                WHERE ma_san_pham = ?";
                 
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("ssdssdsssiis", $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong, $maSanPham);

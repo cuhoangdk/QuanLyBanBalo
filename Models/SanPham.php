@@ -46,10 +46,10 @@ class SanPham {
     }
 
     public function getChatLieu($connection) {
-        $sql = "SELECT * FROM tchatlieu WHERE id = $this->chatLieu";
+        $sql = "SELECT * FROM tchatlieu WHERE ma_chat_lieu = $this->chatLieu";
         $result = $connection->query($sql);
         $chatLieu = $result->fetch_assoc();
-        return $chatLieu['ChatLieu'];
+        return $chatLieu['ten_chat_lieu'];
     }
 
     public function setChatLieu($chatLieu) {
@@ -65,10 +65,10 @@ class SanPham {
     }
 
     public function getHangSanXuat($connection) {
-        $sql = "SELECT * FROM thangsx WHERE id = $this->hangSanXuat";
+        $sql = "SELECT * FROM thangsx WHERE ma_hang_san_xuat  = $this->hangSanXuat";
         $result = $connection->query($sql);
         $hangSanXuat = $result->fetch_assoc();
-        return $hangSanXuat['HangSX'];
+        return $hangSanXuat['ten_hang_san_xuat '];
     }
 
     public function setHangSanXuat($hangSanXuat) {
@@ -76,10 +76,10 @@ class SanPham {
     }
 
     public function getNuocSanXuat($connection) {
-        $sql = "SELECT * FROM quocgia WHERE id = $this->nuocSanXuat";
+        $sql = "SELECT * FROM quocgia WHERE ma_quoc_gia = $this->nuocSanXuat";
         $result = $connection->query($sql);
         $nuocSanXuat = $result->fetch_assoc();
-        return $nuocSanXuat['TenNuoc'];    
+        return $nuocSanXuat['ten_quoc_gia'];    
     }
 
     public function setNuocSanXuat($nuocSanXuat) {
@@ -103,10 +103,10 @@ class SanPham {
     }
 
     public function getLoaiSanPham($connection) {
-        $sql = "SELECT * FROM tloaisp WHERE id = $this->loaiSanPham";
+        $sql = "SELECT * FROM tloaisp WHERE ma_loai_san_pham = $this->loaiSanPham";
         $result = $connection->query($sql);
         $loaiSanPham= $result->fetch_assoc();
-        return $loaiSanPham['TenLoaiSanPham'];        
+        return $loaiSanPham['ten_loai_san_pham'];        
     }
 
     public function setLoaiSanPham($loaiSanPham) {
@@ -114,10 +114,10 @@ class SanPham {
     }
 
     public function getDoiTuong($connection) {
-        $sql = "SELECT * FROM tloaidt WHERE id = $this->doiTuong";
+        $sql = "SELECT * FROM tloaidt WHERE ma_loai_doi_tuong = $this->doiTuong";
         $result = $connection->query($sql);
         $doiTuong = $result->fetch_assoc();
-        return $doiTuong['TenLoaiDoiTuong'];        
+        return $doiTuong['ten_loai_doi_tuong '];        
     }
 
     public function setDoiTuong($doiTuong) {

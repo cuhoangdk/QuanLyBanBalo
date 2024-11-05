@@ -17,7 +17,7 @@ class LoaiDoiTuongController {
         $danhSachLoaiDoiTuong = array();
         while ($row = $result->fetch_assoc()) {
             $loaiDoiTuong = new LoaiDoiTuong(
-                $row['MaDT'], $row['TenLoaiDoiTuong']
+                $row['ma_loai_doi_tuong'], $row['ten_loai_doi_tuong']
             );
             $danhSachLoaiDoiTuong[] = $loaiDoiTuong;
         }
