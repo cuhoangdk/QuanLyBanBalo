@@ -25,7 +25,7 @@ class LoginController {
                 'ten_nhan_vien' => $nhanVien->getTenNhanVien(),
                 'chuc_vu' => $nhanVien->getChucVu(),
             ];
-            header("Location: ../Views/TimKiem.php");
+            header("Location: ../Views/DanhSachSanPham.php");
             exit();
             } else {
                 // Đăng nhập thất bại

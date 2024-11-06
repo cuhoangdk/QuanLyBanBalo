@@ -7,7 +7,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="">
         <ul class="mt-4 space-y-2">
             <li>
-                <a href="../Views/TimKiem.php" class="block w-full py-2 px-4 bg-gray-700 hover:text-black hover:bg-green-300 <?= $current_page == 'TimKiem.php' ? 'bg-green-300 text-black' : '' ?>">
+                <a href="../Views/DanhSachSanPham.php" class="block w-full py-2 px-4 bg-gray-700 hover:text-black hover:bg-green-300 <?= $current_page == 'DanhSachSanPham.php' ? 'bg-green-300 text-black' : '' ?>">
                     <i class="fa-solid fa-table-list mr-2"></i>Tra cứu
                 </a>
             </li>

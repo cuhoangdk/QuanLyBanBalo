@@ -12,11 +12,7 @@ if (!isset($_SESSION['nhanVien'])) {
 $masp = isset($_GET['masp']) ? $_GET['masp'] : 0;
 $sanPhamController = new SanPhamController($connection);
 $sanPham = $sanPhamController->laySanPhamTheoMa($masp);
-if ($sanPham === null) {
-    // Nếu không tìm thấy sản phẩm, hiển thị thông báo lỗi
-    echo "Không tìm thấy sản phẩm.";
-    exit();
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -41,21 +37,27 @@ if ($sanPham === null) {
             <div class="mb-4 text-xl">
                 <p><strong>Mã sản phẩm:</strong> <?php echo htmlspecialchars($sanPham->getMaSanPham()); ?></p>
                 <p><strong>Giá:</strong> <?php echo number_format($sanPham->getGia(), 0, ',', '.'); ?> VND</p>
-                <p><strong>Số lượng:</strong> <?php echo htmlspecialchars($sanPham->getSoLuong()); ?></p>
+                <p><strong>Cân nặng:</strong> <?php echo htmlspecialchars($sanPham->getCanNang()); ?> Kg</p>
                 <p><strong>Mô tả:</strong> <?php echo nl2br(htmlspecialchars($sanPham->getGioiThieuSanPham())); ?></p>
                 <p><strong>Loại sản phẩm:</strong> <?php echo htmlspecialchars($sanPham->getLoaiSanPham($connection)); ?></p>
                 <p><strong>Đối tượng:</strong> <?php echo htmlspecialchars($sanPham->getDoiTuong($connection)); ?></p>
                 <p><strong>Chất liệu:</strong> <?php echo htmlspecialchars($sanPham->getChatLieu($connection)); ?></p>
                 <p><strong>Hãng sản xuất:</strong> <?php echo htmlspecialchars($sanPham->getHangSanXuat($connection)); ?></p>
                 <p><strong>Quốc gia sản xuất:</strong> <?php echo htmlspecialchars($sanPham->getNuocSanXuat($connection)); ?></p>
-                <p><strong>Thời gian bảo hành:</strong> <?php echo htmlspecialchars($sanPham->getThoiGianBaoHanh()); ?> tháng</p>
+                <p><strong>Thời gian bảo hành:</strong> <?php echo htmlspecialchars($sanPham->getThoiGianBaoHanh()); ?> năm</p>
+                <p><strong>Số lượng trong kho:</strong> <?php echo htmlspecialchars($sanPham->getSoLuong()); ?></p>
             </div>
         </div>
     </div>
-    <div class="flex justify-end w-full">
-        <a href="edit.php?masp=<?php echo $sanPham->getMaSanPham(); ?>" class="bg-blue-500 text-white px-4 py-2 rounded mr-2">Chỉnh sửa</a>
-        <a href="delete.php?masp=<?php echo $sanPham->getMaSanPham(); ?>" class="bg-red-500 text-white px-4 py-2 rounded">Xóa</a>
-    </div>
+    <div class="flex justify-between w-full">
+        <!-- Nút Quay lại ở bên trái -->
+        <a href="javascript:history.back()" class="text-gray-500 text-4xl ml-3 hover:text-gray-700"><i class="fa-solid fa-rotate-left"></i></a>
+        
+        <!-- Các nút Chỉnh sửa và Xóa ở bên phải -->
+        <div class="flex space-x-2">
+            <a href="ChinhSuaSanPham.php?masp=<?= htmlspecialchars(string: $sanPham->getMaSanPham()) ?>" title="Chỉnh sửa sản phẩm" class="text-blue-500 text-4xl ml-3 hover:text-blue-700"><i class="fa-solid fa-pen-to-square"></i></a>
+            <a href="chiTietSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>" title="Xóa sản phẩm" class="text-red-500 text-4xl ml-3 hover:text-red-700"><i class="fa-solid fa-trash"></i></a>
+        </div>
     </div>
     </div>
 </body>

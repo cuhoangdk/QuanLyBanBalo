@@ -66,7 +66,7 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
             <input type="number" name="giaMin" placeholder="Giá thấp nhất" value="<?= htmlspecialchars($giaMin) ?>" class="p-2 border rounded">
             <input type="number" name="giaMax" placeholder="Giá cao nhất" value="<?= htmlspecialchars($giaMax) ?>" class="p-2 border rounded">
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-5">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-2">
             <select name="hangSanXuat" class="p-2 border rounded">
                 <option value="">Chọn hãng sản xuất</option>
                 <?php foreach ($danhSachHangSanXuat as $hang): ?>
@@ -112,77 +112,111 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Tìm kiếm</button>
-            <a href="TimKiem.php" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-center">Làm mới</a>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+            <a href="DanhSachSanPham.php" title="Làm mới" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-center">Làm mới</a>
+            <button type="submit" title="Tìm kiếm" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Tìm kiếm</button>
+            <a href="ThemSanPham.php" title="Thêm sản phẩm" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-center">Thêm mới</a>
         </div>
 
     </form>
 
     <!-- Danh sách sản phẩm -->
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mt-5">
-        <?php foreach ($danhMucSanPham as $sanPham): ?>
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <img src="../Images/<?= htmlspecialchars($sanPham->getAnh()) ?>" class="object-cover" alt="<?= htmlspecialchars($sanPham->getTenSanPham()) ?>">
-                <div class="p-4">
-                    <h5 class="text-lg font-semibold"><?= htmlspecialchars(ucwords($sanPham->getTenSanPham())) ?></h5>
-                    <p class="text-gray-700">Giá: <?= number_format($sanPham->getGia(), 0) ?> VNĐ</p>
-                    <p class="text-gray-700">Số lượng: <?= htmlspecialchars($sanPham->getSoLuong()) ?></p>
-                    <a href="chiTietSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>" class="mt-2 inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Xem Chi Tiết</a>
-                </div>
-            </div>
-        <?php endforeach; ?>
-    </div>
+    <div class="overflow-x-auto mt-2">
+    <table class="min-w-full bg-white border border-gray-200">
+        <thead class="bg-gray-200">
+            <tr>
+                <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">STT</th>
+                <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">Tên sản phẩm</th>
+                <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">Giá (VNĐ)</th>
+                <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">Số lượng</th>
+                <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">Hình ảnh</th>
+                <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($danhMucSanPham as $index => $sanPham): ?>
+                <?php $stt = ($page-1)*$limit + $index + 1; ?>
+                <tr class="<?= $stt % 2 == 0 ? 'bg-gray-100' : 'bg-white' ?> border-b hover:bg-gray-200">
+                    <!-- Số thứ tự -->
+                    <td class="px-6 py-2 text-gray-700"><?=$stt ?></td>
+                    
+                    <!-- Tên sản phẩm -->
+                    <td class="px-6 py-2 text-gray-700"><?= htmlspecialchars(ucwords($sanPham->getTenSanPham())) ?></td>
+                    
+                    <!-- Giá -->
+                    <td class="px-6 py-2 text-gray-700"><?= number_format($sanPham->getGia(), 0) ?></td>
+                    
+                    <!-- Số lượng -->
+                    <td class="px-6 py-2 text-gray-700"><?= htmlspecialchars($sanPham->getSoLuong()) ?></td>
+                    
+                    <!-- Hình ảnh -->
+                    <td class="px-6 py-2">
+                        <img src="../Images/<?= htmlspecialchars($sanPham->getAnh()) ?>" alt="<?= htmlspecialchars($sanPham->getTenSanPham()) ?>" class="w-16 h-16 object-cover rounded">
+                    </td>
+                    
+                    <!-- Hành động -->
+                    <td class="px-6 py-2">
+                        <a href="ChiTietSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>" title="Chi tiết sản phẩm" class="text-green-500 text-3xl hover:text-green-700"><i class="fa-solid fa-circle-info"></i></a>
+                        <a href="ChinhSuaSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>" title="Chỉnh sửa sản phẩm" class="text-blue-500 text-3xl ml-3 hover:text-blue-700"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="chiTietSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>" title="Xóa sản phẩm" class="text-red-500 text-3xl ml-3 hover:text-red-700"><i class="fa-solid fa-trash"></i></a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+
     <!-- Pagination Component -->
-<div class="mb-5">
-    <?php if ($totalPages > 1): ?>
-        <nav class="flex justify-center mt-6">
-            <ul class="flex space-x-2">
-                <!-- Trang đầu -->
-                <li>
-                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>"
-                       class="px-4 py-2 border rounded-md <?= $page == 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
-                        <<
-                    </a>
-                </li>
-
-                <!-- Về trước -->
-                <li>
-                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => max(1, $page - 1)])) ?>"
-                       class="px-4 py-2 border rounded-md <?= $page == 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
-                        <
-                    </a>
-                </li>
-
-                <!-- Số trang -->
-                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+    <div class="mb-5">
+        <?php if ($totalPages > 1): ?>
+            <nav class="flex justify-center mt-6">
+                <ul class="flex space-x-2">
+                    <!-- Trang đầu -->
                     <li>
-                        <a href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>"
-                           class="px-4 py-2 border rounded-md <?= $i == $page ? 'bg-green-500 text-white border-green-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
-                            <?= $i ?>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>"
+                        class="px-4 py-2 border rounded-md <?= $page == 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
+                            <<
                         </a>
                     </li>
-                <?php endfor; ?>
 
-                <!-- Về sau -->
-                <li>
-                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => min($totalPages, $page + 1)])) ?>"
-                       class="px-4 py-2 border rounded-md <?= $page == $totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
-                        >
-                    </a>
-                </li>
+                    <!-- Về trước -->
+                    <li>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['page' => max(1, $page - 1)])) ?>"
+                        class="px-4 py-2 border rounded-md <?= $page == 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
+                            <
+                        </a>
+                    </li>
 
-                <!-- Trang cuối -->
-                <li>
-                    <a href="?<?= http_build_query(array_merge($_GET, ['page' => $totalPages])) ?>"
-                       class="px-4 py-2 border rounded-md <?= $page == $totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
-                        >>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    <?php endif; ?>
-</div>
+                    <!-- Số trang -->
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <li>
+                            <a href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>"
+                            class="px-4 py-2 border rounded-md <?= $i == $page ? 'bg-green-500 text-white border-green-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
+                                <?= $i ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <!-- Về sau -->
+                    <li>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['page' => min($totalPages, $page + 1)])) ?>"
+                        class="px-4 py-2 border rounded-md <?= $page == $totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
+                            >
+                        </a>
+                    </li>
+
+                    <!-- Trang cuối -->
+                    <li>
+                        <a href="?<?= http_build_query(array_merge($_GET, ['page' => $totalPages])) ?>"
+                        class="px-4 py-2 border rounded-md <?= $page == $totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
+                            >>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        <?php endif; ?>
+    </div>
 
 </div>
 </body>
