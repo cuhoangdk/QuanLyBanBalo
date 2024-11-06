@@ -20,5 +20,4 @@ if (!mysqli_set_charset($connection, 'utf8')) {
 
 // 5. Đóng kết nối (nếu cần)
 // mysqli_close($connection); // Bỏ dòng này nếu bạn muốn giữ kết nối mở
-
 ?>

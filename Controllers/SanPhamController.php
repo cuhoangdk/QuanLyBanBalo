@@ -189,6 +189,28 @@ class SanPhamController
             return false;
         }
     }
+    public function laySanPhamTheoMa($maSanPham)
+{
+    $sql = "SELECT * FROM tdanhmucsp WHERE ma_san_pham = ?";
+    $stmt = $this->connection->prepare($sql);
+    $stmt->bind_param("s", $maSanPham);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+         $row = $result->fetch_assoc();
+         $sanPham = new SanPham(
+            $row['ma_san_pham'], $row['ten_san_pham'], $row['ma_chat_lieu'],
+            $row['can_nang'], $row['ma_hang_san_xuat'], $row['ma_quoc_gia_san_xuat'],
+            $row['thoi_gian_bao_hanh'], $row['gioi_thieu_san_pham'],
+            $row['ma_loai_san_pham'], $row['ma_loai_doi_tuong'], $row['anh'],
+            $row['gia'], $row['so_luong']
+        );
+        return $sanPham;
+    } else {
+        return null; // Không tìm thấy sản phẩm
+    }
+}
 
     // Xóa sản phẩm
     public function xoaSanPham($maSanPham)

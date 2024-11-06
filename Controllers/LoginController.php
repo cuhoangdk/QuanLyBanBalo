@@ -1,5 +1,5 @@
 <?php
-include_once '../Models/NhanVien.php';
+include_once __DIR__ . '/../Models/NhanVien.php';
 class LoginController {
     protected $connection;
 
@@ -25,7 +25,7 @@ class LoginController {
                 'ten_nhan_vien' => $nhanVien->getTenNhanVien(),
                 'chuc_vu' => $nhanVien->getChucVu(),
             ];
-            header("Location: ThemSanPham.php");
+            header("Location: ../Views/TimKiem.php");
             exit();
             } else {
                 // Đăng nhập thất bại

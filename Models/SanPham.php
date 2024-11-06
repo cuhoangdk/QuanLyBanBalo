@@ -46,10 +46,13 @@ class SanPham {
     }
 
     public function getChatLieu($connection) {
-        $sql = "SELECT * FROM tchatlieu WHERE ma_chat_lieu = $this->chatLieu";
-        $result = $connection->query($sql);
+        $sql = "SELECT * FROM tchatlieu WHERE ma_chat_lieu = ?";
+        $stmt = $connection->prepare($sql);
+        $stmt->bind_param("s", $this->chatLieu);
+        $stmt->execute();
+        $result = $stmt->get_result();
         $chatLieu = $result->fetch_assoc();
-        return $chatLieu['ten_chat_lieu'];
+        return $chatLieu['ten_chat_lieu'];        
     }
 
     public function setChatLieu($chatLieu) {
@@ -65,10 +68,13 @@ class SanPham {
     }
 
     public function getHangSanXuat($connection) {
-        $sql = "SELECT * FROM thangsx WHERE ma_hang_san_xuat  = $this->hangSanXuat";
-        $result = $connection->query($sql);
+        $sql = "SELECT * FROM thangsx WHERE ma_hang_san_xuat = ?";
+        $stmt = $connection->prepare($sql);
+        $stmt->bind_param("s", $this->hangSanXuat);
+        $stmt->execute();
+        $result = $stmt->get_result();
         $hangSanXuat = $result->fetch_assoc();
-        return $hangSanXuat['ten_hang_san_xuat '];
+        return $hangSanXuat['ten_hang_san_xuat']; 
     }
 
     public function setHangSanXuat($hangSanXuat) {
@@ -76,10 +82,13 @@ class SanPham {
     }
 
     public function getNuocSanXuat($connection) {
-        $sql = "SELECT * FROM quocgia WHERE ma_quoc_gia = $this->nuocSanXuat";
-        $result = $connection->query($sql);
+        $sql = "SELECT * FROM tquocgia WHERE ma_quoc_gia = ?";
+        $stmt = $connection->prepare($sql);
+        $stmt->bind_param("s", $this->nuocSanXuat);
+        $stmt->execute();
+        $result = $stmt->get_result();
         $nuocSanXuat = $result->fetch_assoc();
-        return $nuocSanXuat['ten_quoc_gia'];    
+        return $nuocSanXuat['ten_quoc_gia']; 
     }
 
     public function setNuocSanXuat($nuocSanXuat) {
@@ -103,21 +112,26 @@ class SanPham {
     }
 
     public function getLoaiSanPham($connection) {
-        $sql = "SELECT * FROM tloaisp WHERE ma_loai_san_pham = $this->loaiSanPham";
-        $result = $connection->query($sql);
-        $loaiSanPham= $result->fetch_assoc();
+        $sql = "SELECT * FROM tloaisp WHERE ma_loai_san_pham = ?";
+        $stmt = $connection->prepare($sql);
+        $stmt->bind_param("s", $this->loaiSanPham);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $loaiSanPham = $result->fetch_assoc();
         return $loaiSanPham['ten_loai_san_pham'];        
     }
-
     public function setLoaiSanPham($loaiSanPham) {
         $this->loaiSanPham = $loaiSanPham;
     }
 
     public function getDoiTuong($connection) {
-        $sql = "SELECT * FROM tloaidt WHERE ma_loai_doi_tuong = $this->doiTuong";
-        $result = $connection->query($sql);
+        $sql = "SELECT * FROM tloaidt WHERE ma_loai_doi_tuong = ?";
+        $stmt = $connection->prepare($sql);
+        $stmt->bind_param("s", $this->doiTuong);
+        $stmt->execute();
+        $result = $stmt->get_result();
         $doiTuong = $result->fetch_assoc();
-        return $doiTuong['ten_loai_doi_tuong '];        
+        return $doiTuong['ten_loai_doi_tuong'];        
     }
 
     public function setDoiTuong($doiTuong) {
