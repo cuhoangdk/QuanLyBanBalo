@@ -210,8 +210,7 @@ class SanPhamController
             $i++;
         }
         $sql = "INSERT INTO tdanhmucsp (ma_san_pham, ten_san_pham, ma_chat_lieu, can_nang, ma_hang_san_xuat, ma_quoc_gia_san_xuat, thoi_gian_bao_hanh, gioi_thieu_san_pham, ma_loai_san_pham, ma_loai_doi_tuong, anh, gia, so_luong, trang_thai)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $maSP = $this->taoMaSanPham($tenSanPham);        
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"; 
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("sssdssdssssiii", $maSP , $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong, $trangthai);
 
