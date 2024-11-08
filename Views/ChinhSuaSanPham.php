@@ -63,6 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    if($sanPhamController->kiemTraTenSanPhamTonTai($tenSanPham)) {
+        $error['ten'] = "Tên sản phẩm đã tồn tại";
+    }
+
     if (empty($error)) {
         // Cập nhật sản phẩm
         $sanPhamController->chinhSuaSanPham($masp, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong);
@@ -104,17 +108,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label class="block text-gray-700 font-bold">Tên sản phẩm:</label>
                     <input type="text" name="tenSanPham" value="<?= htmlspecialchars($sanPham->getTenSanPham()) ?>"
                         class="w-full px-3 py-2 border rounded-lg">
+                    <?php if (!empty($error['ten'])): ?>
+                        <div class="mb-4 text-red-500">
+                            <?= htmlspecialchars($error['ten']) ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="mb-2 w-full">
                     <label class="block text-gray-700 font-bold">Đơn giá:</label>
-                    <input type="text" name="gia" value="<?= htmlspecialchars($sanPham->getGia()) ?>"
+                    <input type="number" min="1" name="gia" value="<?= htmlspecialchars($sanPham->getGia()) ?>"
                         class="w-full px-3 py-2 border rounded-lg">
                 </div>
 
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Cân nặng (kg):</label>
-                        <input type="text" name="canNang" value="<?= htmlspecialchars($sanPham->getCanNang()) ?>"
+                        <input type="number" min="1" name="canNang" value="<?= htmlspecialchars($sanPham->getCanNang()) ?>"
                             class="w-full px-3 py-2 border rounded-lg">
                     </div>
                     <div class="mb-2 w-1/2">
@@ -190,13 +199,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Thời gian bảo hành (năm):</label>
-                        <input type="text" name="thoiGianBaoHanh"
+                        <input type="number" min="1" name="thoiGianBaoHanh"
                             value="<?= htmlspecialchars($sanPham->getThoiGianBaoHanh()) ?>"
                             class="w-full px-3 py-2 border rounded-lg">
                     </div>
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Số lượng trong kho:</label>
-                        <input type="text" name="soLuong" value="<?= htmlspecialchars($sanPham->getSoLuong()) ?>"
+                        <input type="number" min="1" name="soLuong" value="<?= htmlspecialchars($sanPham->getSoLuong()) ?>"
                             class="w-full px-3 py-2 border rounded-lg">
                     </div>
                 </div>
@@ -214,9 +223,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="file" value="<?= htmlspecialchars($sanPham->getAnh()) ?>" name="anh"
                                 class="w-full px-3 py-2 border rounded-lg">
                         </div>
-                        <?php if (!empty($error)): ?>
+                        <?php if (!empty($error['anh'])): ?>
                             <div class="mb-4 text-red-500">
-                                <?= htmlspecialchars($error) ?>
+                                <?= htmlspecialchars($error['anh']) ?>
                             </div>
                         <?php endif; ?>
                     </div>

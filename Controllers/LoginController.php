@@ -42,7 +42,7 @@ class LoginController {
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
         $stmt->close();
-        
+
         if ($result) {
             // Trả về một đối tượng NhanVien nếu tìm thấy
             return new NhanVien(
@@ -60,7 +60,7 @@ class LoginController {
             return null;
         }
     }
-    
+
     /**
      * Phương thức đăng xuất
      * Hủy bỏ session hiện tại và đăng xuất người dùng

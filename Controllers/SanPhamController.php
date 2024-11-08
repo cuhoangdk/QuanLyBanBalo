@@ -221,27 +221,27 @@ class SanPhamController
         }
     }
     public function laySanPhamTheoMa($maSanPham)
-{
-    $sql = "SELECT * FROM tdanhmucsp WHERE ma_san_pham = ? AND trang_thai=1";
-    $stmt = $this->connection->prepare($sql);
-    $stmt->bind_param("s", $maSanPham);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    {
+        $sql = "SELECT * FROM tdanhmucsp WHERE ma_san_pham = ? AND trang_thai=1";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("s", $maSanPham);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    if ($result->num_rows > 0) {
-         $row = $result->fetch_assoc();
-         $sanPham = new SanPham(
-            $row['ma_san_pham'], $row['ten_san_pham'], $row['ma_chat_lieu'],
-            $row['can_nang'], $row['ma_hang_san_xuat'], $row['ma_quoc_gia_san_xuat'],
-            $row['thoi_gian_bao_hanh'], $row['gioi_thieu_san_pham'],
-            $row['ma_loai_san_pham'], $row['ma_loai_doi_tuong'], $row['anh'],
-            $row['gia'], $row['so_luong']
-        );
-        return $sanPham;
-    } else {
-        return null; // Không tìm thấy sản phẩm
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $sanPham = new SanPham(
+                $row['ma_san_pham'], $row['ten_san_pham'], $row['ma_chat_lieu'],
+                $row['can_nang'], $row['ma_hang_san_xuat'], $row['ma_quoc_gia_san_xuat'],
+                $row['thoi_gian_bao_hanh'], $row['gioi_thieu_san_pham'],
+                $row['ma_loai_san_pham'], $row['ma_loai_doi_tuong'], $row['anh'],
+                $row['gia'], $row['so_luong']
+            );
+            return $sanPham;
+        } else {
+            return null; // Không tìm thấy sản phẩm
+        }
     }
-}
 
     // Xóa sản phẩm
     public function xoaSanPham($maSanPham)
@@ -260,6 +260,9 @@ class SanPhamController
     // Chỉnh sửa sản phẩm
     public function chinhSuaSanPham($maSanPham, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong)
     {
+        if ($this->kiemTraTenSanPhamTonTai($tenSanPham)) {
+            return false;
+        }
         $sql = "UPDATE tdanhmucsp 
                 SET ten_san_pham = ?, ma_chat_lieu = ?, can_nang = ?, ma_hang_san_xuat = ?, ma_quoc_gia_san_xuat = ?, thoi_gian_bao_hanh = ?, gioi_thieu_san_pham = ?, ma_loai_san_pham = ?, ma_loai_doi_tuong = ?, anh = ?, gia = ?, so_luong = ? 
                 WHERE ma_san_pham = ?";
