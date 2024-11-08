@@ -184,7 +184,7 @@ class SanPhamController
         return $stmt->num_rows > 0; // Trả về true nếu mã sản phẩm đã tồn tại
     }
     // Hàm kiểm tra tên sản phẩm đã tồn tại với trạng thái trang_thai = 1
-    private function kiemTraTenSanPhamTonTai($tenSanPham)
+    public function kiemTraTenSanPhamTonTai($tenSanPham)
     {
         $sql = "SELECT ten_san_pham FROM tdanhmucsp WHERE ten_san_pham = ? AND trang_thai = 1";
         $stmt = $this->connection->prepare($sql);

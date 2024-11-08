@@ -48,16 +48,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $anh = $sanPhamController->xuLyUploadAnh($_FILES['anh']);
     } catch (Exception $e) {
+        $error['anh'] = $e->getMessage();
         $anh = null;
     }
 
+    if($sanPhamController->kiemTraTenSanPhamTonTai($tenSanPham)) {
+        $error['ten'] = "Tên sản phẩm đã tồn tại";
+    }
 
-    // Thêm sản phẩm mới
-    $sanPhamController->themSanPham($tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong);
+    if (empty($error)) {
+        // Thêm sản phẩm mới
+        $sanPhamController->themSanPham($tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong);
 
-    // Chuyển hướng về trang danh sách sản phẩm sau khi thêm mới
-    header("Location: DanhSachSanPham.php");
-    exit();
+        // Chuyển hướng về trang danh sách sản phẩm sau khi thêm mới
+        header("Location: DanhSachSanPham.php");
+        exit();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -82,25 +88,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-2">
                     <label class="block text-gray-700 font-bold">Tên sản phẩm:</label>
-                    <input type="text" name="tenSanPham" class="w-full px-3 py-2 border rounded-lg"
+                    <input type="text" name="tenSanPham" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($tenSanPham) ? $tenSanPham : '' ?>"
                         placeholder="Tên sản phẩm" required>
+                    <?php if (!empty($error['ten'])): ?>
+                        <div class="mb-4 text-red-500">
+                            <?= htmlspecialchars($error['ten']) ?>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Đơn giá:</label>
-                        <input type="text" name="gia" class="w-full px-3 py-2 border rounded-lg" placeholder="Đơn giá"
+                        <input type="text" name="gia" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($gia) ? $gia : '' ?>" placeholder="Đơn giá"
                             required>
                     </div>
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Số lượng:</label>
-                        <input type="text" name="soLuong" class="w-full px-3 py-2 border rounded-lg"
+                        <input type="text" name="soLuong" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($soLuong) ? $soLuong : '' ?>"
                             placeholder="Số lượng" required>
                     </div>
                 </div>
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Cân nặng (kg):</label>
-                        <input type="text" name="canNang" class="w-full px-3 py-2 border rounded-lg"
+                        <input type="text" name="canNang" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($canNang) ? $canNang : '' ?>"
                             placeholder="Cân nặng" required>
                     </div>
                     <div class="mb-2 w-1/2">
@@ -110,9 +121,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php
                                 $maLoaiSanPham = htmlspecialchars($loai->getMaLoaiSanPham());
                                 $tenLoaiSanPham = htmlspecialchars($loai->getLoaiSanPham());
+                                $selected = isset($loaiSanPham) && $loaiSanPham == $maLoaiSanPham ? 'selected' : '';
                                 ?>
-                                <option value="<?= $maLoaiSanPham ?>"><?= $tenLoaiSanPham ?></option>
-                            <?php endforeach; ?>
+                                <option value="<?= $maLoaiSanPham ?>" <?= $selected ?>><?= $tenLoaiSanPham ?></option>
+                                <?php endforeach; ?>
                         </select>
                     </div>
                 </div>
@@ -124,6 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php
                                 $maDoiTuong = htmlspecialchars($doiTuong->getMaDoiTuong());
                                 $tenDoiTuong = htmlspecialchars($doiTuong->getDoiTuong());
+                                $selected = isset($doiTuong) && $doiTuong == $maDoiTuong ? 'selected' : '';
                                 ?>
                                 <option value="<?= $maDoiTuong ?>"><?= $tenDoiTuong ?></option>
                             <?php endforeach; ?>
@@ -136,6 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php
                                 $maChatLieu = htmlspecialchars($chatLieu->getMaChatLieu());
                                 $tenChatLieu = htmlspecialchars($chatLieu->getChatLieu());
+                                $selected = isset($chatLieu) && $chatLieu == $maChatLieu ? 'selected' : '';
                                 ?>
                                 <option value="<?= $maChatLieu ?>"><?= $tenChatLieu ?></option>
                             <?php endforeach; ?>
@@ -150,6 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php
                                 $maHangSanXuat = htmlspecialchars($hang->getMaHangSanXuat());
                                 $tenHangSanXuat = htmlspecialchars($hang->getHangSanXuat());
+                                $selected = isset($hangSanXuat) && $hangSanXuat == $maHangSanXuat ? 'selected' : '';
                                 ?>
                                 <option value="<?= $maHangSanXuat ?>"><?= $tenHangSanXuat ?></option>
                             <?php endforeach; ?>
@@ -162,6 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php
                                 $maQuocGia = htmlspecialchars($quocGia->getMaQuocGia());
                                 $tenQuocGia = htmlspecialchars($quocGia->getQuocGia());
+                                $selected = isset($nuocSanXuat) && $nuocSanXuat == $maQuocGia ? 'selected' : '';
                                 ?>
                                 <option value="<?= $maQuocGia ?>"><?= $tenQuocGia ?></option>
                             <?php endforeach; ?>
@@ -171,17 +187,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-full">
                         <label class="block text-gray-700 font-bold">Thời gian bảo hành (năm):</label>
-                        <input type="number" name="thoiGianBaoHanh" class="w-full px-3 py-2 border rounded-lg"
+                        <input type="number" name="thoiGianBaoHanh" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($thoiGianBaoHanh) ? $thoiGianBaoHanh : '' ?>"
                             placeholder="Số năm bảo hành" required>
                     </div>
                     <div class="mb-2 w-full">
                         <label class="block text-gray-700 font-bold">Ảnh sản phẩm:</label>
                         <input type="file" name="anh" class="w-full px-3 py-2 border rounded-lg" required>
+                        <?php if (!empty($error['anh'])): ?>
+                            <div class="mb-4 text-red-500">
+                                <?= htmlspecialchars($error['anh']) ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="mb-2 w-full">
                     <label class="block text-gray-700 font-bold">Mô tả:</label>
-                    <textarea name="gioiThieuSanPham" class="w-full h-44 px-3 py-2 border rounded-lg"></textarea>
+                    <textarea name="gioiThieuSanPham"  class="w-full h-44 px-3 py-2 border rounded-lg"><?= isset($gioiThieuSanPham) ? $gioiThieuSanPham : '' ?></textarea>
                 </div>
                 <div class="flex justify-between">
                     <a href="javascript:history.back()" class="text-gray-500 text-4xl ml-3 hover:text-gray-700"><i

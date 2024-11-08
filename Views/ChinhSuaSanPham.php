@@ -33,6 +33,12 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
 $masp = isset($_GET['masp']) ? $_GET['masp'] : 0;
 $sanPham = $sanPhamController->laySanPhamTheoMa($masp);
 
+if ($sanPham === null) {
+    // Nếu không tìm thấy sản phẩm, hiển thị thông báo lỗi
+    echo "Không tìm thấy sản phẩm.";
+    exit();
+}
+
 // Xử lý khi form được submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tenSanPham = $_POST['tenSanPham'];
@@ -51,15 +57,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
         $anh = $sanPhamController->xuLyUploadAnh($_FILES['anh']);
     } catch (Exception $e) {
+        $error = $e->getMessage();
         $anh = $sanPham->getAnh();
     }
 
-    // Cập nhật sản phẩm
-    $sanPhamController->chinhSuaSanPham($masp, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong);
+    if (empty($error)) {
+        // Cập nhật sản phẩm
+        $sanPhamController->chinhSuaSanPham($masp, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong);
 
-    // Chuyển hướng về trang chi tiết sản phẩm sau khi cập nhật
-    header("Location: ChiTietSanPham.php?masp=$masp");
-    exit();
+        // Chuyển hướng về trang chi tiết sản phẩm sau khi cập nhật
+        header("Location: ChiTietSanPham.php?masp=$masp");
+        exit();
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -196,6 +205,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="file" value="<?= htmlspecialchars($sanPham->getAnh()) ?>" name="anh"
                                 class="w-full px-3 py-2 border rounded-lg">
                         </div>
+                        <?php if (!empty($error)): ?>
+                            <div class="mb-4 text-red-500">
+                                <?= htmlspecialchars($error) ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="flex justify-between">
