@@ -215,7 +215,7 @@ class SanPhamController
     // Xóa sản phẩm
     public function xoaSanPham($maSanPham)
     {
-        $sql = "DELETE FROM tdanhmucsp WHERE MaSP = ?";
+        $sql = "DELETE FROM tdanhmucsp WHERE ma_san_pham = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("s", $maSanPham);
 
@@ -237,6 +237,38 @@ class SanPhamController
             return true;
         } else {
             return false;
+        }
+    }
+    public function xuLyUploadAnh($file)
+    {
+        if (isset($file) && $file['error'] == 0) {
+            $targetDir = "../Images/";
+            $fileName = basename($file["name"]);
+            $targetFile = $targetDir . $fileName;
+            $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+            // Kiểm tra loại file (chỉ chấp nhận jpg, jpeg, png và gif)
+            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+            if (in_array($fileType, $allowedTypes)) {
+                // Kiểm tra MIME type để đảm bảo đó là file ảnh
+                $fileMimeType = mime_content_type($file["tmp_name"]);
+                $allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+
+                if (in_array($fileMimeType, $allowedMimeTypes)) {
+                    // Di chuyển file tới thư mục lưu trữ
+                    if (move_uploaded_file($file["tmp_name"], $targetFile)) {
+                        return $fileName;
+                    } else {
+                        throw new Exception("Không thể di chuyển tệp đã tải lên.");
+                    }
+                } else {
+                    throw new Exception("Chỉ chấp nhận các file ảnh có định dạng JPG, JPEG, PNG, và GIF.");
+                }
+            } else {
+                throw new Exception("Chỉ chấp nhận các file ảnh có định dạng JPG, JPEG, PNG, và GIF.");
+            }
+        } else {
+            throw new Exception("Không có tệp nào được tải lên hoặc có lỗi trong quá trình tải lên.");
         }
     }
 }

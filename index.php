@@ -10,5 +10,8 @@ if (!isset($_SESSION['nhanVien'])) {
     // Chuyển hướng đến trang đăng nhập
     header("Location: Views/login.php");
     exit();
+}else{
+    header("Location: Views/DanhSachSanPham.php");
+    exit();
 }
 ?>
