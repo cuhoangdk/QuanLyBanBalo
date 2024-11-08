@@ -76,7 +76,7 @@ class SanPhamController
             $types .= 'd';
         }
         if ($giaMax !== null) {
-            $sql .= " AND Gigiaa <= ?";
+            $sql .= " AND gia <= ?";
             $params[] = $giaMax;
             $types .= 'd';
         }
@@ -173,10 +173,28 @@ class SanPhamController
         ];
         return strtr(mb_strtolower($str), $unwanted_array);
     }
-
+    // Hàm kiểm tra mã sản phẩm có tồn tại hay không
+    private function kiemTraMaSanPhamTonTai($maSP)
+    {
+        $sql = "SELECT ma_san_pham FROM tdanhmucsp WHERE ma_san_pham = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("s", $maSP);
+        $stmt->execute();
+        $stmt->store_result();
+        return $stmt->num_rows > 0; // Trả về true nếu mã sản phẩm đã tồn tại
+    }
     // Thêm sản phẩm
     public function themSanPham($tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong)
     {
+        $maSP = $this->taoMaSanPham($tenSanPham);  
+        $originalMaSP = $maSP;  // Lưu lại mã gốc để thêm số thứ tự nếu cần
+        $i = 1;
+        
+        // Kiểm tra xem mã sản phẩm đã tồn tại chưa và thêm số thứ tự nếu cần
+        while ($this->kiemTraMaSanPhamTonTai($maSP)) {
+            $maSP = $originalMaSP . $i;
+            $i++;
+        }
         $sql = "INSERT INTO tdanhmucsp (ma_san_pham, ten_san_pham, ma_chat_lieu, can_nang, ma_hang_san_xuat, ma_quoc_gia_san_xuat, thoi_gian_bao_hanh, gioi_thieu_san_pham, ma_loai_san_pham, ma_loai_doi_tuong, anh, gia, so_luong)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $maSP = $this->taoMaSanPham($tenSanPham);        
