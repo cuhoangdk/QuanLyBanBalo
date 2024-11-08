@@ -260,6 +260,9 @@ class SanPhamController
     // Chỉnh sửa sản phẩm
     public function chinhSuaSanPham($maSanPham, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong)
     {
+        if ($this->kiemTraTenSanPhamTonTai($tenSanPham)) {
+            return false;
+        }
         $sql = "UPDATE tdanhmucsp 
                 SET ten_san_pham = ?, ma_chat_lieu = ?, can_nang = ?, ma_hang_san_xuat = ?, ma_quoc_gia_san_xuat = ?, thoi_gian_bao_hanh = ?, gioi_thieu_san_pham = ?, ma_loai_san_pham = ?, ma_loai_doi_tuong = ?, anh = ?, gia = ?, so_luong = ? 
                 WHERE ma_san_pham = ?";

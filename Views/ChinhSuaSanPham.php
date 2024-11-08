@@ -60,6 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = $e->getMessage();
         $anh = $sanPham->getAnh();
     }
+    if($sanPhamController->kiemTraTenSanPhamTonTai($tenSanPham)) {
+        $error['ten'] = "Tên sản phẩm đã tồn tại";
+    }
 
     if (empty($error)) {
         // Cập nhật sản phẩm
