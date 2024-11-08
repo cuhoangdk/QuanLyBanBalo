@@ -13,7 +13,7 @@ class SanPhamController
     // Lấy danh mục sản phẩm
     public function layDanhMucSanPham()
     {
-        $sql = "SELECT * FROM tdanhmucsp";
+        $sql = "SELECT * FROM tdanhmucsp WHERE trang_thai=1";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -36,7 +36,7 @@ class SanPhamController
     // Tìm kiếm sản phẩm theo tên
     public function timKiemSanPhamTheoTen($tenSanPham)
     {
-        $sql = "SELECT * FROM tdanhmucsp WHERE TenSP LIKE ?";
+        $sql = "SELECT * FROM tdanhmucsp WHERE TenSP LIKE ? AND trang_thai=1";
         $stmt = $this->connection->prepare($sql);
         $likeTenSanPham = "%" . $tenSanPham . "%";
         $stmt->bind_param("s", $likeTenSanPham);
@@ -61,7 +61,7 @@ class SanPhamController
     // Tìm kiếm sản phẩm với các tiêu chí
     public function timKiemSanPham($tenSanPham = null, $giaMin = null, $giaMax = null, $hangSanXuat = null, $loai = null, $nuocSanXuat = null, $doiTuong = null, $chatLieu = null,$limit, $offset)
     {
-        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM tdanhmucsp WHERE 1=1";
+        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM tdanhmucsp WHERE trang_thai=1";
         $params = [];
         $types = '';
 
@@ -183,23 +183,37 @@ class SanPhamController
         $stmt->store_result();
         return $stmt->num_rows > 0; // Trả về true nếu mã sản phẩm đã tồn tại
     }
+    // Hàm kiểm tra tên sản phẩm đã tồn tại với trạng thái trang_thai = 1
+    private function kiemTraTenSanPhamTonTai($tenSanPham)
+    {
+        $sql = "SELECT ten_san_pham FROM tdanhmucsp WHERE ten_san_pham = ? AND trang_thai = 1";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("s", $tenSanPham);
+        $stmt->execute();
+        $stmt->store_result();
+        return $stmt->num_rows > 0; // Trả về true nếu tên sản phẩm đã tồn tại và đang kích hoạt
+    }
     // Thêm sản phẩm
     public function themSanPham($tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong)
     {
         $maSP = $this->taoMaSanPham($tenSanPham);  
+        $trangthai =1;
         $originalMaSP = $maSP;  // Lưu lại mã gốc để thêm số thứ tự nếu cần
         $i = 1;
-        
+        // Kiểm tra xem tên sản phẩm đã tồn tại với trang_thai = 1 chưa
+        if ($this->kiemTraTenSanPhamTonTai($tenSanPham)) {
+            return false;
+        }
         // Kiểm tra xem mã sản phẩm đã tồn tại chưa và thêm số thứ tự nếu cần
         while ($this->kiemTraMaSanPhamTonTai($maSP)) {
             $maSP = $originalMaSP . $i;
             $i++;
         }
-        $sql = "INSERT INTO tdanhmucsp (ma_san_pham, ten_san_pham, ma_chat_lieu, can_nang, ma_hang_san_xuat, ma_quoc_gia_san_xuat, thoi_gian_bao_hanh, gioi_thieu_san_pham, ma_loai_san_pham, ma_loai_doi_tuong, anh, gia, so_luong)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO tdanhmucsp (ma_san_pham, ten_san_pham, ma_chat_lieu, can_nang, ma_hang_san_xuat, ma_quoc_gia_san_xuat, thoi_gian_bao_hanh, gioi_thieu_san_pham, ma_loai_san_pham, ma_loai_doi_tuong, anh, gia, so_luong, trang_thai)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $maSP = $this->taoMaSanPham($tenSanPham);        
         $stmt = $this->connection->prepare($sql);
-        $stmt->bind_param("sssdssdssssii", $maSP , $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong);
+        $stmt->bind_param("sssdssdssssiii", $maSP , $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong, $trangthai);
 
         if ($stmt->execute()) {
             return true;
@@ -209,7 +223,7 @@ class SanPhamController
     }
     public function laySanPhamTheoMa($maSanPham)
 {
-    $sql = "SELECT * FROM tdanhmucsp WHERE ma_san_pham = ?";
+    $sql = "SELECT * FROM tdanhmucsp WHERE ma_san_pham = ? AND trang_thai=1";
     $stmt = $this->connection->prepare($sql);
     $stmt->bind_param("s", $maSanPham);
     $stmt->execute();
@@ -233,7 +247,7 @@ class SanPhamController
     // Xóa sản phẩm
     public function xoaSanPham($maSanPham)
     {
-        $sql = "DELETE FROM tdanhmucsp WHERE ma_san_pham = ?";
+        $sql = "UPDATE tdanhmucsp SET trang_thai = 0 WHERE ma_san_pham = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("s", $maSanPham);
 
@@ -247,14 +261,33 @@ class SanPhamController
     // Chỉnh sửa sản phẩm
     public function chinhSuaSanPham($maSanPham, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong)
     {
-        $sql = "UPDATE tdanhmucsp SET ten_san_pham = ?, ma_chat_lieu = ?, can_nang = ?, ma_hang_san_xuat = ?, ma_quoc_gia_san_xuat = ?, thoi_gian_bao_hanh = ?, gioi_thieu_san_pham = ?, ma_loai_san_pham = ?, ma_loai_doi_tuong = ?, anh = ?, gia = ?, so_luong = ? WHERE ma_san_pham = ?";
-        $stmt = $this->connection->prepare($sql);
-        $stmt->bind_param("ssdssdssssiis", $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong, $maSanPham);
-    
-        if ($stmt->execute()) {
-            return true;
+        // Tạo mã sản phẩm mới dựa trên tên sản phẩm
+        $maSanPhamMoi = $this->taoMaSanPham($tenSanPham);
+
+        // Câu lệnh đầu tiên: Cập nhật các thuộc tính khác
+        $sql1 = "UPDATE tdanhmucsp 
+                SET ten_san_pham = ?, ma_chat_lieu = ?, can_nang = ?, ma_hang_san_xuat = ?, ma_quoc_gia_san_xuat = ?, thoi_gian_bao_hanh = ?, gioi_thieu_san_pham = ?, ma_loai_san_pham = ?, ma_loai_doi_tuong = ?, anh = ?, gia = ?, so_luong = ? 
+                WHERE ma_san_pham = ?";
+        
+        $stmt1 = $this->connection->prepare($sql1);
+        $stmt1->bind_param("ssdssdssssiis", $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong, $maSanPham);
+
+        if (!$stmt1->execute()) {
+            return false; // Trả về false nếu câu lệnh đầu tiên thất bại
+        }
+
+        // Câu lệnh thứ hai: Cập nhật mã sản phẩm
+        $sql2 = "UPDATE tdanhmucsp 
+                SET ma_san_pham = ? 
+                WHERE ma_san_pham = ?";
+        
+        $stmt2 = $this->connection->prepare($sql2);
+        $stmt2->bind_param("ss", $maSanPhamMoi, $maSanPham);
+
+        if ($stmt2->execute()) {
+            return true; // Trả về true nếu cả hai câu lệnh đều thành công
         } else {
-            return false;
+            return false; // Trả về false nếu câu lệnh thứ hai thất bại
         }
     }
     public function xuLyUploadAnh($file)
