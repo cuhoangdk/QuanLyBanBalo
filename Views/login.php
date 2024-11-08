@@ -2,15 +2,26 @@
 include_once '../Config/config.php';
 include_once '../Controllers/LoginController.php';
 
-// Khởi tạo đối tượng NhanVien và LoginController
+// Khởi tạo đối tượng LoginController
 $loginController = new LoginController($connection);
+
+// Khởi tạo biến để hiển thị thông báo nếu cần
+$message = '';
 
 // Kiểm tra nếu form đăng nhập được gửi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
     $password = $_POST['password'];
+
     // Gọi phương thức đăng nhập từ LoginController
-    $message = $loginController->login($username, $password);
+    if ($loginController->login($username, $password)) {
+        // Đăng nhập thành công, chuyển hướng đến trang sản phẩm
+        header("Location: ../Views/DanhSachSanPham.php");
+        exit();
+    } else {
+        // Đăng nhập thất bại, thiết lập thông báo lỗi
+        $message = "Tên đăng nhập hoặc mật khẩu không đúng";
+    }
 }
 ?>
 
@@ -44,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
 
             <?php if (!empty($message)): ?>
-                <div class="alert alert-info mt-3 text-center"><?php echo $message; ?></div>
+                <div class="alert alert-info mt-3 text-center text-red-500"><?php echo $message; ?></div>
             <?php endif; ?>
         </div>
     </div>

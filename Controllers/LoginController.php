@@ -15,24 +15,24 @@ class LoginController {
 
         // Kiểm tra thông tin đăng nhập
         $nhanVien = $this->getNhanVienByUsernameAndPassword($username, $hashedPassword);
-        
+
         if ($nhanVien) {
             // Đăng nhập thành công, lưu thông tin nhân viên vào session
             if (session_status() == PHP_SESSION_NONE) {
                 session_start();
-                $_SESSION['nhanVien'] = [
+            }
+            $_SESSION['nhanVien'] = [
                 'ma_nhan_vien' => $nhanVien->getMaNhanVien(),
                 'ten_nhan_vien' => $nhanVien->getTenNhanVien(),
                 'chuc_vu' => $nhanVien->getChucVu(),
             ];
-            header("Location: ../Views/DanhSachSanPham.php");
-            exit();
-            } else {
-                // Đăng nhập thất bại
-                return "Tên đăng nhập hoặc mật khẩu không đúng";
-            }
+            return true;
+        } else {
+            // Đăng nhập thất bại
+            return false;
         }
     }
+
     // Lấy thông tin nhân viên dựa trên username và password đã mã hóa
     public function getNhanVienByUsernameAndPassword($username, $hashedPassword) {
         // Tạo truy vấn SQL với tham số trực tiếp
@@ -70,6 +70,5 @@ class LoginController {
         session_start();
         session_unset();
         session_destroy();
-        return "Đã đăng xuất thành công";
     }
 }
