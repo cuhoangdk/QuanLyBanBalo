@@ -59,12 +59,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $anh = $sanPhamController->xuLyUploadAnh($_FILES['anh']);
         } catch (Exception $e) {
-            $error = $e->getMessage();
+            $error['anh'] = $e->getMessage();
         }
-    }
-
-    if($sanPhamController->kiemTraTenSanPhamTonTai($tenSanPham)) {
-        $error['ten'] = "Tên sản phẩm đã tồn tại";
     }
 
     if (empty($error)) {
@@ -108,11 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <label class="block text-gray-700 font-bold">Tên sản phẩm:</label>
                     <input type="text" name="tenSanPham" value="<?= htmlspecialchars($sanPham->getTenSanPham()) ?>"
                         class="w-full px-3 py-2 border rounded-lg">
-                    <?php if (!empty($error['ten'])): ?>
-                        <div class="mb-4 text-red-500">
-                            <?= htmlspecialchars($error['ten']) ?>
-                        </div>
-                    <?php endif; ?>
                 </div>
                 <div class="mb-2 w-full">
                     <label class="block text-gray-700 font-bold">Đơn giá:</label>
