@@ -33,11 +33,11 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
 $masp = isset($_GET['masp']) ? $_GET['masp'] : null;
 $sanPham = $sanPhamController->laySanPhamTheoMa($masp);
 
-if ($sanPham === null) {
-    // Nếu không tìm thấy sản phẩm, hiển thị thông báo lỗi
-    header("Location: DanhSachSanPham.php");
-    exit();
-}
+// if ($sanPham === null) {
+//     // Nếu không tìm thấy sản phẩm, hiển thị thông báo lỗi
+//     echo "Không tìm thấy sản phẩm.";
+//     exit();
+// }
 
 // Xử lý khi form được submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
