@@ -104,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Số lượng:</label>
-                        <input ttype="number" min="1" name="soLuong" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($soLuong) ? $soLuong : '' ?>"
+                        <input type="number" min="1" name="soLuong" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($soLuong) ? $soLuong : '' ?>"
                             placeholder="Số lượng" required>
                     </div>
                 </div>

@@ -70,5 +70,6 @@ class LoginController {
         session_start();
         session_unset();
         session_destroy();
+        return "Đăng xuất thành công";
     }
 }
