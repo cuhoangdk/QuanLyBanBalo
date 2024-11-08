@@ -99,19 +99,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Đơn giá:</label>
-                        <input type="text" name="gia" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($gia) ? $gia : '' ?>" placeholder="Đơn giá"
+                        <input type="number" min="1" name="gia" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($gia) ? $gia : '' ?>" placeholder="Đơn giá"
                             required>
                     </div>
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Số lượng:</label>
-                        <input type="text" name="soLuong" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($soLuong) ? $soLuong : '' ?>"
+                        <input ttype="number" min="1" name="soLuong" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($soLuong) ? $soLuong : '' ?>"
                             placeholder="Số lượng" required>
                     </div>
                 </div>
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Cân nặng (kg):</label>
-                        <input type="text" name="canNang" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($canNang) ? $canNang : '' ?>"
+                        <input type="number" min="1" name="canNang" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($canNang) ? $canNang : '' ?>"
                             placeholder="Cân nặng" required>
                     </div>
                     <div class="mb-2 w-1/2">
@@ -187,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-full">
                         <label class="block text-gray-700 font-bold">Thời gian bảo hành (năm):</label>
-                        <input type="number" name="thoiGianBaoHanh" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($thoiGianBaoHanh) ? $thoiGianBaoHanh : '' ?>"
+                        <input type="number" min="1" name="thoiGianBaoHanh" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($thoiGianBaoHanh) ? $thoiGianBaoHanh : '' ?>"
                             placeholder="Số năm bảo hành" required>
                     </div>
                     <div class="mb-2 w-full">

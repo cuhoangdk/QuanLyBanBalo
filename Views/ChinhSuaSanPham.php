@@ -103,14 +103,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="mb-2 w-full">
                     <label class="block text-gray-700 font-bold">Đơn giá:</label>
-                    <input type="text" name="gia" value="<?= htmlspecialchars($sanPham->getGia()) ?>"
+                    <input type="number" min="1" name="gia" value="<?= htmlspecialchars($sanPham->getGia()) ?>"
                         class="w-full px-3 py-2 border rounded-lg">
                 </div>
 
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Cân nặng (kg):</label>
-                        <input type="text" name="canNang" value="<?= htmlspecialchars($sanPham->getCanNang()) ?>"
+                        <input type="number" min="1" name="canNang" value="<?= htmlspecialchars($sanPham->getCanNang()) ?>"
                             class="w-full px-3 py-2 border rounded-lg">
                     </div>
                     <div class="mb-2 w-1/2">
@@ -186,13 +186,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Thời gian bảo hành (năm):</label>
-                        <input type="text" name="thoiGianBaoHanh"
+                        <input type="number" min="1" name="thoiGianBaoHanh"
                             value="<?= htmlspecialchars($sanPham->getThoiGianBaoHanh()) ?>"
                             class="w-full px-3 py-2 border rounded-lg">
                     </div>
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Số lượng trong kho:</label>
-                        <input type="text" name="soLuong" value="<?= htmlspecialchars($sanPham->getSoLuong()) ?>"
+                        <input type="number" min="1" name="soLuong" value="<?= htmlspecialchars($sanPham->getSoLuong()) ?>"
                             class="w-full px-3 py-2 border rounded-lg">
                     </div>
                 </div>
