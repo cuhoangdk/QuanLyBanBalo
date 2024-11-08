@@ -60,6 +60,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Thêm sản phẩm mới
         $sanPhamController->themSanPham($tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong);
 
+        $_SESSION['success'] = 'Thêm sản phẩm thành công';
+
         // Chuyển hướng về trang danh sách sản phẩm sau khi thêm mới
         header("Location: DanhSachSanPham.php");
         exit();

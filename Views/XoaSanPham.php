@@ -10,13 +10,21 @@ if (!isset($_SESSION['nhanVien'])) {
     exit();
 }
 
-$masp = isset($_GET['masp']) ? $_GET['masp'] : 0;
+$masp = isset($_GET['masp']) ? $_GET['masp'] : null;
+if ($masp == null) {
+    // Chuyển hướng về trang danh sách sản phẩm nếu không có mã sản phẩm
+    header("Location: DanhSachSanPham.php");
+    exit();
+}
+
 $sanPhamController = new SanPhamController($connection);
 $sanPham = $sanPhamController->laySanPhamTheoMa($masp);
 
 // Xử lý khi form được submit để xóa sản phẩm
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sanPhamController->xoaSanPham($masp);
+
+    $_SESSION['success'] = 'Xóa sản phẩm thành công';
     // Chuyển hướng về trang danh sách sản phẩm sau khi xóa
     header("Location: DanhSachSanPham.php");
     exit();

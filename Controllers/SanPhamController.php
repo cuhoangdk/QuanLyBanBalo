@@ -264,7 +264,7 @@ class SanPhamController
                 SET ten_san_pham = ?, ma_chat_lieu = ?, can_nang = ?, ma_hang_san_xuat = ?, ma_quoc_gia_san_xuat = ?, thoi_gian_bao_hanh = ?, gioi_thieu_san_pham = ?, ma_loai_san_pham = ?, ma_loai_doi_tuong = ?, anh = ?, gia = ?, so_luong = ? 
                 WHERE ma_san_pham = ?";
         
-        $stmt = $this->connection->prepare($sql1);
+        $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("ssdssdssssiis", $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong, $maSanPham);
         if ($stmt->execute()) {
             return true; // Trả về true nếu câu lệnh thành công

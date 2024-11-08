@@ -9,10 +9,26 @@ if (!isset($_SESSION['nhanVien'])) {
     header("Location: login.php");
     exit();
 }
-$masp = isset($_GET['masp']) ? $_GET['masp'] : 0;
+$masp = isset($_GET['masp']) ? $_GET['masp'] : null;
+if ($masp == null) {
+    // Chuyển hướng về trang danh sách sản phẩm nếu không có mã sản phẩm
+    header("Location: DanhSachSanPham.php");
+    exit();
+}
 $sanPhamController = new SanPhamController($connection);
 $sanPham = $sanPhamController->laySanPhamTheoMa($masp);
 
+
+if (isset($_SESSION['success']))
+{
+    echo '<div id="notification" class="fixed top-16 right-5 bg-green-500 text-white p-4 rounded shadow-lg">
+    '.$_SESSION['success'].'
+        <button onclick="document.getElementById(\'notification\').style.display=\'none\'" class="ml-4 bg-red-500 px-2 rounded">X</button>
+    </div>';
+    echo '<script>setTimeout(function() {document.getElementById("notification").style.display = "none";}, 5000);
+    </script>';
+    unset($_SESSION['success']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="vi">

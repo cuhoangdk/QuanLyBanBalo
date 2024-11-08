@@ -43,6 +43,7 @@ $danhSachHangSanXuat = $hangSanXuatController->layDanhSachHangSanXuat();
 $danhSachQuocGia = $quocGiaController->layDanhSachQuocGia();
 $danhSachLoaiDoiTuong = $loaiDoiTuongController->layDanhSachLoaiDoiTuong();
 $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
+
 ?>
 <!DOCTYPE html>
 <html lang="vi">
@@ -239,6 +240,17 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
 </html>
 
 <?php
+if (isset($_SESSION['success']))
+{
+    echo '<div id="notification" class="fixed top-16 right-5 bg-green-500 text-white p-4 rounded shadow-lg">
+    '.$_SESSION['success'].'
+        <button onclick="document.getElementById(\'notification\').style.display=\'none\'" class="ml-4 bg-red-500 px-2 rounded">X</button>
+    </div>';
+    echo '<script>setTimeout(function() {document.getElementById("notification").style.display = "none";}, 5000);
+    </script>';
+    unset($_SESSION['success']);
+}
+
 if ($connection) {
     $connection->close();
 }

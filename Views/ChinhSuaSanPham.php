@@ -30,12 +30,12 @@ $danhSachQuocGia = $quocGiaController->layDanhSachQuocGia();
 $danhSachLoaiDoiTuong = $loaiDoiTuongController->layDanhSachLoaiDoiTuong();
 $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
 
-$masp = isset($_GET['masp']) ? $_GET['masp'] : 0;
+$masp = isset($_GET['masp']) ? $_GET['masp'] : null;
 $sanPham = $sanPhamController->laySanPhamTheoMa($masp);
 
 if ($sanPham === null) {
     // Nếu không tìm thấy sản phẩm, hiển thị thông báo lỗi
-    echo "Không tìm thấy sản phẩm.";
+    header("Location: DanhSachSanPham.php");
     exit();
 }
 
@@ -52,18 +52,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hangSanXuat = $_POST['hangSanXuat'];
     $nuocSanXuat = $_POST['nuocSanXuat'];
     $thoiGianBaoHanh = $_POST['thoiGianBaoHanh'];
+    $anh = $sanPham->getAnh();
 
     // Xử lý upload ảnh
-    try {
-        $anh = $sanPhamController->xuLyUploadAnh($_FILES['anh']);
-    } catch (Exception $e) {
-        $error = $e->getMessage();
-        $anh = $sanPham->getAnh();
+    if (isset($_FILES['anh']) && $_FILES['anh']['error'] == 0) {
+        try {
+            $anh = $sanPhamController->xuLyUploadAnh($_FILES['anh']);
+        } catch (Exception $e) {
+            $error = $e->getMessage();
+        }
     }
 
     if (empty($error)) {
         // Cập nhật sản phẩm
         $sanPhamController->chinhSuaSanPham($masp, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong);
+
+        $_SESSION['success'] = 'Cập nhật sản phẩm thành công';
 
         // Chuyển hướng về trang chi tiết sản phẩm sau khi cập nhật
         header("Location: ChiTietSanPham.php?masp=$masp");
