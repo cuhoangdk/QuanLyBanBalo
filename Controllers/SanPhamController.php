@@ -261,33 +261,16 @@ class SanPhamController
     // Chỉnh sửa sản phẩm
     public function chinhSuaSanPham($maSanPham, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong)
     {
-        // Tạo mã sản phẩm mới dựa trên tên sản phẩm
-        $maSanPhamMoi = $this->taoMaSanPham($tenSanPham);
-
-        // Câu lệnh đầu tiên: Cập nhật các thuộc tính khác
-        $sql1 = "UPDATE tdanhmucsp 
+        $sql = "UPDATE tdanhmucsp 
                 SET ten_san_pham = ?, ma_chat_lieu = ?, can_nang = ?, ma_hang_san_xuat = ?, ma_quoc_gia_san_xuat = ?, thoi_gian_bao_hanh = ?, gioi_thieu_san_pham = ?, ma_loai_san_pham = ?, ma_loai_doi_tuong = ?, anh = ?, gia = ?, so_luong = ? 
                 WHERE ma_san_pham = ?";
         
-        $stmt1 = $this->connection->prepare($sql1);
-        $stmt1->bind_param("ssdssdssssiis", $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong, $maSanPham);
-
-        if (!$stmt1->execute()) {
-            return false; // Trả về false nếu câu lệnh đầu tiên thất bại
-        }
-
-        // Câu lệnh thứ hai: Cập nhật mã sản phẩm
-        $sql2 = "UPDATE tdanhmucsp 
-                SET ma_san_pham = ? 
-                WHERE ma_san_pham = ?";
-        
-        $stmt2 = $this->connection->prepare($sql2);
-        $stmt2->bind_param("ss", $maSanPhamMoi, $maSanPham);
-
-        if ($stmt2->execute()) {
-            return true; // Trả về true nếu cả hai câu lệnh đều thành công
+        $stmt = $this->connection->prepare($sql1);
+        $stmt->bind_param("ssdssdssssiis", $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong, $maSanPham);
+        if ($stmt->execute()) {
+            return true; // Trả về true nếu câu lệnh thành công
         } else {
-            return false; // Trả về false nếu câu lệnh thứ hai thất bại
+            return false; // Trả về false nếu câu lệnh thất bại
         }
     }
     public function xuLyUploadAnh($file)
