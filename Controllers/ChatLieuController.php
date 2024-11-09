@@ -28,7 +28,7 @@ class ChatLieuController{
     public function themChatLieu($tenChatLieu)
     {
         // Tạo mã chất liệu từ tên chất liệu
-        $maChatLieu = taoMa($tenChatLieu);
+        $maChatLieu = taoMaDai($tenChatLieu);
         
         // Kiểm tra tên chất liệu đã tồn tại hay chưa
         if ($this->kiemTraTenChatLieuTonTai($tenChatLieu)) {
