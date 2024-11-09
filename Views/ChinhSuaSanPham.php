@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Cân nặng (kg):</label>
-                        <input type="number" min="1" name="canNang" value="<?= htmlspecialchars($sanPham->getCanNang()) ?>"
+                        <input type="float" min="0.1" name="canNang" value="<?= htmlspecialchars($sanPham->getCanNang()) ?>"
                             class="w-full px-3 py-2 border rounded-lg">
                     </div>
                     <div class="mb-2 w-1/2">
@@ -190,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Thời gian bảo hành (năm):</label>
-                        <input type="number" min="1" name="thoiGianBaoHanh"
+                        <input type="float" min="0" name="thoiGianBaoHanh"
                             value="<?= htmlspecialchars($sanPham->getThoiGianBaoHanh()) ?>"
                             class="w-full px-3 py-2 border rounded-lg">
                     </div>

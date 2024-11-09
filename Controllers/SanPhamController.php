@@ -1,6 +1,6 @@
 <?php
 include_once '../Models/SanPham.php';
-
+include_once '../Utils/utils.php';
 class SanPhamController
 {
     protected $connection;
@@ -135,44 +135,6 @@ class SanPhamController
         $totalSanPham = $result->fetch_assoc()['total'];
     return [$danhMucSanPham, $totalSanPham];
     }
-    protected function taoMaSanPham($tenSanPham)
-    {
-        // Chuyển tên sản phẩm thành dạng không dấu
-        $tenSanPhamKhongDau = $this->removeAccents($tenSanPham);
-
-        // Tách tên sản phẩm thành từng từ
-        $tu = explode(' ', $tenSanPhamKhongDau);
-
-        // Lấy tối đa 2 ký tự đầu tiên của mỗi từ và ghép lại
-        $maSP = '';
-        foreach ($tu as $t) {
-            // Kiểm tra độ dài của từ, nếu từ có ít hơn 2 ký tự thì lấy tất cả ký tự của từ đó
-            $maSP .= substr($t, 0, min(2, strlen($t)));
-        }
-
-        return strtolower($maSP); // Đảm bảo mã sản phẩm là chữ in thường
-    }
-
-    // Hàm chuyển tiếng Việt có dấu thành không dấu
-    protected function removeAccents($str)
-    {
-        $unwanted_array = [
-            'á'=>'a','à'=>'a','ả'=>'a','ã'=>'a','ạ'=>'a',
-            'ă'=>'a','ắ'=>'a','ằ'=>'a','ẳ'=>'a','ẵ'=>'a','ặ'=>'a',
-            'â'=>'a','ấ'=>'a','ầ'=>'a','ẩ'=>'a','ẫ'=>'a','ậ'=>'a',
-            'é'=>'e','è'=>'e','ẻ'=>'e','ẽ'=>'e','ẹ'=>'e',
-            'ê'=>'e','ế'=>'e','ề'=>'e','ể'=>'e','ễ'=>'e','ệ'=>'e',
-            'í'=>'i','ì'=>'i','ỉ'=>'i','ĩ'=>'i','ị'=>'i',
-            'ó'=>'o','ò'=>'o','ỏ'=>'o','õ'=>'o','ọ'=>'o',
-            'ô'=>'o','ố'=>'o','ồ'=>'o','ổ'=>'o','ỗ'=>'o','ộ'=>'o',
-            'ơ'=>'o','ớ'=>'o','ờ'=>'o','ở'=>'o','ỡ'=>'o','ợ'=>'o',
-            'ú'=>'u','ù'=>'u','ủ'=>'u','ũ'=>'u','ụ'=>'u',
-            'ư'=>'u','ứ'=>'u','ừ'=>'u','ử'=>'u','ữ'=>'u','ự'=>'u',
-            'ý'=>'y','ỳ'=>'y','ỷ'=>'y','ỹ'=>'y','ỵ'=>'y',
-            'đ'=>'d'
-        ];
-        return strtr(mb_strtolower($str), $unwanted_array);
-    }
     // Hàm kiểm tra mã sản phẩm có tồn tại hay không
     private function kiemTraMaSanPhamTonTai($maSP)
     {
@@ -196,8 +158,8 @@ class SanPhamController
     // Thêm sản phẩm
     public function themSanPham($tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong)
     {
-        $maSP = $this->taoMaSanPham($tenSanPham);  
-        $trangthai =1;
+        $maSP = taoMa($tenSanPham);  
+        $trangthai = 1;
         $originalMaSP = $maSP;  // Lưu lại mã gốc để thêm số thứ tự nếu cần
         $i = 1;
         // Kiểm tra xem tên sản phẩm đã tồn tại với trang_thai = 1 chưa
@@ -222,7 +184,7 @@ class SanPhamController
     }
     public function laySanPhamTheoMa($maSanPham)
     {
-        $sql = "SELECT * FROM tdanhmucsp WHERE ma_san_pham = ? AND trang_thai=1";
+        $sql = "SELECT * FROM tdanhmucsp WHERE ma_san_pham = ? AND trang_thai= 1";
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("s", $maSanPham);
         $stmt->execute();
@@ -260,18 +222,17 @@ class SanPhamController
     // Chỉnh sửa sản phẩm
     public function chinhSuaSanPham($maSanPham, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong)
     {
-        if ($this->kiemTraTenSanPhamTonTai($tenSanPham)) {
-            return false;
-        }
         $sql = "UPDATE tdanhmucsp 
                 SET ten_san_pham = ?, ma_chat_lieu = ?, can_nang = ?, ma_hang_san_xuat = ?, ma_quoc_gia_san_xuat = ?, thoi_gian_bao_hanh = ?, gioi_thieu_san_pham = ?, ma_loai_san_pham = ?, ma_loai_doi_tuong = ?, anh = ?, gia = ?, so_luong = ? 
                 WHERE ma_san_pham = ?";
         
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("ssdssdssssiis", $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong, $maSanPham);
+        
         if ($stmt->execute()) {
             return true; // Trả về true nếu câu lệnh thành công
         } else {
+
             return false; // Trả về false nếu câu lệnh thất bại
         }
     }

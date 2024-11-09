@@ -3,7 +3,6 @@ include_once __DIR__ . '/../Models/NhanVien.php';
 class LoginController {
     protected $connection;
 
-    // Khởi tạo với dependency của NhanVienModel
     public function __construct($connection) {
         $this->connection = $connection;
     }
@@ -35,7 +34,6 @@ class LoginController {
 
     // Lấy thông tin nhân viên dựa trên username và password đã mã hóa
     public function getNhanVienByUsernameAndPassword($username, $hashedPassword) {
-        // Tạo truy vấn SQL với tham số trực tiếp
         // Sử dụng prepared statements để tránh SQL injection
         $stmt = $this->connection->prepare("SELECT * FROM tnhanvien WHERE username = ? AND password = ?");
         $stmt->bind_param("ss", $username, $hashedPassword);
@@ -64,7 +62,6 @@ class LoginController {
     /**
      * Phương thức đăng xuất
      * Hủy bỏ session hiện tại và đăng xuất người dùng
-     * @return string Thông báo đăng xuất thành công
      */
     public function logout() {
         session_start();

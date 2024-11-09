@@ -64,13 +64,24 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
     <div class="container mx-auto w-4/5 px-7 ">
         <!-- Form tìm kiếm -->
         <form method="GET" class="bg-white p-4 rounded shadow-md mt-5">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <input type="text" name="tenSanPham" placeholder="Tên sản phẩm"
                     value="<?= htmlspecialchars($tenSanPham) ?>" class="p-2 border rounded">
                 <input type="number" name="giaMin" placeholder="Giá thấp nhất" value="<?= htmlspecialchars($giaMin) ?>"
                     class="p-2 border rounded">
                 <input type="number" name="giaMax" placeholder="Giá cao nhất" value="<?= htmlspecialchars($giaMax) ?>"
                     class="p-2 border rounded">
+                <select name="chatLieu" class="p-2 border rounded">
+                    <option value="">Chọn chất liệu</option>
+                    <?php foreach ($danhSachChatLieu as $chatLieuObj): ?>
+                        <?php
+                        $maChatLieu = htmlspecialchars($chatLieuObj->getMaChatLieu());
+                        $tenChatLieu = htmlspecialchars($chatLieuObj->getChatLieu());
+                        $selected = $maChatLieu == $chatLieu ? 'selected' : '';
+                        ?>
+                        <option value="<?= $maChatLieu ?>" <?= $selected ?>><?= $tenChatLieu ?></option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-2">
                 <select name="hangSanXuat" class="p-2 border rounded">
@@ -134,12 +145,12 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
             <table class="min-w-full bg-white border border-gray-200">
                 <thead class="bg-gray-200">
                     <tr>
-                        <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">STT</th>
-                        <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">Tên sản phẩm</th>
-                        <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">Giá (VNĐ)</th>
-                        <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">Số lượng</th>
-                        <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">Hình ảnh</th>
-                        <th class="px-6 py-3 border-b text-left text-sm font-semibold text-gray-700">Hành động</th>
+                        <th class="px-3 pl-6 py-3 border-b text-left text-sm font-semibold text-gray-700">STT</th>
+                        <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Tên sản phẩm</th>
+                        <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Giá (VNĐ)</th>
+                        <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Số lượng</th>
+                        <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Hình ảnh</th>
+                        <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -147,27 +158,27 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
                         <?php $stt = ($page - 1) * $limit + $index + 1; ?>
                         <tr class="<?= $stt % 2 == 0 ? 'bg-gray-100' : 'bg-white' ?> border-b hover:bg-gray-200">
                             <!-- Số thứ tự -->
-                            <td class="px-6 py-2 text-gray-700"><?= $stt ?></td>
+                            <td class="px-3 pl-6 py-2 text-gray-700"><?= $stt ?></td>
 
                             <!-- Tên sản phẩm -->
-                            <td class="px-6 py-2 text-gray-700"><?= htmlspecialchars(ucwords($sanPham->getTenSanPham())) ?>
+                            <td class="px-3 py-2 text-gray-700"><?= htmlspecialchars(ucwords($sanPham->getTenSanPham())) ?>
                             </td>
 
                             <!-- Giá -->
-                            <td class="px-6 py-2 text-gray-700"><?= number_format($sanPham->getGia(), 0) ?></td>
+                            <td class="px-3 py-2 text-gray-700"><?= number_format($sanPham->getGia(), 0) ?></td>
 
                             <!-- Số lượng -->
-                            <td class="px-6 py-2 text-gray-700"><?= htmlspecialchars($sanPham->getSoLuong()) ?></td>
+                            <td class="px-3 py-2 text-gray-700"><?= htmlspecialchars($sanPham->getSoLuong()) ?></td>
 
                             <!-- Hình ảnh -->
-                            <td class="px-6 py-2">
+                            <td class="px-3 py-2">
                                 <img src="../Images/<?= htmlspecialchars($sanPham->getAnh()) ?>"
                                     alt="<?= htmlspecialchars($sanPham->getTenSanPham()) ?>"
                                     class="w-16 h-16 object-cover rounded">
                             </td>
 
                             <!-- Hành động -->
-                            <td class="px-6 py-2">
+                            <td class="px-3 py-2">
                                 <a href="ChiTietSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>"
                                     title="Chi tiết sản phẩm" class="text-green-500 text-3xl hover:text-green-700"><i
                                         class="fa-solid fa-circle-info"></i></a>
