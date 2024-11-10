@@ -21,6 +21,7 @@ class LoginController {
                 session_start();
             }
             $_SESSION['nhanVien'] = [
+                'ho_nhan_vien' => $nhanVien->getHoNhanVien(),
                 'ma_nhan_vien' => $nhanVien->getMaNhanVien(),
                 'ten_nhan_vien' => $nhanVien->getTenNhanVien(),
                 'chuc_vu' => $nhanVien->getChucVu(),
@@ -62,16 +63,12 @@ class LoginController {
         $stmt->close();
         if ($result) {
             $maNhanVien = $result['ma_user'];
-            $quyen = $result['quyen'];
-            if($quyen == 1){
+            $_SESSION['quyen'] = $result['quyen'];
+
+            if($_SESSION['quyen'] == 1 || $_SESSION['quyen'] == 2){
                 $nhanVien = $this->getNhanVienByMaNhanVien($maNhanVien);
-                $_SESSION['quyen'] = 1;
                 return $nhanVien;
-            }else if($quyen == 2){
-                $nhanVien = $this->getNhanVienByMaNhanVien($maNhanVien);
-                $_SESSION['quyen'] = 2;
-                return $nhanVien;
-            }else if($quyen == 3){
+            }else if($_SESSION['quyen'] == 3){
                 $this->logout();
                 echo "Chưa xây dựng phía khách hàng";
                 exit();

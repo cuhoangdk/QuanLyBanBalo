@@ -7,6 +7,11 @@ if (!isset($_SESSION['nhanVien'])) {
     header("Location: login.php");
     exit();
 }
+if ($_SESSION['quyen']!=1) {
+    // Chuyển hướng đến trang đăng nhập
+    header("Location: DanhSachSanPham.php");
+    exit();
+}
 
 include_once '../Config/config.php'; // Kết nối tới cơ sở dữ liệu
 include_once '../Controllers/SanPhamController.php';

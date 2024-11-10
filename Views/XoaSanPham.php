@@ -9,6 +9,12 @@ if (!isset($_SESSION['nhanVien'])) {
     header("Location: login.php");
     exit();
 }
+if ($_SESSION['quyen']!=1) {
+    // Chuyển hướng đến trang đăng nhập
+    header("Location: DanhSachSanPham.php");
+    exit();
+}
+
 
 $masp = isset($_GET['masp']) ? $_GET['masp'] : null;
 // if ($masp == null) {
