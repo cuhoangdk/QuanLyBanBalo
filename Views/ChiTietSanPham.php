@@ -82,14 +82,16 @@ if (isset($_SESSION['success']))
                         class="fa-solid fa-rotate-left"></i></a>
 
                 <!-- Các nút Chỉnh sửa và Xóa ở bên phải -->
-                <div class="flex space-x-2">
-                    <a href="ChinhSuaSanPham.php?masp=<?= htmlspecialchars(string: $sanPham->getMaSanPham()) ?>"
-                        title="Chỉnh sửa sản phẩm" class="text-blue-500 text-4xl ml-3 hover:text-blue-700"><i
-                            class="fa-solid fa-pen-to-square"></i></a>
-                    <a href="XoaSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>"
-                        title="Xóa sản phẩm" class="text-red-500 text-4xl ml-3 hover:text-red-700"><i
-                            class="fa-solid fa-trash"></i></a>
-                </div>
+                <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
+                    <div class="flex space-x-2">
+                        <a href="ChinhSuaSanPham.php?masp=<?= htmlspecialchars(string: $sanPham->getMaSanPham()) ?>"
+                            title="Chỉnh sửa sản phẩm" class="text-blue-500 text-4xl ml-3 hover:text-blue-700"><i
+                                class="fa-solid fa-pen-to-square"></i></a>
+                        <a href="XoaSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>"
+                            title="Xóa sản phẩm" class="text-red-500 text-4xl ml-3 hover:text-red-700"><i
+                                class="fa-solid fa-trash"></i></a>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 </body>
