@@ -3,7 +3,10 @@ include_once __DIR__ . '/../Config/config.php';
 include_once __DIR__ . '/../Controllers/LoginController.php';
 // Khởi tạo LoginController
 $loginController = new LoginController($connection);
-
+if ($loginController->isSessionExpired()) {
+    header("Location: login.php"); // Chuyển hướng về trang đăng nhập
+    exit();
+}
 // Lấy tên nhân viên từ session
 $tenNhanVien = isset($_SESSION['nhanVien']['ten_nhan_vien']) ? $_SESSION['nhanVien']['ten_nhan_vien'] : '';
 

@@ -1,6 +1,7 @@
 <?php
 session_start(); // Bắt đầu phiên
 
+
 // Kiểm tra nếu nhân viên chưa đăng nhập
 if (!isset($_SESSION['nhanVien'])) {
     // Chuyển hướng đến trang đăng nhập
@@ -15,6 +16,7 @@ include_once '../Controllers/HangSanXuatController.php';
 include_once '../Controllers/QuocGiaController.php';
 include_once '../Controllers/LoaiDoiTuongController.php';
 include_once '../Controllers/LoaiSanPhamController.php';
+include_once '../Controllers/LoginController.php';
 
 $sanPhamController = new SanPhamController($connection);
 $chatLieuController = new ChatLieuController($connection);
@@ -22,6 +24,7 @@ $hangSanXuatController = new HangSanXuatController($connection);
 $quocGiaController = new QuocGiaController($connection);
 $loaiDoiTuongController = new LoaiDoiTuongController($connection);
 $loaiSanPhamController = new LoaiSanPhamController($connection);
+
 
 // Lấy dữ liệu tìm kiếm từ URL và kiểm tra giá trị null nếu là chuỗi rỗng
 $fields = ['tenSanPham', 'giaMin', 'giaMax', 'hangSanXuat', 'loai', 'nuocSanXuat', 'doiTuong', 'chatLieu'];
@@ -182,12 +185,14 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
                                 <a href="ChiTietSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>"
                                     title="Chi tiết sản phẩm" class="text-green-500 text-3xl hover:text-green-700"><i
                                         class="fa-solid fa-circle-info"></i></a>
-                                <a href="ChinhSuaSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>"
-                                    title="Chỉnh sửa sản phẩm" class="text-blue-500 text-3xl ml-3 hover:text-blue-700"><i
-                                        class="fa-solid fa-pen-to-square"></i></a>
-                                <a href="XoaSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>"
-                                    title="Xóa sản phẩm" class="text-red-500 text-3xl ml-3 hover:text-red-700"><i
-                                        class="fa-solid fa-trash"></i></a>
+                                <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
+                                    <a href="ChinhSuaSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>"
+                                        title="Chỉnh sửa sản phẩm" class="text-blue-500 text-3xl ml-3 hover:text-blue-700"><i
+                                            class="fa-solid fa-pen-to-square"></i></a>
+                                    <a href="XoaSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>"
+                                        title="Xóa sản phẩm" class="text-red-500 text-3xl ml-3 hover:text-red-700"><i
+                                            class="fa-solid fa-trash"></i></a>
+                                <?php endif; ?>
                             </td>
                         </tr>
                     <?php endforeach; ?>
