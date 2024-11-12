@@ -8,6 +8,10 @@ class LoaiSanPhamController{
     {
         $this->connection = $connection;
     }
+    /**
+     * Hàm lấy danh sách loại sản phẩm
+     * @return LoaiSanPham[]
+     */
     public function layDanhSachLoaiSanPham()
     {
         $sql = "SELECT * FROM tloaisp";

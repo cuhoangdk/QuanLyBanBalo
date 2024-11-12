@@ -7,29 +7,27 @@ if (!isset($_SESSION['nhanVien'])) {
     header("Location: login.php");
     exit();
 }
-
-include_once '../Config/config.php'; // Kết nối tới cơ sở dữ liệu
+// import file cấu hình db & các file model
+include_once '../Config/config.php'; 
 include_once '../Controllers/SanPhamController.php';
 include_once '../Controllers/ChatLieuController.php';
 include_once '../Controllers/HangSanXuatController.php';
 include_once '../Controllers/QuocGiaController.php';
 include_once '../Controllers/LoaiDoiTuongController.php';
 include_once '../Controllers/LoaiSanPhamController.php';
-
+// Khởi tạo các controller
 $sanPhamController = new SanPhamController($connection);
 $chatLieuController = new ChatLieuController($connection);
 $hangSanXuatController = new HangSanXuatController($connection);
 $quocGiaController = new QuocGiaController($connection);
 $loaiDoiTuongController = new LoaiDoiTuongController($connection);
 $loaiSanPhamController = new LoaiSanPhamController($connection);
-
 // Lấy danh sách cho các combo box
 $danhSachChatLieu = $chatLieuController->layDanhSachChatLieu();
 $danhSachHangSanXuat = $hangSanXuatController->layDanhSachHangSanXuat();
 $danhSachQuocGia = $quocGiaController->layDanhSachQuocGia();
 $danhSachLoaiDoiTuong = $loaiDoiTuongController->layDanhSachLoaiDoiTuong();
 $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
-
 // Xử lý khi form được submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tenSanPham = $_POST['tenSanPham'];
@@ -43,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $hangSanXuat = $_POST['hangSanXuat'];
     $nuocSanXuat = $_POST['nuocSanXuat'];
     $thoiGianBaoHanh = $_POST['thoiGianBaoHanh'];
-
     // Xử lý upload ảnh
     try {
         $anh = $sanPhamController->xuLyUploadAnh($_FILES['anh']);
@@ -51,17 +48,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error['anh'] = $e->getMessage();
         $anh = null;
     }
-
+    // Kiểm tra tên sản phẩm đã tồn tại chưa
     if($sanPhamController->kiemTraTenSanPhamTonTai($tenSanPham)) {
         $error['ten'] = "Tên sản phẩm đã tồn tại";
     }
-
+    // Kiểm tra thời gian bảo hành
+    if (!is_numeric($thoiGianBaoHanh) || $thoiGianBaoHanh < 0) {
+        $error['thoiGianBaoHanh'] = 'Thời gian bảo hành phải là số và không được nhỏ hơn 0.';
+    }
+    // Kiểm tra số lượng
+    if (!is_numeric($soLuong) || $soLuong < 1) {
+        $error['soLuong'] = 'Số lượng phải là số và lớn hơn 0.';
+    }
+    // Kiểm tra cân nặng
+    if (!is_numeric($canNang) || $canNang < 0.1) {
+        $error['canNang'] = 'Cân nặng phải là số và lớn hơn hoặc bằng 0.1.';
+    }
+    // Kiểm tra đơn giá
+    if (!is_numeric($gia) || $gia < 1) {
+        $error['gia'] = 'Đơn giá phải là số và lớn hơn hoặc bằng 1.';
+    }
+    // Nếu không có lỗi thì thêm sản phẩm mới
     if (empty($error)) {
         // Thêm sản phẩm mới
         $sanPhamController->themSanPham($tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong);
-
+        // Lưu thông báo
         $_SESSION['success'] = 'Thêm sản phẩm thành công';
-
         // Chuyển hướng về trang danh sách sản phẩm sau khi thêm mới
         header("Location: DanhSachSanPham.php");
         exit();
@@ -78,20 +90,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/caeacdbc15.js" crossorigin="anonymous"></script>
 </head>
+<!-- Layouts -->
 <?php include '../Layouts/header.php'; ?>
 
 <body class="bg-gray-100 mt-16 flex">
     <div class="container mx-auto w-1/5">
+        <!-- Sidebar -->
         <?php include '../Layouts/sidebar.php'; ?>
     </div>
     <div class="container mx-auto w-4/5 px-7">
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-2xl font-bold mb-4">Thêm Sản Phẩm</h2>
+            <!-- Form thêm sản phẩm -->
             <form action="" method="POST" enctype="multipart/form-data">
                 <div class="mb-2">
                     <label class="block text-gray-700 font-bold">Tên sản phẩm:</label>
                     <input type="text" name="tenSanPham" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($tenSanPham) ? $tenSanPham : '' ?>"
                         placeholder="Tên sản phẩm" required>
+                    <!-- Hiển thị thông báo lỗi nếu có -->
                     <?php if (!empty($error['ten'])): ?>
                         <div class="mb-4 text-red-500">
                             <?= htmlspecialchars($error['ten']) ?>
@@ -103,11 +119,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label class="block text-gray-700 font-bold">Đơn giá:</label>
                         <input type="number" min="1" name="gia" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($gia) ? $gia : '' ?>" placeholder="Đơn giá"
                             required>
+                        <!-- Hiển thị thông báo lỗi nếu có -->
+                        <?php if (!empty($error['gia'])): ?>
+                            <div class="mb-4 text-red-500">
+                                <?= htmlspecialchars($error['gia']) ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Số lượng:</label>
                         <input type="number" min="1" name="soLuong" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($soLuong) ? $soLuong : '' ?>"
                             placeholder="Số lượng" required>
+                        <!-- Hiển thị thông báo lỗi nếu có -->
+                        <?php if (!empty($error['soLuong'])): ?>
+                            <div class="mb-4 text-red-500">
+                                <?= htmlspecialchars($error['soLuong']) ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="flex w-full gap-5">
@@ -115,6 +143,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label class="block text-gray-700 font-bold">Cân nặng (kg):</label>
                         <input type="float" min="0.1" name="canNang" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($canNang) ? $canNang : '' ?>"
                             placeholder="Cân nặng" required>
+                        <!-- Hiển thị thông báo lỗi nếu có -->
+                        <?php if (!empty($error['canNang'])): ?>
+                            <div class="mb-4 text-red-500">
+                                <?= htmlspecialchars($error['canNang']) ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Loại sản phẩm:</label>
@@ -191,6 +225,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label class="block text-gray-700 font-bold">Thời gian bảo hành (năm):</label>
                         <input type="float" min="0" name="thoiGianBaoHanh" class="w-full px-3 py-2 border rounded-lg" value="<?= isset($thoiGianBaoHanh) ? $thoiGianBaoHanh : '' ?>"
                             placeholder="Số năm bảo hành" required>
+                        <!-- Hiển thị thông báo lỗi nếu có -->
+                        <?php if (!empty($error['thoiGianBaoHanh'])): ?>
+                            <div class="mb-4 text-red-500">
+                                <?= htmlspecialchars($error['thoiGianBaoHanh']) ?>
+                            </div>
+                        <?php endif; ?>
                     </div>
                     <div class="mb-2 w-full">
                         <label class="block text-gray-700 font-bold">Ảnh sản phẩm:</label>

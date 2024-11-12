@@ -1,4 +1,5 @@
 <?php
+// include các file cần thiết
 include_once '../Config/config.php';
 include_once '../Controllers/LoginController.php';
 
@@ -39,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container mx-auto flex justify-center items-center h-screen">
         <div class="bg-white p-8 rounded shadow-md w-full max-w-md">
             <h2 class="text-2xl font-bold mb-6 text-center">Đăng nhập</h2>
+            <!-- Form đăng nhập -->
             <form method="POST" action="login.php" class="space-y-4">
                 <hr class="my-6">
                 <h4 class="font-bold text-left mt-3 mb-2">Username</h4>
@@ -51,9 +53,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input type="checkbox" class="mx-2 w-4 h-4">
                     <label class="">Remember me</label>
                 </div>
+                <!-- Nút đăng nhập -->
                 <button type="submit" class="w-full py-2.5 bg-green-500 text-white rounded-full font-bold">LOG IN</button>
             </form>
-
+            <!-- Hiển thị thông báo nếu có -->
             <?php if (!empty($message)): ?>
                 <div class="alert alert-info mt-3 text-center text-red-500"><?php echo $message; ?></div>
             <?php endif; ?>

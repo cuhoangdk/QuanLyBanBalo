@@ -7,7 +7,10 @@ class LoaiDoiTuongController {
     public function __construct($connection) {
         $this->connection = $connection;
     }
-
+    /**
+     * Hàm lấy danh sách loại đối tượng
+     * @return LoaiDoiTuong[]
+     */
     public function layDanhSachLoaiDoiTuong() {
         $sql = "SELECT * FROM tloaidt";
         $stmt = $this->connection->prepare($sql);
@@ -65,7 +68,6 @@ class LoaiDoiTuongController {
 
         return $row['count'] > 0; // Trả về true nếu mã loại đối tượng đã tồn tại
     }
-
     // Hàm kiểm tra tên loại đối tượng đã tồn tại
     public function kiemTraTenLoaiDoiTuongTonTai($tenLoaiDoiTuong)
     {

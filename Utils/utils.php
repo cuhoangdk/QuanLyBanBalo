@@ -1,4 +1,9 @@
 <?php
+/**
+ * Hàm này dùng để chuyển đổi chuỗi có dấu thành chuỗi không dấu
+ * @param string $str chuỗi có dấu cần chuyển đổi
+ * @return string chuỗi không dấu
+ */
 function removeAccents($str)
 {
     $unwanted_array = [
@@ -18,6 +23,11 @@ function removeAccents($str)
     ];
     return strtr(mb_strtolower($str), $unwanted_array);
     }
+/**
+ * Summary of taoMa
+ * @param mixed $tenSanPham
+ * @return string
+ */
 function taoMa($tenSanPham)
 {
     // Chuyển tên sản phẩm thành dạng không dấu
@@ -35,6 +45,11 @@ function taoMa($tenSanPham)
 
     return strtolower($maSP); // Đảm bảo mã sản phẩm là chữ in thường
 }
+/**
+ * Summary of taoMaDai
+ * @param mixed $tenLoaiSanPham
+ * @return string
+ */
 function taoMaDai($tenLoaiSanPham)
 {
     // Chuyển tên loại sản phẩm thành dạng không dấu

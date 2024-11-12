@@ -8,6 +8,10 @@ class HangSanXuatController{
     {
         $this->connection = $connection;
     }
+    /**
+     * Summary of layDanhSachHangSanXuat
+     * @return HangSanXuat[]
+     */
     public function layDanhSachHangSanXuat()
     {
         $sql = "SELECT * FROM thangsx";
@@ -66,7 +70,6 @@ class HangSanXuatController{
 
         return $row['count'] > 0; // Trả về true nếu mã hãng sản xuất đã tồn tại
     }
-
     // Hàm kiểm tra tên hãng sản xuất đã tồn tại
     public function kiemTraTenHangSanXuatTonTai($tenHangSanXuat)
     {

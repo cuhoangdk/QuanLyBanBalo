@@ -1,7 +1,6 @@
 <?php
 session_start(); // Bắt đầu phiên
 
-
 // Kiểm tra nếu nhân viên chưa đăng nhập
 if (!isset($_SESSION['nhanVien'])) {
     // Chuyển hướng đến trang đăng nhập
@@ -18,6 +17,7 @@ include_once '../Controllers/LoaiDoiTuongController.php';
 include_once '../Controllers/LoaiSanPhamController.php';
 include_once '../Controllers/LoginController.php';
 
+// Tạo các đối tượng Controller
 $sanPhamController = new SanPhamController($connection);
 $chatLieuController = new ChatLieuController($connection);
 $hangSanXuatController = new HangSanXuatController($connection);
@@ -32,22 +32,25 @@ foreach ($fields as $field) {
     $$field = isset($_GET[$field]) && $_GET[$field] !== '' ? $_GET[$field] : null;
 }
 
-$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1;
-$limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : 15;
-$offset = ($page - 1) * $limit;
+// Lấy trang hiện tại và số lượng sản phẩm trên mỗi trang
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1; // Trang hiện tại
+$limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : 15; // Số lượng sản phẩm trên mỗi trang
+$offset = ($page - 1) * $limit; // Vị trí bắt đầu lấy sản phẩm
 
+// Tìm kiếm sản phẩm trong cơ sở dữ liệu trả về mảng chứa danh sách sản phẩm và tổng số sản phẩm
 [$danhMucSanPham, $totalSanPham] = $sanPhamController->timKiemSanPham($tenSanPham, $giaMin, $giaMax, $hangSanXuat, $loai, $nuocSanXuat, $doiTuong, $chatLieu, $limit, $offset);
 
+// Tính tổng số trang dựa trên tổng số sản phẩm và số lượng sản phẩm trên mỗi trang
 $totalPages = ceil($totalSanPham / $limit);
 
-// Lấy danh sách cho các combo box
+// Lấy danh sách chất liệu, hãng sản xuất, quốc gia, loại đối tượng, loại sản phẩm từ cơ sở dữ liệu để hiển thị trong form tìm kiếm
 $danhSachChatLieu = $chatLieuController->layDanhSachChatLieu();
 $danhSachHangSanXuat = $hangSanXuatController->layDanhSachHangSanXuat();
 $danhSachQuocGia = $quocGiaController->layDanhSachQuocGia();
 $danhSachLoaiDoiTuong = $loaiDoiTuongController->layDanhSachLoaiDoiTuong();
 $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
-
 ?>
+
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -58,6 +61,7 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/caeacdbc15.js" crossorigin="anonymous"></script>
 </head>
+<!-- Header -->
 <?php include '../Layouts/header.php'; ?>
 
 <body class="bg-gray-100 mt-12 flex">
@@ -182,10 +186,13 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
 
                             <!-- Hành động -->
                             <td class="px-3 py-2">
+                                <!-- Nút xem chi tiết sản phẩm -->
                                 <a href="ChiTietSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>"
                                     title="Chi tiết sản phẩm" class="text-green-500 text-3xl hover:text-green-700"><i
                                         class="fa-solid fa-circle-info"></i></a>
+                                <!-- Nêu là quản trị viên thì hiển thị nút chỉnh sửa và xóa -->
                                 <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
+                                    <!-- Nút chỉnh sửa và xóa sản phẩm -->
                                     <a href="ChinhSuaSanPham.php?masp=<?= htmlspecialchars($sanPham->getMaSanPham()) ?>"
                                         title="Chỉnh sửa sản phẩm" class="text-blue-500 text-3xl ml-3 hover:text-blue-700"><i
                                             class="fa-solid fa-pen-to-square"></i></a>
@@ -201,7 +208,7 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
         </div>
 
 
-        <!-- Pagination Component -->
+        <!-- Phân trang -->
         <div class="mb-5">
             <?php if ($totalPages > 1): ?>
                 <nav class="flex justify-center mt-6">
@@ -256,6 +263,7 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
 </html>
 
 <?php
+// Hiển thị thông báo nếu có 
 if (isset($_SESSION['success']))
 {
     echo '<div id="notification" class="fixed top-16 right-5 bg-green-500 text-white p-4 rounded shadow-lg">

@@ -7,34 +7,54 @@ class LoginController {
         $this->connection = $connection;
     }
 
-    // Phương thức xử lý đăng nhập
+    /**
+     * Phương thức đăng nhập
+     * @param string $username Tên đăng nhập
+     * @param string $password Mật khẩu
+     * @return bool Trả về true nếu đăng nhập thành công
+     */
     public function login($username, $password) {
-        // Mã hóa mật khẩu bằng MD5
+        // Mã hóa mật khẩu đê so sánh với mật khẩu trong cơ sở dữ liệu
         $hashedPassword = md5($password);
 
-        // Kiểm tra thông tin đăng nhập
-        $nhanVien = $this->getUserByUsernameAndPassword($username, $hashedPassword);
+        // Kiểm tra thông tin đăng nhập trả về mã nhân viên và quyền
+        [$maUser, $quyen] = $this->getUserByUsernameAndPassword($username, $hashedPassword);
 
-        if ($nhanVien) {
-            // Đăng nhập thành công, lưu thông tin nhân viên vào session
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
-            $_SESSION['nhanVien'] = [
-                'ho_nhan_vien' => $nhanVien->getHoNhanVien(),
-                'ma_nhan_vien' => $nhanVien->getMaNhanVien(),
-                'ten_nhan_vien' => $nhanVien->getTenNhanVien(),
-                'chuc_vu' => $nhanVien->getChucVu(),
-            ];
-                // Lưu thời gian bắt đầu và thời gian hết hạn session
-            $_SESSION['login_time'] = time();
-            $_SESSION['expire_time'] = time() + (20 * 60); // 20min
-            return true;
-        } else {
-            // Đăng nhập thất bại
+        // Nếu không tìm thấy user, trả về false
+        if (!$maUser) {
+            return false;
+        }
+        // Lưu thông tin quyền vào session
+        $_SESSION['quyen'] = $quyen;
+
+        if($quyen == 1 || $quyen == 2){ // Nếu quyền là 1 hoặc 2 thì chuyển đến trang quản lý
+            $nhanVien = $this->getNhanVienByMaNhanVien($maUser);
+                // Đăng nhập thành công, lưu thông tin nhân viên vào session
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
+                $_SESSION['nhanVien'] = [
+                    'ma_nhan_vien' => $nhanVien->getMaNhanVien(),
+                    'ho_nhan_vien' => $nhanVien->getHoNhanVien(),
+                    'ten_nhan_vien' => $nhanVien->getTenNhanVien(),
+                    'chuc_vu' => $nhanVien->getChucVu(),
+                ];
+                    // Lưu thời gian bắt đầu và thời gian hết hạn session
+                $_SESSION['login_time'] = time();
+                $_SESSION['expire_time'] = time() + (20 * 60); // 20min
+                //$_SESSION['expire_time'] = time() + (5); // 5sec
+                return true;
+        }else if($quyen == 3){ // Nếu quyền là 3 thì chuyển hướng đến trang khách hàng
+            $this->getKhachHangByMaKhachHang();
+            return false;
+        }else{ // Nếu quyền không phải 1, 2 hoặc 3 thì trả về false
             return false;
         }
     }
+    /**
+     * Kiểm tra xem session có hết hạn chưa
+     * @return bool Trả về true nếu session hết hạn
+     */
     public function isSessionExpired() {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -50,7 +70,12 @@ class LoginController {
         }
         return false;
     }
-    // Lấy thông tin nhân viên dựa trên username và password đã mã hóa
+    /**
+     * Lấy thông tin user dựa trên username và password
+     * @param string $username Tên đăng nhập
+     * @param string $hashedPassword Mật khẩu đã mã hóa
+     * @return array|null Mảng chứa mã user và quyền hoặc null nếu không tìm thấy
+     */
     public function getUserByUsernameAndPassword($username, $hashedPassword) {
         if (session_status() == PHP_SESSION_NONE) {
             session_start();
@@ -62,21 +87,21 @@ class LoginController {
         $result = $stmt->get_result()->fetch_assoc();
         $stmt->close();
         if ($result) {
-            $maNhanVien = $result['ma_user'];
-            $_SESSION['quyen'] = $result['quyen'];
-
-            if($_SESSION['quyen'] == 1 || $_SESSION['quyen'] == 2){
-                $nhanVien = $this->getNhanVienByMaNhanVien($maNhanVien);
-                return $nhanVien;
-            }else if($_SESSION['quyen'] == 3){
-                $this->logout();
-                echo "Chưa xây dựng phía khách hàng";
-                exit();
-            }
+            return [$result['ma_user'], $result['quyen']];
         } else {
             return null;
         }
     }
+    public function getKhachHangByMaKhachHang(){
+        $this->logout();
+        echo "Chưa xây dựng phía khách hàng";
+        exit();
+    }
+    /**
+     * Lấy thông tin nhân viên dựa trên mã nhân viên
+     * @param string $maNhanVien Mã nhân viên
+     * @return NhanVien|null Đối tượng NhanVien hoặc null nếu không tìm thấy
+     */
     public function getNhanVienByMaNhanVien($maNhanVien) {
         // Sử dụng prepared statements để tránh SQL injection
         $stmt = $this->connection->prepare("SELECT * FROM tnhanvien WHERE ma_nhan_vien = ?");
@@ -103,6 +128,7 @@ class LoginController {
     /**
      * Phương thức đăng xuất
      * Hủy bỏ session hiện tại và đăng xuất người dùng
+     * @return bool Trả về true nếu đăng xuất thành công
      */
     public function logout() {
         session_unset();

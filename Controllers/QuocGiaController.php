@@ -7,6 +7,11 @@ class QuocGiaController{
     {
         $this->connection = $connection;
     }
+
+    /**
+     * Hàm lấy danh sách quốc gia
+     * @return QuocGia[]
+     */
     public function layDanhSachQuocGia()
     {
         $sql = "SELECT * FROM tquocgia";
@@ -45,7 +50,6 @@ class QuocGiaController{
             return false; // Trả về false nếu có lỗi xảy ra
         }
     }
-
     // Hàm kiểm tra tên quốc gia đã tồn tại
     private function kiemTraTenQuocGiaTonTai($tenQuocGia)
     {

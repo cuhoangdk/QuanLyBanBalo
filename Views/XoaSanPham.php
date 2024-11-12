@@ -1,6 +1,7 @@
 <?php
 session_start(); // Bắt đầu phiên
-include_once '../Config/config.php'; // Kết nối tới cơ sở dữ liệu
+// include các file cần thiết
+include_once '../Config/config.php';
 include_once '../Controllers/SanPhamController.php';
 
 // Kiểm tra nếu nhân viên chưa đăng nhập
@@ -9,6 +10,7 @@ if (!isset($_SESSION['nhanVien'])) {
     header("Location: login.php");
     exit();
 }
+// Kiểm tra nếu nhân viên không phải quản trị viên
 if ($_SESSION['quyen']!=1) {
     // Chuyển hướng đến trang đăng nhập
     header("Location: DanhSachSanPham.php");
@@ -17,19 +19,15 @@ if ($_SESSION['quyen']!=1) {
 
 
 $masp = isset($_GET['masp']) ? $_GET['masp'] : null;
-// if ($masp == null) {
-//     // Chuyển hướng về trang danh sách sản phẩm nếu không có mã sản phẩm
-//     header("Location: DanhSachSanPham.php");
-//     exit();
-// }
-
+// Khởi tạo đối tượng SanPhamController
 $sanPhamController = new SanPhamController($connection);
 $sanPham = $sanPhamController->laySanPhamTheoMa($masp);
 
 // Xử lý khi form được submit để xóa sản phẩm
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Gọi phương thức xóa sản phẩm từ SanPhamController
     $sanPhamController->xoaSanPham($masp);
-
+    // Thiết lập session để hiển thị thông báo
     $_SESSION['success'] = 'Xóa sản phẩm thành công';
     // Chuyển hướng về trang danh sách sản phẩm sau khi xóa
     header("Location: DanhSachSanPham.php");
@@ -45,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Xóa Sản Phẩm</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/caeacdbc15.js" crossorigin="anonymous"></script>
+    <!-- Script xác nhận xóa sản phẩm -->
     <script>
         function confirmDelete(event) {
             if (!confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')) {
@@ -53,10 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </script>
 </head>
+<!-- Header -->
 <?php include '../Layouts/header.php'; ?>
 
 <body class="bg-gray-100 mt-16 flex">
     <div class="container mx-auto w-1/5">
+        <!-- Sidebar -->
         <?php include '../Layouts/sidebar.php'; ?>
     </div>
     <div class="container mx-auto w-4/5 px-7 ">

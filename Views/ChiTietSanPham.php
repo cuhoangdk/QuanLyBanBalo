@@ -10,11 +10,6 @@ if (!isset($_SESSION['nhanVien'])) {
     exit();
 }
 $masp = isset($_GET['masp']) ? $_GET['masp'] : null;
-// if ($masp == null) {
-//     // Chuyển hướng về trang danh sách sản phẩm nếu không có mã sản phẩm
-//     header("Location: DanhSachSanPham.php");
-//     exit();
-// }
 $sanPhamController = new SanPhamController($connection);
 $sanPham = $sanPhamController->laySanPhamTheoMa($masp);
 

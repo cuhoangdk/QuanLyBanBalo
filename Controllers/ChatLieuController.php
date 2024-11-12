@@ -8,13 +8,19 @@ class ChatLieuController{
     {
         $this->connection = $connection;
     }
+    /**
+     * Lấy danh sách chất liệu
+     * @return ChatLieu[]
+     */
     public function layDanhSachChatLieu()
     {
+        // Câu lệnh sql lấy danh sách chất liệu
         $sql = "SELECT * FROM tchatlieu";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
 
+        // Lấy danh sách chất liệu
         $danhSachChatLieu = array();
         while ($row = $result->fetch_assoc()) {
             $chatLieu = new ChatLieu(

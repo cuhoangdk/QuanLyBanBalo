@@ -10,7 +10,10 @@ class SanPhamController
         $this->connection = $connection;
     }
 
-    // Lấy danh mục sản phẩm
+    /**
+     * Lấy danh sách sản phẩm
+     * @return SanPham[]
+     */
     public function layDanhMucSanPham()
     {
         $sql = "SELECT * FROM tdanhmucsp WHERE trang_thai=1";
@@ -33,7 +36,11 @@ class SanPhamController
         return $danhMucSanPham;
     }
 
-    // Tìm kiếm sản phẩm theo tên
+    /**
+     * Tìm kiếm sản phẩm theo tên
+     * @param string $tenSanPham
+     * @return SanPham[]
+     */
     public function timKiemSanPhamTheoTen($tenSanPham)
     {
         $sql = "SELECT * FROM tdanhmucsp WHERE TenSP LIKE ? AND trang_thai=1";
@@ -57,8 +64,20 @@ class SanPhamController
         $stmt->close();
         return $danhMucSanPham;
     }
-
-    // Tìm kiếm sản phẩm với các tiêu chí
+    /**
+     * Tìm kiếm sản phẩm với các tiêu chí khác nhau
+     * @param string|null $tenSanPham
+     * @param float|null $giaMin
+     * @param float|null $giaMax
+     * @param string|null $hangSanXuat
+     * @param string|null $loai
+     * @param string|null $nuocSanXuat
+     * @param string|null $doiTuong
+     * @param string|null $chatLieu
+     * @param int $limit
+     * @param int $offset
+     * @return array gồm danh sách sản phẩm và tổng số sản phẩm phù hợp với tiêu chí tìm kiếm
+     */
     public function timKiemSanPham($tenSanPham = null, $giaMin = null, $giaMax = null, $hangSanXuat = null, $loai = null, $nuocSanXuat = null, $doiTuong = null, $chatLieu = null,$limit, $offset)
     {
         $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM tdanhmucsp WHERE trang_thai=1";
@@ -133,9 +152,13 @@ class SanPhamController
         // Lấy tổng số sản phẩm phù hợp với tiêu chí tìm kiếm
         $result = $this->connection->query("SELECT FOUND_ROWS() as total");
         $totalSanPham = $result->fetch_assoc()['total'];
-    return [$danhMucSanPham, $totalSanPham];
+        return [$danhMucSanPham, $totalSanPham];
     }
-    // Hàm kiểm tra mã sản phẩm có tồn tại hay không
+    /**
+     * Tìm kiếm sản phẩm theo mã sản phẩm
+     * @param string $maSanPham
+     * @return bool
+     */
     private function kiemTraMaSanPhamTonTai($maSP)
     {
         $sql = "SELECT ma_san_pham FROM tdanhmucsp WHERE ma_san_pham = ?";
@@ -145,7 +168,12 @@ class SanPhamController
         $stmt->store_result();
         return $stmt->num_rows > 0; // Trả về true nếu mã sản phẩm đã tồn tại
     }
-    // Hàm kiểm tra tên sản phẩm đã tồn tại với trạng thái trang_thai = 1
+
+    /**
+     * Kiểm tra tên sản phẩm đã tồn tại với trạng thái trang_thai = 1
+     * @param string $tenSanPham
+     * @return bool
+     */
     public function kiemTraTenSanPhamTonTai($tenSanPham)
     {
         $sql = "SELECT ten_san_pham FROM tdanhmucsp WHERE ten_san_pham = ? AND trang_thai = 1";
@@ -155,7 +183,23 @@ class SanPhamController
         $stmt->store_result();
         return $stmt->num_rows > 0; // Trả về true nếu tên sản phẩm đã tồn tại và đang kích hoạt
     }
-    // Thêm sản phẩm
+
+    /**
+     * Thêm sản phẩm mới vào cơ sở dữ liệu
+     * @param string $tenSanPham
+     * @param string $chatLieu
+     * @param float $canNang
+     * @param string $hangSanXuat
+     * @param string $nuocSanXuat
+     * @param int $thoiGianBaoHanh
+     * @param string $gioiThieu
+     * @param string $loai
+     * @param string $doiTuong
+     * @param string $anh
+     * @param float $gia
+     * @param int $soLuong
+     * @return bool
+     */
     public function themSanPham($tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong)
     {
         $maSP = taoMa($tenSanPham);  
@@ -166,7 +210,7 @@ class SanPhamController
         if ($this->kiemTraTenSanPhamTonTai($tenSanPham)) {
             return false;
         }
-        // Kiểm tra xem mã sản phẩm đã tồn tại chưa và thêm số thứ tự nếu cần
+        // Kiểm tra xem mã sản phẩm đã tồn tại chưa và tạo mã mới nếu cần
         while ($this->kiemTraMaSanPhamTonTai($maSP)) {
             $maSP = $originalMaSP . $i;
             $i++;
@@ -182,6 +226,11 @@ class SanPhamController
             return false;
         }
     }
+    /**
+     * Lấy thông tin sản phẩm theo mã sản phẩm
+     * @param string $maSanPham
+     * @return SanPham|null
+     */
     public function laySanPhamTheoMa($maSanPham)
     {
         $sql = "SELECT * FROM tdanhmucsp WHERE ma_san_pham = ? AND trang_thai= 1";
@@ -205,7 +254,11 @@ class SanPhamController
         }
     }
 
-    // Xóa sản phẩm
+    /**
+     * Xóa sản phẩm theo mã sản phẩm
+     * @param string $maSanPham
+     * @return bool
+     */
     public function xoaSanPham($maSanPham)
     {
         $sql = "UPDATE tdanhmucsp SET trang_thai = 0 WHERE ma_san_pham = ?";
@@ -219,7 +272,23 @@ class SanPhamController
         }
     }
 
-    // Chỉnh sửa sản phẩm
+    /**
+     * Chỉnh sửa thông tin sản phẩm
+     * @param string $maSanPham
+     * @param string $tenSanPham
+     * @param string $chatLieu
+     * @param float $canNang
+     * @param string $hangSanXuat
+     * @param string $nuocSanXuat
+     * @param float $thoiGianBaoHanh
+     * @param string $gioiThieuSanPham
+     * @param string $loaiSanPham
+     * @param string $doiTuong
+     * @param string $anh
+     * @param float $gia
+     * @param int $soLuong
+     * @return bool
+     */
     public function chinhSuaSanPham($maSanPham, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong)
     {
         $sql = "UPDATE tdanhmucsp 
@@ -236,20 +305,26 @@ class SanPhamController
             return false; // Trả về false nếu câu lệnh thất bại
         }
     }
+    /**
+     * Xử lý upload ảnh
+     * @param array $file
+     * @return string
+     * @throws Exception
+     */
     public function xuLyUploadAnh($file)
     {
         if (isset($file) && $file['error'] == 0) {
-            $targetDir = "../Images/";
-            $fileName = basename($file["name"]);
-            $targetFile = $targetDir . $fileName;
-            $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+            $targetDir = "../Images/"; // Thư mục lưu trữ file ảnh
+            $fileName = basename($file["name"]); // Lấy tên file
+            $targetFile = $targetDir . $fileName; // Đường dẫn file
+            $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)); // Lấy đuôi file
 
-            // Kiểm tra loại file (chỉ chấp nhận jpg, jpeg, png và gif)
-            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+            // Kiểm tra định dạng file
+            $allowedTypes = ['jpg', 'jpeg', 'png', 'gif']; // Các loại file ảnh cho phép
             if (in_array($fileType, $allowedTypes)) {
                 // Kiểm tra MIME type để đảm bảo đó là file ảnh
-                $fileMimeType = mime_content_type($file["tmp_name"]);
-                $allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+                $fileMimeType = mime_content_type($file["tmp_name"]); // Lấy MIME type của file
+                $allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']; // Các loại MIME type cho phép
 
                 if (in_array($fileMimeType, $allowedMimeTypes)) {
                     // Di chuyển file tới thư mục lưu trữ
