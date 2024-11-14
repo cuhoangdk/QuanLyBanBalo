@@ -8,7 +8,7 @@ if (!isset($_SESSION['nhanVien'])) {
     exit();
 }
 
-include_once '../Config/config.php'; // Kết nối tới cơ sở dữ liệu
+include_once '../Config/Config.php'; // Kết nối tới cơ sở dữ liệu
 include_once '../Controllers/SanPhamController.php';
 include_once '../Controllers/ChatLieuController.php';
 include_once '../Controllers/HangSanXuatController.php';

@@ -8,7 +8,7 @@ if (!isset($_SESSION['nhanVien'])) {
     exit();
 }
 // import file cấu hình db & các file model
-include_once '../Config/config.php'; 
+include_once '../Config/Config.php'; 
 include_once '../Controllers/SanPhamController.php';
 include_once '../Controllers/ChatLieuController.php';
 include_once '../Controllers/HangSanXuatController.php';

@@ -16,7 +16,7 @@ if ($_SESSION['quyen']!=1) {
 }
 
 // include các file cần thiết
-include_once '../Config/config.php'; // Kết nối tới cơ sở dữ liệu
+include_once '../Config/Config.php'; // Kết nối tới cơ sở dữ liệu
 include_once '../Controllers/SanPhamController.php';
 include_once '../Controllers/ChatLieuController.php';
 include_once '../Controllers/HangSanXuatController.php';
@@ -244,9 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="flex w-full gap-5">
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Mô tả sản phẩm:</label>
-                        <textarea name="gioiThieuSanPham"class="w-full h-52 px-3 py-2 border rounded-lg">
-                            <?= htmlspecialchars($sanPham->getGioiThieuSanPham()) ?>
-                        </textarea>
+                        <textarea name="gioiThieuSanPham"class="w-full h-52 px-3 py-2 border rounded-lg"><?= htmlspecialchars($sanPham->getGioiThieuSanPham()) ?></textarea>
                     </div>
                     <div class="mb-2 w-1/2">
                         <label class="block text-gray-700 font-bold">Ảnh sản phẩm:</label>

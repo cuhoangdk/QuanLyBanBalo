@@ -1,6 +1,6 @@
 <?php
 // include các file cần thiết
-include_once __DIR__ . '/../Config/config.php';
+include_once __DIR__ . '/../Config/Config.php';
 include_once __DIR__ . '/../Controllers/LoginController.php';
 
 // Khởi tạo LoginController

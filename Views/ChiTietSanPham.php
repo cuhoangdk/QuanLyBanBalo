@@ -1,6 +1,6 @@
 <?php
 session_start(); // Bắt đầu phiên
-include_once '../Config/config.php'; // Kết nối tới cơ sở dữ liệu
+include_once '../Config/Config.php'; // Kết nối tới cơ sở dữ liệu
 include_once '../Controllers/SanPhamController.php';
 
 // Kiểm tra nếu nhân viên chưa đăng nhập

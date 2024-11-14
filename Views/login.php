@@ -1,6 +1,7 @@
 <?php
+session_start(); // Bắt đầu phiên
 // include các file cần thiết
-include_once '../Config/config.php';
+include_once '../Config/Config.php';
 include_once '../Controllers/LoginController.php';
 
 // Khởi tạo đối tượng LoginController
@@ -8,6 +9,14 @@ $loginController = new LoginController($connection);
 
 // Khởi tạo biến để hiển thị thông báo nếu cần
 $message = '';
+
+if (isset($_SESSION['quyen']) && ($_SESSION['quyen'] == '1' || $_SESSION['quyen'] == '2')) {
+    header("Location: DanhSachSanPham.php");
+    exit();
+} else if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == '3') {
+    echo "Chưa xây dựng phía khách hàng";
+    exit();
+}
 
 // Kiểm tra nếu form đăng nhập được gửi
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

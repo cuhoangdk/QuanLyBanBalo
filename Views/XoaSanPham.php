@@ -1,7 +1,7 @@
 <?php
 session_start(); // Bắt đầu phiên
 // include các file cần thiết
-include_once '../Config/config.php';
+include_once '../Config/Config.php';
 include_once '../Controllers/SanPhamController.php';
 
 // Kiểm tra nếu nhân viên chưa đăng nhập
