@@ -221,8 +221,10 @@ class SanPhamController
         $stmt->bind_param("sssdssdssssiii", $maSP , $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieu, $loai, $doiTuong, $anh, $gia, $soLuong, $trangthai);
 
         if ($stmt->execute()) {
+            $_SESSION['success'] = 'Thêm sản phẩm thành công';
             return true;
         } else {
+            $_SESSION['error'] = 'Lỗi khi thêm sản phẩm';
             return false;
         }
     }
@@ -266,8 +268,10 @@ class SanPhamController
         $stmt->bind_param("s", $maSanPham);
 
         if ($stmt->execute()) {
+            $_SESSION['success'] = 'Xóa sản phẩm thành công';
             return true;
         } else {
+            $_SESSION['error'] = 'Lỗi khi xóa sản phẩm';
             return false;
         }
     }
@@ -299,9 +303,10 @@ class SanPhamController
         $stmt->bind_param("ssdssdssssiis", $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong, $maSanPham);
         
         if ($stmt->execute()) {
+            $_SESSION['success'] = 'Chỉnh sửa sản phẩm thành công';
             return true; // Trả về true nếu câu lệnh thành công
         } else {
-
+            $_SESSION['error'] = 'Lỗi khi chỉnh sửa sản phẩm';
             return false; // Trả về false nếu câu lệnh thất bại
         }
     }

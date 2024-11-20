@@ -23,6 +23,28 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     header("Location: ../Views/login.php");
     exit();
 }
+
+// Hiển thị thông báo nếu có 
+if (isset($_SESSION['success']))
+{
+    echo '<div id="notificationSuccess" class="fixed top-16 right-5 bg-green-500 text-white p-4 rounded shadow-lg">
+    '.$_SESSION['success'].'
+        <button onclick="document.getElementById(\'notificationSuccess\').style.display=\'none\'" class="ml-4 bg-red-500 px-2 rounded">X</button>
+    </div>';
+    echo '<script>setTimeout(function() {document.getElementById("notificationSuccess").style.display = "none";}, 5000);
+    </script>';
+    unset($_SESSION['success']);
+}
+if (isset($_SESSION['error']))
+{
+    echo '<div id="notificationError" class="fixed top-16 right-5 bg-green-500 text-white p-4 rounded shadow-lg">
+    '.$_SESSION['error'].'
+        <button onclick="document.getElementById(\'notificationError\').style.display=\'none\'" class="ml-4 bg-red-500 px-2 rounded">X</button>
+    </div>';
+    echo '<script>setTimeout(function() {document.getElementById("notificationError").style.display = "none";}, 5000);
+    </script>';
+    unset($_SESSION['error']);
+}
 ?>
 <!-- Header -->
 <header class="bg-gray-300 text-gray-800 p-2 px-7 fixed right-0 top-0 w-4/5 z-10">
@@ -31,3 +53,4 @@ if (isset($_GET['action']) && $_GET['action'] == 'logout') {
         <a href="?action=logout" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-4 rounded-full">Đăng xuất</a>
     </div>
 </header>
+

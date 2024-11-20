@@ -16,8 +16,7 @@ if ($_SESSION['quyen']!=1) {
     header("Location: DanhSachSanPham.php");
     exit();
 }
-
-
+// Lấy mã sản phẩm từ URL
 $masp = isset($_GET['masp']) ? $_GET['masp'] : null;
 // Khởi tạo đối tượng SanPhamController
 $sanPhamController = new SanPhamController($connection);
@@ -27,8 +26,6 @@ $sanPham = $sanPhamController->laySanPhamTheoMa($masp);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Gọi phương thức xóa sản phẩm từ SanPhamController
     $sanPhamController->xoaSanPham($masp);
-    // Thiết lập session để hiển thị thông báo
-    $_SESSION['success'] = 'Xóa sản phẩm thành công';
     // Chuyển hướng về trang danh sách sản phẩm sau khi xóa
     header("Location: DanhSachSanPham.php");
     exit();

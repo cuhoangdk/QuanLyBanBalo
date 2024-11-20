@@ -89,8 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($error)) {
         // Cập nhật sản phẩm
         $sanPhamController->chinhSuaSanPham($masp, $tenSanPham, $chatLieu, $canNang, $hangSanXuat, $nuocSanXuat, $thoiGianBaoHanh, $gioiThieuSanPham, $loaiSanPham, $doiTuong, $anh, $gia, $soLuong);
-        // Lưu thông báo
-        $_SESSION['success'] = 'Cập nhật sản phẩm thành công';
         // Chuyển hướng về trang chi tiết sản phẩm sau khi cập nhật
         header("Location: ChiTietSanPham.php?masp=$masp");
         exit();
@@ -265,7 +263,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="flex justify-between">
                     <a href="javascript:history.back()" class="text-gray-500 text-4xl ml-3 hover:text-gray-700">
                         <i class="fa-solid fa-rotate-left"></i></a>
-                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Lưu thayđổi</button>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Lưu thay đổi</button>
                 </div>
             </form>
         </div>
