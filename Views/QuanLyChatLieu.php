@@ -22,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $chatLieuController->themChatLieu($tenChatLieu);
 
     }
+    // Xử lý khi form được submit để chỉnh sửa chất liệu
     if (isset($_POST['chinhSuaChatLieu'])) {
         $maChatLieu = $_POST['maChatLieu'];
         $tenChatLieu = $_POST['tenChatLieu'];
