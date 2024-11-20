@@ -9,37 +9,37 @@ if (!isset($_SESSION['nhanVien'])) {
 }
 
 include_once '../Config/Config.php'; // Kết nối tới cơ sở dữ liệu
-include_once '../Controllers/ChatLieuController.php';
-$chatLieuController = new ChatLieuController($connection);
+include_once '../Controllers/HangSanXuatController.php';
+$hangSanXuatController = new HangSanXuatController($connection);
 
 // Xử lý khi form được submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Xử lý khi form được submit để thêm chất liệu mới
-    if (isset($_POST['themChatLieu']))
+    // Xử lý khi form được submit để thêm hãng sản xuất mới
+    if (isset($_POST['themHangSanXuat']))
     {
-        $tenChatLieu = $_POST['tenChatLieu'];
-        // Thêm chất liệu
-        $chatLieuController->themChatLieu($tenChatLieu);
+        $tenHangSanXuat = $_POST['tenHangSanXuat'];
+        // Thêm hãng sản xuất
+        $hangSanXuatController->themHangSanXuat($tenHangSanXuat);
 
     }
-    // Xử lý khi form được submit để chỉnh sửa chất liệu
-    if (isset($_POST['chinhSuaChatLieu'])) {
-        $maChatLieu = $_POST['maChatLieu'];
-        $tenChatLieu = $_POST['tenChatLieu'];
-        // Cập nhật chất liệu
-        $chatLieuController->suaChatLieu($maChatLieu, $tenChatLieu);
+    // Xử lý khi form được submit để chỉnh sửa hãng sản xuất
+    if (isset($_POST['chinhSuaHangSanXuat'])) {
+        $maHangSanXuat = $_POST['maHangSanXuat'];
+        $tenHangSanXuat = $_POST['tenHangSanXuat'];
+        // Cập nhật hãng sản xuất
+        $hangSanXuatController->suaHangSanXuat($maHangSanXuat, $tenHangSanXuat);
         
     }
-    // Xử lý khi form được submit để xóa chất liệu
-    if (isset($_POST['xoaChatLieu'])) {
-        $maChatLieu = $_POST['maChatLieu'];
-        // Gọi phương thức xóa chất liệu từ ChatLieuController
-        $chatLieuController->xoaChatLieu($maChatLieu);
+    // Xử lý khi form được submit để xóa hãng sản xuất
+    if (isset($_POST['xoaHangSanXuat'])) {
+        $maHangSanXuat = $_POST['maHangSanXuat'];
+        // Gọi phương thức xóa hãng sản xuất từ HangSanXuatController
+        $hangSanXuatController->xoaHangSanXuat($maHangSanXuat);
     }
 }
 
-// Lấy danh sách chất liệu
-$dsChatLieu = $chatLieuController->layDanhSachChatLieu();
+// Lấy danh sách hãng sản xuất
+$dsHangSanXuat = $hangSanXuatController->layDanhSachHangSanXuat();
 ?>
 
 <!DOCTYPE html>
@@ -61,36 +61,31 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
     </div>
     <div class="container mx-auto w-4/5 px-7 ">
         <div class="flex justify-between items-center mt-2">
-            <h1 class="text-2xl font-bold">Danh Mục Sản Phẩm</h1>
+            <h1 class="text-2xl font-bold">Danh Mục Hãng Sản Xuất</h1>
             <a onclick="showAddModal()" class="bg-blue-500 text-white font-bold px-4 py-2 rounded cursor-pointer">+</a>
         </div>
-        <?php if (!empty($error['ten'])): ?>
-                    <div class="mb-4 text-red-500">
-                        <?= htmlspecialchars($error['ten']) ?>
-                    </div>
-        <?php endif; ?>
         <div class="overflow-x-auto mt-2">
             <table class="min-w-full bg-white border border-gray-200">
                 <thead class="bg-gray-200">
                     <tr>
                         <th class="px-3 pl-6 py-3 border-b text-left text-sm font-semibold text-gray-700">STT</th>
-                        <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Mã chất liệu</th>
-                        <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Tên chất liệu</th>
+                        <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Mã hãng sản xuất</th>
+                        <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Tên hãng sản xuất</th>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($dsChatLieu as $index => $chatLieu): ?>
+                    <?php foreach ($dsHangSanXuat as $index => $hangSanXuat): ?>
                         <?php $stt = $index + 1; ?>
                         <tr class="<?= $stt % 2 == 0 ? 'bg-gray-100' : 'bg-white' ?> border-b hover:bg-gray-200">
                             <!-- Số thứ tự -->
                             <td class="px-3 pl-6 py-2 text-gray-700"><?= $stt ?></td>
 
                             <!-- Tên sản phẩm -->
-                            <td class="px-3 py-2 text-gray-700"><?= htmlspecialchars($chatLieu->getMaChatLieu()) ?></td>
+                            <td class="px-3 py-2 text-gray-700"><?= htmlspecialchars($hangSanXuat->getMaHangSanXuat()) ?></td>
 
                             <!-- Giá -->
-                            <td class="px-3 py-2 text-gray-700"><?= htmlspecialchars(ucwords($chatLieu->getChatLieu())) ?></td>
+                            <td class="px-3 py-2 text-gray-700"><?= htmlspecialchars(ucwords($hangSanXuat->getHangSanXuat())) ?></td>
 
                             <!-- Hành động -->
                             <td class="px-3 py-2">
@@ -98,15 +93,15 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
                                 <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
                                     <!-- Nút chỉnh sửa -->
                                     <button 
-                                        onclick="showEditModal('<?= $chatLieu->getMaChatLieu() ?>', '<?= htmlspecialchars($chatLieu->getChatLieu()) ?>')" 
-                                        title="Chỉnh sửa chất liệu" 
+                                        onclick="showEditModal('<?= $hangSanXuat->getMaHangSanXuat() ?>', '<?= htmlspecialchars($hangSanXuat->getHangSanXuat()) ?>')" 
+                                        title="Chỉnh sửa hãng sản xuất" 
                                         class="text-blue-500 text-3xl ml-3 hover:text-blue-700">
                                         <i class="fa-solid fa-pen-to-square"></i>
                                     </button>
                                     <!-- Nút xóa -->
                                     <button 
-                                        onclick="showDeleteModal('<?= $chatLieu->getMaChatLieu() ?>')" 
-                                        title="Xóa sản phẩm" 
+                                        onclick="showDeleteModal('<?= $hangSanXuat->getMaHangSanXuat() ?>')" 
+                                        title="Xóa hãng sản xuất" 
                                         class="text-red-500 text-3xl ml-3 hover:text-red-700">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
@@ -123,21 +118,21 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
             <div class="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg">
                 <!-- Header -->
                 <div class="bg-blue-500 px-6 py-4 flex justify-between items-center">
-                    <h2 class="text-white font-semibold text-lg">Thêm Chất Liệu</h2>
+                    <h2 class="text-white font-semibold text-lg">Thêm hãng sản xuất</h2>
                     <button onclick="hideModal()" class="bg-red-400 px-2 rounded text-white text-xl">&times;</button>
                 </div>
                 <!-- Body -->
                 <div class="p-6">
-                    <!-- Form thêm chất liệu -->
+                    <!-- Form thêm hãng sản xuất -->
                     <form action="" method="POST">
                         <div class="mb-4">
-                            <label class="block text-gray-700 font-semibold mb-2">Tên chất liệu:</label>
-                            <input type="text" name="tenChatLieu" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                                value="<?= isset($tenChatLieu) ? $tenChatLieu : '' ?>" placeholder="Nhập tên chất liệu" required>
+                            <label class="block text-gray-700 font-semibold mb-2">Tên hãng sản xuất:</label>
+                            <input type="text" name="tenHangSanXuat" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                                value="<?= isset($tenHangSanXuat) ? $tenHangSanXuat : '' ?>" placeholder="Nhập tên hãng sản xuất" required>
                         </div>
-                        <button name="themChatLieu" type="submit" 
+                        <button name="themHangSanXuat" type="submit" 
                             class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-400">
-                            Thêm Chất Liệu
+                            Thêm hãng sản xuất
                         </button>
                     </form>
                 </div>
@@ -153,7 +148,7 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
                 </div>
                 <!-- Body -->
                 <div class="p-6">
-                    <p class="text-red-700 text-xl font-bold ">Bạn có chắc chắn muốn xóa chất liệu này không?</p>
+                    <p class="text-red-700 text-xl font-bold ">Bạn có chắc chắn muốn xóa hãng sản xuất này không?</p>
                 </div>
                 <!-- Footer -->
                 <div class="p-6 flex justify-end">
@@ -161,31 +156,31 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
                         Hủy
                     </button>
                     <form id="deleteForm" method="POST">
-                        <input type="hidden" name="maChatLieu" id="deleteMaChatLieu">
-                        <button name="xoaChatLieu" type="submit" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-700">Xác nhận</button>
+                        <input type="hidden" name="maHangSanXuat" id="deleteMaHangSanXuat">
+                        <button name="xoaHangSanXuat" type="submit" class="bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-700">Xác nhận</button>
                     </form>
                 </div>
             </div>
         </div>
 
-        <!-- Modal chỉnh sửa chất liệu -->
+        <!-- Modal chỉnh sửa hãng sản xuất -->
         <div id="editModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
             <div class="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg overflow-hidden">
                 <!-- Header -->
                 <div class="bg-yellow-500 px-6 py-4 flex justify-between items-center">
-                    <h2 class="text-white font-semibold text-lg">Chỉnh sửa Chất Liệu</h2>
+                    <h2 class="text-white font-semibold text-lg">Chỉnh sửa hãng sản xuất</h2>
                     <button onclick="hideModal()" class="bg-red-400 px-2 rounded text-white text-xl">&times;</button>
                 </div>
                 <!-- Body -->
                 <div class="p-6">
-                    <!-- Form chỉnh sửa chất liệu -->
+                    <!-- Form chỉnh sửa hãng sản xuất -->
                     <form action="" method="POST">
-                        <input type="hidden" name="maChatLieu" id="editMaChatLieu">
+                        <input type="hidden" name="maHangSanXuat" id="editMaHangSanXuat">
                         <div class="mb-4">
-                            <label class="block text-gray-700 font-semibold mb-2">Tên chất liệu:</label>
-                            <input type="text" name="tenChatLieu" id="editTenChatLieu" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-500 focus:outline-none" placeholder="Nhập tên chất liệu" required>
+                            <label class="block text-gray-700 font-semibold mb-2">Tên hãng sản xuất:</label>
+                            <input type="text" name="tenHangSanXuat" id="editTenHangSanXuat" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-yellow-500 focus:outline-none" placeholder="Nhập tên hãng sản xuất" required>
                         </div>
-                        <button name="chinhSuaChatLieu" type="submit" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-700 focus:ring-2 focus:ring-yellow-400">
+                        <button name="chinhSuaHangSanXuat" type="submit" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-lg hover:bg-yellow-700 focus:ring-2 focus:ring-yellow-400">
                             Lưu Chỉnh Sửa
                         </button>
                     </form>
@@ -210,17 +205,17 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
     }
 
     // Hiển thị modal xác nhận
-    function showDeleteModal(maChatLieu) {
+    function showDeleteModal(maHangSanXuat) {
         document.getElementById('deleteModal').style.display = 'flex';
-        // Gán mã chất liệu vào input hidden
-        document.getElementById('deleteMaChatLieu').value = maChatLieu;
+        // Gán mã hãng sản xuất vào input hidden
+        document.getElementById('deleteMaHangSanXuat').value = maHangSanXuat;
     }
 
     // Hiển thị modal chỉnh sửa
-    function showEditModal(maChatLieu, tenChatLieu) {
+    function showEditModal(maHangSanXuat, tenHangSanXuat) {
         document.getElementById('editModal').style.display = 'flex';
         // Gán dữ liệu vào các input trong form
-        document.getElementById('editMaChatLieu').value = maChatLieu;
-        document.getElementById('editTenChatLieu').value = tenChatLieu;
+        document.getElementById('editMaHangSanXuat').value = maHangSanXuat;
+        document.getElementById('editTenHangSanXuat').value = tenHangSanXuat;
     }
 </script>

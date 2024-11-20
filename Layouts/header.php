@@ -20,7 +20,7 @@ $hoVaTenNhanVien = $hoNhanVien." ".$tenNhanVien." (".$chucVu.")";
 // Thực hiện đăng xuất nếu có yêu cầu
 if (isset($_GET['action']) && $_GET['action'] == 'logout') {
     $loginController->logout();
-    header("Location: ../Views/login.php");
+    header("Location: ../Pages/login.php");
     exit();
 }
 

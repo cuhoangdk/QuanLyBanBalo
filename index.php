@@ -7,10 +7,10 @@ include_once __DIR__ . '/Layouts/header.php'; // Bao gồm header
 // Kiểm tra nếu nhân viên chưa đăng nhập
 if (!isset($_SESSION['nhanVien'])) {
     // Chuyển hướng đến trang đăng nhập
-    header("Location: Views/login.php");
+    header("Location: Pages/login.php");
     exit();
 }else if(isset($_SESSION['nhanVien']) && ($_SESSION['quyen'] == '1'|| $_SESSION['quyen'] == '2')){
-    header("Location: Views/DanhSachSanPham.php");
+    header("Location: Pages/DanhSachSanPham.php");
     exit();
 }else if($_SESSION['quyen'] == '3'){
     echo "Chưa xây dựng phía khách hàng";

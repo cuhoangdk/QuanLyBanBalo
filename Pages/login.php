@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Gọi phương thức đăng nhập từ LoginController
     if ($loginController->login($username, $password)) {
         // Đăng nhập thành công, chuyển hướng đến trang sản phẩm
-        header("Location: ../Views/DanhSachSanPham.php");
+        header("Location: ../Pages/DanhSachSanPham.php");
         exit();
     } else {
         // Đăng nhập thất bại, thiết lập thông báo lỗi
