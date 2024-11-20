@@ -23,8 +23,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </li>
             <li>
                 <!-- Nếu trang hiện tại là trang ThemSanPham.php thì hiển thị màu nền xanh -->
-                <a href="../Views/DanhSachChatLieu.php"
-                    class="block py-2 px-4 bg-gray-700 hover:text-black hover:bg-green-300 <?= $current_page == 'DanhSachChatLieu.php' ? 'bg-green-300 text-black' : '' ?>">
+                <a href="../Views/QuanLyChatLieu.php"
+                    class="block py-2 px-4 bg-gray-700 hover:text-black hover:bg-green-300 <?= $current_page == 'QuanLyChatLieu.php' ? 'bg-green-300 text-black' : '' ?>">
                     <i class="fa-solid fa-table-list mr-2"></i>Quản lý chất liệu
                 </a>
             </li>

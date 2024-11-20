@@ -118,12 +118,9 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
             </table>
         </div>
 
-        <!-- Overlay mờ -->
-        <div id="modalOverlay" class="fixed inset-0 bg-gray-800 bg-opacity-50 hidden" onclick="hideModal()"></div>
-
         <!-- Modal thêm sản phẩm -->
-        <div id="addModal" class="fixed inset-40 flex items-center justify-center hidden">
-            <div class="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg overflow-hidden">
+        <div id="addModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+            <div class="bg-white w-full max-w-md mx-auto rounded-lg shadow-lg">
                 <!-- Header -->
                 <div class="bg-blue-500 px-6 py-4 flex justify-between items-center">
                     <h2 class="text-white font-semibold text-lg">Thêm Chất Liệu</h2>
@@ -204,19 +201,16 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
     // Ẩn modal
     function hideModal() {
         document.getElementById('addModal').style.display = 'none';
-        document.getElementById('modalOverlay').style.display = 'none';
         document.getElementById('deleteModal').style.display = 'none';
         document.getElementById('editModal').style.display = 'none';
     }
     // Hiển thị modal thêm mới
     function showAddModal() {
-        document.getElementById('addModal').style.display = 'block';
-        document.getElementById('modalOverlay').style.display = 'block';
+        document.getElementById('addModal').style.display = 'flex';
     }
 
     // Hiển thị modal xác nhận
     function showDeleteModal(maChatLieu) {
-        document.getElementById('modalOverlay').style.display = 'block';
         document.getElementById('deleteModal').style.display = 'flex';
         // Gán mã chất liệu vào input hidden
         document.getElementById('deleteMaChatLieu').value = maChatLieu;
@@ -224,10 +218,7 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
 
     // Hiển thị modal chỉnh sửa
     function showEditModal(maChatLieu, tenChatLieu) {
-        document.getElementById('modalOverlay').style.display = 'block';
         document.getElementById('editModal').style.display = 'flex';
-        document.getElementById('modalOverlay').style.display = 'block';
-
         // Gán dữ liệu vào các input trong form
         document.getElementById('editMaChatLieu').value = maChatLieu;
         document.getElementById('editTenChatLieu').value = tenChatLieu;

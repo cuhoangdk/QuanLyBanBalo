@@ -47,7 +47,7 @@ if (isset($_SESSION['error']))
 }
 ?>
 <!-- Header -->
-<header class="bg-gray-300 text-gray-800 p-2 px-7 fixed right-0 top-0 w-4/5 z-10">
+<header class="bg-gray-300 text-gray-800 p-2 px-7 fixed right-0 top-0 w-4/5">
     <div class="container mx-auto flex justify-between items-center">
         <h1 class="text-xl font-bold">Xin chào, <?= htmlspecialchars($hoVaTenNhanVien) ?>!</h1>
         <a href="?action=logout" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-4 rounded-full">Đăng xuất</a>
