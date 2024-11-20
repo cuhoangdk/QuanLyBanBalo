@@ -66,19 +66,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error['anh'] = $e->getMessage();
         }
     }
-    // Kiểm tra thời gian bảo hành
-    if (!is_numeric($thoiGianBaoHanh) || $thoiGianBaoHanh < 0) {
-        $error['thoiGianBaoHanh'] = 'Thời gian bảo hành phải là số và không được nhỏ hơn 0.';
+    // Kiểm tra thời gian bảo hành (tối đa 20 năm)
+    if (!is_numeric($thoiGianBaoHanh) || $thoiGianBaoHanh < 0 || $thoiGianBaoHanh > 20) {
+        $error['thoiGianBaoHanh'] = 'Thời gian bảo hành phải là số, không nhỏ hơn 0 và không quá 20 năm.';
     }
-
-    // Kiểm tra số lượng
-    if (!is_numeric($soLuong) || $soLuong < 1) {
-        $error['soLuong'] = 'Số lượng phải là số và lớn hơn 0.';
+    // Kiểm tra số lượng (tối đa 100)
+    if (!is_numeric($soLuong) || $soLuong < 1 || $soLuong > 100) {
+        $error['soLuong'] = 'Số lượng phải là số, lớn hơn 0 và không vượt quá 100.';
     }
-
-    // Kiểm tra cân nặng
-    if (!is_numeric($canNang) || $canNang < 0.1) {
-        $error['canNang'] = 'Cân nặng phải là số và lớn hơn hoặc bằng 0.1.';
+    // Kiểm tra cân nặng (tối đa 10kg)
+    if (!is_numeric($canNang) || $canNang < 0.1 || $canNang > 10) {
+        $error['canNang'] = 'Cân nặng phải là số, lớn hơn hoặc bằng 0.1 và không vượt quá 10kg.';
     }
 
     // Kiểm tra đơn giá

@@ -74,9 +74,9 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <input type="text" name="tenSanPham" placeholder="Tên sản phẩm"
                     value="<?= htmlspecialchars($tenSanPham) ?>" class="p-2 border rounded">
-                <input type="number" name="giaMin" placeholder="Giá thấp nhất" value="<?= htmlspecialchars($giaMin) ?>"
+                <input type="number" name="giaMin" placeholder="Giá thấp nhất" min="0" step="1000" value="<?= htmlspecialchars($giaMin) ?>"
                     class="p-2 border rounded">
-                <input type="number" name="giaMax" placeholder="Giá cao nhất" value="<?= htmlspecialchars($giaMax) ?>"
+                <input type="number" name="giaMax" placeholder="Giá cao nhất" min="0" step="1000" value="<?= htmlspecialchars($giaMax) ?>"
                     class="p-2 border rounded">
                 <select name="chatLieu" class="p-2 border rounded">
                     <option value="">Chọn chất liệu</option>

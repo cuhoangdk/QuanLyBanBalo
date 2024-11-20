@@ -11,7 +11,16 @@ if (!isset($_SESSION['nhanVien'])) {
 include_once '../Config/Config.php'; // Kết nối tới cơ sở dữ liệu
 include_once '../Controllers/LoaiSanPhamController.php';
 $loaiSanPhamController = new LoaiSanPhamController($connection);
+// Lấy trang hiện tại và số lượng sản phẩm trên mỗi trang
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1; // Trang hiện tại
+$limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : 5; // Số lượng sản phẩm trên mỗi trang
+$offset = ($page - 1) * $limit; // Vị trí bắt đầu lấy sản phẩm
 
+// Tìm kiếm sản phẩm trong cơ sở dữ liệu trả về mảng chứa danh sách sản phẩm và tổng số sản phẩm
+[$danhSachLoaiSanPham, $totalLoaiSanPham] = $loaiSanPhamController->phanTrangLoaiSanPham( $limit, $offset);
+
+// Tính tổng số trang dựa trên tổng số sản phẩm và số lượng sản phẩm trên mỗi trang
+$totalPages = ceil($totalLoaiSanPham / $limit);
 // Xử lý khi form được submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Xử lý khi form được submit để thêm loại sản phẩm mới
@@ -37,9 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $loaiSanPhamController->xoaLoaiSanPham($maLoaiSanPham);
     }
 }
-
-// Lấy danh sách loại sản phẩm
-$dsLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
 ?>
 
 <!DOCTYPE html>
@@ -75,8 +81,8 @@ $dsLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($dsLoaiSanPham as $index => $loaiSanPham): ?>
-                        <?php $stt = $index + 1; ?>
+                    <?php foreach ($danhSachLoaiSanPham as $index => $loaiSanPham): ?>
+                        <?php $stt = ($page - 1) * $limit + $index + 1; ?>
                         <tr class="<?= $stt % 2 == 0 ? 'bg-gray-100' : 'bg-white' ?> border-b hover:bg-gray-200">
                             <!-- Số thứ tự -->
                             <td class="px-3 pl-6 py-2 text-gray-700"><?= $stt ?></td>
@@ -111,6 +117,54 @@ $dsLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
                     <?php endforeach; ?>
                 </tbody>
             </table>
+        </div>
+        <!-- Phân trang -->
+        <div class="mb-5">
+            <?php if ($totalPages > 1): ?>
+                <nav class="flex justify-center mt-6">
+                    <ul class="flex space-x-2">
+                        <!-- Trang đầu -->
+                        <li>
+                            <a href="?<?= http_build_query(array_merge($_GET, ['page' => 1])) ?>"
+                                class="px-4 py-2 border rounded-md <?= $page == 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
+                                << </a>
+                        </li>
+
+                        <!-- Về trước -->
+                        <li>
+                            <a href="?<?= http_build_query(array_merge($_GET, ['page' => max(1, $page - 1)])) ?>"
+                                class="px-4 py-2 border rounded-md <?= $page == 1 ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
+                                < </a>
+                        </li>
+
+                        <!-- Số trang -->
+                        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                            <li>
+                                <a href="?<?= http_build_query(array_merge($_GET, ['page' => $i])) ?>"
+                                    class="px-4 py-2 border rounded-md <?= $i == $page ? 'bg-green-500 text-white border-green-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
+                                    <?= $i ?>
+                                </a>
+                            </li>
+                        <?php endfor; ?>
+
+                        <!-- Về sau -->
+                        <li>
+                            <a href="?<?= http_build_query(array_merge($_GET, ['page' => min($totalPages, $page + 1)])) ?>"
+                                class="px-4 py-2 border rounded-md <?= $page == $totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
+                                >
+                            </a>
+                        </li>
+
+                        <!-- Trang cuối -->
+                        <li>
+                            <a href="?<?= http_build_query(array_merge($_GET, ['page' => $totalPages])) ?>"
+                                class="px-4 py-2 border rounded-md <?= $page == $totalPages ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-white text-green-500 border-green-300 hover:bg-green-100 hover:text-green-600' ?>">
+                                >>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            <?php endif; ?>
         </div>
 
         <!-- Modal thêm sản phẩm -->
@@ -187,7 +241,6 @@ $dsLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
                 </div>
             </div>
         </div>
-
     </div>
 </body>
 </html>

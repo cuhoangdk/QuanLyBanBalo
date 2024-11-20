@@ -122,4 +122,42 @@ class LoaiSanPhamController{
             return false; // Trả về false nếu không tồn tại
         }
     }
+    public function phanTrangLoaiSanPham($limit, $offset)
+    {
+        $sql = "SELECT SQL_CALC_FOUND_ROWS * FROM tloaisp WHERE trang_thai = 1";
+        $params = [];
+        $types = '';
+
+        // Thêm giới hạn phân trang
+        $sql .= " LIMIT ? OFFSET ?";
+        $params[] = $limit;
+        $params[] = $offset;
+        $types .= 'ii';
+
+        // Chuẩn bị và thực thi câu truy vấn
+        $stmt = $this->connection->prepare($sql);
+        if (!empty($params)) {
+            $stmt->bind_param($types, ...$params);
+        }
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        // Xử lý kết quả
+        $danhSachLoaiSanPham = [];
+        while ($row = $result->fetch_assoc()) {
+            $loaiSanPham = new LoaiSanPham(
+                $row['ma_loai_san_pham'],
+                $row['ten_loai_san_pham']
+            );
+            $danhSachLoaiSanPham[] = $loaiSanPham;
+        }
+        $stmt->close();
+
+        // Lấy tổng số loại sản phẩm phù hợp
+        $result = $this->connection->query("SELECT FOUND_ROWS() as total");
+        $totalLoaiSanPham = $result->fetch_assoc()['total'];
+
+        // Trả về danh sách và tổng số lượng
+        return [$danhSachLoaiSanPham, $totalLoaiSanPham];
+    }
 }
