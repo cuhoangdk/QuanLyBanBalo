@@ -116,9 +116,13 @@ class LoginController {
                 $result['ho_nhan_vien'],
                 $result['ten_nhan_vien'],
                 $result['ngay_sinh'],
+                $result['gioi_tinh'],
                 $result['so_dien_thoai'],
                 $result['dia_chi'],
                 $result['chuc_vu'],
+                $result['anh_dai_dien'],
+                $result['email'],
+                $result['cccd'],
                 $result['ghi_chu']
             );
         } else {
