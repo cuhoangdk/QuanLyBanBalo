@@ -7,7 +7,7 @@ include_once __DIR__ . '/../Controllers/LoginController.php';
 $loginController = new LoginController($connection);
 // Kiểm tra xem session có hợp lệ không
 if ($loginController->isSessionExpired()) {
-    header("Location: login.php"); // Chuyển hướng về trang đăng nhập
+    header("Location: ../Pages/login.php"); // Chuyển hướng về trang đăng nhập
     exit();
 }
 
