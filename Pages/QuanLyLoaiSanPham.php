@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tenLoaiSanPham = $_POST['tenLoaiSanPham'];
         // Thêm loại sản phẩm
         $loaiSanPhamController->themLoaiSanPham($tenLoaiSanPham);
-
+        [$danhSachLoaiSanPham, $totalLoaiSanPham] = $loaiSanPhamController->phanTrangLoaiSanPham( $limit, $offset);
     }
     // Xử lý khi form được submit để chỉnh sửa loại sản phẩm
     if (isset($_POST['chinhSuaLoaiSanPham'])) {
@@ -37,13 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tenLoaiSanPham = $_POST['tenLoaiSanPham'];
         // Cập nhật loại sản phẩm
         $loaiSanPhamController->suaLoaiSanPham($maLoaiSanPham, $tenLoaiSanPham);
-        
+        [$danhSachLoaiSanPham, $totalLoaiSanPham] = $loaiSanPhamController->phanTrangLoaiSanPham( $limit, $offset);
     }
     // Xử lý khi form được submit để xóa loại sản phẩm
     if (isset($_POST['xoaLoaiSanPham'])) {
         $maLoaiSanPham = $_POST['maLoaiSanPham'];
         // Gọi phương thức xóa loại sản phẩm từ LoaiSanPhamController
         $loaiSanPhamController->xoaLoaiSanPham($maLoaiSanPham);
+        [$danhSachLoaiSanPham, $totalLoaiSanPham] = $loaiSanPhamController->phanTrangLoaiSanPham( $limit, $offset);
     }
 }
 ?>
