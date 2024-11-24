@@ -13,7 +13,7 @@ include_once '../Controllers/LoaiSanPhamController.php';
 $loaiSanPhamController = new LoaiSanPhamController($connection);
 // Lấy trang hiện tại và số lượng sản phẩm trên mỗi trang
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1; // Trang hiện tại
-$limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : 5; // Số lượng sản phẩm trên mỗi trang
+$limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : 15; // Số lượng sản phẩm trên mỗi trang
 $offset = ($page - 1) * $limit; // Vị trí bắt đầu lấy sản phẩm
 
 // Tìm kiếm sản phẩm trong cơ sở dữ liệu trả về mảng chứa danh sách sản phẩm và tổng số sản phẩm
@@ -69,7 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="container mx-auto w-4/5 px-7 ">
         <div class="flex justify-between items-center mt-2">
             <h1 class="text-2xl font-bold">Danh Mục Loại Sản Phẩm</h1>
-            <a onclick="showAddModal()" class="bg-blue-500 text-white font-bold px-4 py-2 rounded cursor-pointer">+</a>
+            <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
+                <a onclick="showAddModal()" class="bg-blue-500 text-white font-bold px-4 py-2 rounded cursor-pointer">+</a>
+            <?php endif; ?> 
         </div>
         <div class="overflow-x-auto mt-2">
             <table class="min-w-full bg-white border border-gray-200">
@@ -183,7 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="mb-4">
                             <label class="block text-gray-700 font-semibold mb-2">Tên loại sản phẩm:</label>
                             <input type="text" name="tenLoaiSanPham" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                                value="<?= isset($tenLoaiSanPham) ? $tenLoaiSanPham : '' ?>" placeholder="Nhập tên loại sản phẩm" required>
+                                 placeholder="Nhập tên loại sản phẩm" required>
                         </div>
                         <button name="themLoaiSanPham" type="submit" 
                             class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-400">

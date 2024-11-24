@@ -54,10 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <hr class="my-6">
                 <h4 class="font-bold text-left mt-3 mb-2">Username</h4>
                 <input type="text" name="username" placeholder="Email address or username" value="<?php echo isset($_POST['username']) ? $_POST['username'] : ''; ?>"
-                    class="block border border-black rounded w-full pl-4 py-2.5" required>
+                    class="block border border-green-500 rounded w-full pl-4 py-2.5 focus:ring-2 focus:ring-green-500 focus:outline-none" required>
                 <h4 class="font-bold text-left mt-3 mb-2">Password</h4>
                 <input type="password" name="password" placeholder="Password" value="<?php echo isset($_POST['password']) ? $_POST['password'] : ''; ?>"
-                    class="block border border-black rounded w-full pl-4 py-2.5" required>
+                    class="block border border-green-500 rounded w-full pl-4 py-2.5 focus:ring-2 focus:ring-green-500 focus:outline-none" required>
                 <div class="flex items-center mb-2">
                     <input type="checkbox" class="mx-2 w-4 h-4">
                     <label class="">Remember me</label>

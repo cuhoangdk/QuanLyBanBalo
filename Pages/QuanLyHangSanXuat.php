@@ -62,7 +62,9 @@ $dsHangSanXuat = $hangSanXuatController->layDanhSachHangSanXuat();
     <div class="container mx-auto w-4/5 px-7 ">
         <div class="flex justify-between items-center mt-2">
             <h1 class="text-2xl font-bold">Danh Mục Hãng Sản Xuất</h1>
-            <a onclick="showAddModal()" class="bg-blue-500 text-white font-bold px-4 py-2 rounded cursor-pointer">+</a>
+            <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
+                <a onclick="showAddModal()" class="bg-blue-500 text-white font-bold px-4 py-2 rounded cursor-pointer">+</a>
+            <?php endif; ?> 
         </div>
         <div class="overflow-x-auto mt-2">
             <table class="min-w-full bg-white border border-gray-200">
@@ -128,7 +130,7 @@ $dsHangSanXuat = $hangSanXuatController->layDanhSachHangSanXuat();
                         <div class="mb-4">
                             <label class="block text-gray-700 font-semibold mb-2">Tên hãng sản xuất:</label>
                             <input type="text" name="tenHangSanXuat" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                                value="<?= isset($tenHangSanXuat) ? $tenHangSanXuat : '' ?>" placeholder="Nhập tên hãng sản xuất" required>
+                                placeholder="Nhập tên hãng sản xuất" required>
                         </div>
                         <button name="themHangSanXuat" type="submit" 
                             class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-400">

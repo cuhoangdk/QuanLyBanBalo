@@ -7,6 +7,12 @@ if (!isset($_SESSION['nhanVien'])) {
     header("Location: login.php");
     exit();
 }
+// Kiểm tra nếu nhân viên không phải quản trị viên
+if ($_SESSION['quyen']!=1) {
+    // Chuyển hướng đến trang đăng nhập
+    header("Location: DanhSachSanPham.php");
+    exit();
+}
 // import file cấu hình db & các file model
 include_once '../Config/Config.php'; 
 include_once '../Controllers/SanPhamController.php';

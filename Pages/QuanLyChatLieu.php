@@ -14,13 +14,17 @@ $chatLieuController = new ChatLieuController($connection);
 
 // Xử lý khi form được submit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if  (isset($_SESSION['quyen']) && $_SESSION['quyen'] != 1) {
+        // Nếu không phải quản trị viên thì không thực hiện thêm, sửa, xóa chất liệu
+        header("Location: ../index.php");
+        exit();
+    }
     // Xử lý khi form được submit để thêm chất liệu mới
     if (isset($_POST['themChatLieu']))
     {
         $tenChatLieu = $_POST['tenChatLieu'];
         // Thêm chất liệu
         $chatLieuController->themChatLieu($tenChatLieu);
-
     }
     // Xử lý khi form được submit để chỉnh sửa chất liệu
     if (isset($_POST['chinhSuaChatLieu'])) {
@@ -28,7 +32,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $tenChatLieu = $_POST['tenChatLieu'];
         // Cập nhật chất liệu
         $chatLieuController->suaChatLieu($maChatLieu, $tenChatLieu);
-        
     }
     // Xử lý khi form được submit để xóa chất liệu
     if (isset($_POST['xoaChatLieu'])) {
@@ -62,7 +65,9 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
     <div class="container mx-auto w-4/5 px-7 ">
         <div class="flex justify-between items-center mt-2">
             <h1 class="text-2xl font-bold">Danh Mục Chất Liệu</h1>
-            <a onclick="showAddModal()" class="bg-blue-500 text-white font-bold px-4 py-2 rounded cursor-pointer">+</a>
+            <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
+                <a onclick="showAddModal()" class="bg-blue-500 text-white font-bold px-4 py-2 rounded cursor-pointer">+</a>
+            <?php endif; ?>        
         </div>
         <div class="overflow-x-auto mt-2">
             <table class="min-w-full bg-white border border-gray-200">
@@ -128,7 +133,7 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
                         <div class="mb-4">
                             <label class="block text-gray-700 font-semibold mb-2">Tên chất liệu:</label>
                             <input type="text" name="tenChatLieu" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-                                value="<?= isset($tenChatLieu) ? $tenChatLieu : '' ?>" placeholder="Nhập tên chất liệu" required>
+                                 placeholder="Nhập tên chất liệu" required>
                         </div>
                         <button name="themChatLieu" type="submit" 
                             class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-400">

@@ -71,7 +71,7 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
     <div class="container mx-auto w-4/5 px-7 ">
         <!-- Form tìm kiếm -->
         <form method="GET" class="bg-white p-4 rounded shadow-md mt-5">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <input type="text" name="tenSanPham" placeholder="Tên sản phẩm"
                     value="<?= htmlspecialchars($tenSanPham) ?>" class="p-2 border rounded">
                 <input type="number" name="giaMin" placeholder="Giá thấp nhất" min="0" step="1000" value="<?= htmlspecialchars($giaMin) ?>"
@@ -90,7 +90,7 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-2">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-2">
                 <select name="hangSanXuat" class="p-2 border rounded">
                     <option value="">Chọn hãng sản xuất</option>
                     <?php foreach ($danhSachHangSanXuat as $hang): ?>
@@ -136,13 +136,15 @@ $danhSachLoaiSanPham = $loaiSanPhamController->layDanhSachLoaiSanPham();
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+            <div class="grid grid-cols-<?= isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1 ? '3' : '2' ?> gap-4 mt-2">
                 <a href="DanhSachSanPham.php" title="Làm mới"
-                    class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-center">Làm mới</a>
+                    class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 text-center flex items-center justify-center">Làm mới</a>
                 <button type="submit" title="Tìm kiếm"
                     class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Tìm kiếm</button>
-                <a href="ThemSanPham.php" title="Thêm sản phẩm"
-                    class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-center">Thêm mới</a>
+                <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
+                    <a href="ThemSanPham.php" title="Thêm sản phẩm"
+                        class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-center">Thêm mới</a>
+                <?php endif; ?>
             </div>
 
         </form>

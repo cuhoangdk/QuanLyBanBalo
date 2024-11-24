@@ -8,45 +8,39 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <div class="">
         <ul class="mt-4 space-y-2">
             <li>
-                <a href="../Pages/DanhSachSanPham.php"
+                <a href="../Pages/DanhSachSanPham.php" title="Quản lý sản phẩm"
                     class="block w-full py-2 px-4 bg-gray-700 hover:text-black hover:bg-green-300 <?= $current_page == 'DanhSachSanPham.php' ? 'bg-green-300 text-black' : '' ?>">
-                    <i class="fa-solid fa-table-list mr-2"></i>Quản lý sản phẩm
+                    <i class="fa-solid fa-table-list mr-2"></i><span class="hidden md:inline">Quản lý sản phẩm</span>
                 </a>
             </li>            
             <li>
-                <a href="../Pages/QuanLyChatLieu.php"
+                <a href="../Pages/QuanLyChatLieu.php"title="Quản lý chất liệu"
                     class="block py-2 px-4 bg-gray-700 hover:text-black hover:bg-green-300 <?= $current_page == 'QuanLyChatLieu.php' ? 'bg-green-300 text-black' : '' ?>">
-                    <i class="fa-solid fa-table-list mr-2"></i>Quản lý chất liệu
+                    <i class="fa-solid fa-table-list mr-2"></i><span class="hidden md:inline">Quản lý chất liệu</span>
                 </a>
             </li>
             <li>
-                <a href="../Pages/QuanLyHangSanXuat.php"
+                <a href="../Pages/QuanLyHangSanXuat.php" title="Quản lý hãng sản xuất"
                     class="block py-2 px-4 bg-gray-700 hover:text-black hover:bg-green-300 <?= $current_page == 'QuanLyHangSanXuat.php' ? 'bg-green-300 text-black' : '' ?>">
-                    <i class="fa-solid fa-table-list mr-2"></i>Quản lý hãng sản xuất
+                    <i class="fa-solid fa-table-list mr-2"></i><span class="hidden md:inline">Quản lý hãng sản xuất</span>
                 </a>
             </li>
             <li>
-                <a href="../Pages/QuanLyLoaiDoiTuong.php"
+                <a href="../Pages/QuanLyLoaiDoiTuong.php" title="Quản lý loại đối tượng"
                     class="block py-2 px-4 bg-gray-700 hover:text-black hover:bg-green-300 <?= $current_page == 'QuanLyLoaiDoiTuong.php' ? 'bg-green-300 text-black' : '' ?>">
-                    <i class="fa-solid fa-table-list mr-2"></i>Quản lý loại đối tượng
+                    <i class="fa-solid fa-table-list mr-2"></i><span class="hidden md:inline">Quản lý loại đối tượng</span>
                 </a>
             </li>
             <li>
-                <a href="../Pages/QuanLyLoaiSanPham.php"
+                <a href="../Pages/QuanLyLoaiSanPham.php" title="Quản lý loại sản phẩm"
                     class="block py-2 px-4 bg-gray-700 hover:text-black hover:bg-green-300 <?= $current_page == 'QuanLyLoaiSanPham.php' ? 'bg-green-300 text-black' : '' ?>">
-                    <i class="fa-solid fa-table-list mr-2"></i>Quản lý loại sản phẩm
+                    <i class="fa-solid fa-table-list mr-2"></i><span class="hidden md:inline">Quản lý loại sản phẩm</span>
                 </a>
             </li>
             <li>
-                <a href="../Pages/QuanLyQuocGia.php"
+                <a href="../Pages/QuanLyQuocGia.php" title="Quản lý quốc gia"
                     class="block py-2 px-4 bg-gray-700 hover:text-black hover:bg-green-300 <?= $current_page == 'QuanLyQuocGia.php' ? 'bg-green-300 text-black' : '' ?>">
-                    <i class="fa-solid fa-table-list mr-2"></i>Quản lý quốc gia
-                </a>
-            </li>
-            <li>                
-                <a href="../Pages/ThemSanPham.php"
-                    class="block py-2 px-4 bg-gray-700 hover:text-black hover:bg-green-300 <?= $current_page == 'ThemSanPham.php' ? 'bg-green-300 text-black' : '' ?>">
-                    <i class="fa-solid fa-circle-plus mr-2"></i>Thêm sản phẩm
+                    <i class="fa-solid fa-table-list mr-2"></i><span class="hidden md:inline">Quản lý quốc gia</span>
                 </a>
             </li>
         </ul>
