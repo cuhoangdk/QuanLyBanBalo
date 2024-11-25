@@ -43,32 +43,59 @@ if (isset($_SESSION['success']))
     </div>
     <div class="container mx-auto w-4/5 px-7 ">
         <div class="bg-white shadow-md rounded-lg p-6">
-            <div class="flex">
+            <div class="flex w-full">
                 <img src="../Images/<?= htmlspecialchars($sanPham->getAnh()) ?>"
-                    alt="<?php echo htmlspecialchars($sanPham->getTenSanPham()); ?>" class="w-5/12 h-auto rounded-lg">
-                <div class="pl-6">
+                    alt="<?php echo htmlspecialchars($sanPham->getTenSanPham()); ?>" class="w-5/12 h-auto object-contain rounded-lg">
+                <div class="pl-6 w-full">
                     <h2 class="text-2xl font-bold mb-4"><?php echo htmlspecialchars($sanPham->getTenSanPham()); ?></h2>
-                    <div class="mb-4 text-xl">
-                        <p><strong>Mã sản phẩm:</strong> <?php echo htmlspecialchars($sanPham->getMaSanPham()); ?></p>
-                        <p><strong>Giá:</strong> <?php echo number_format($sanPham->getGia(), 0, ',', '.'); ?> VND</p>
-                        <p><strong>Cân nặng:</strong> <?php echo htmlspecialchars($sanPham->getCanNang()); ?> Kg</p>
-                        <p><strong>Mô tả:</strong>
-                            <?php echo nl2br(htmlspecialchars($sanPham->getGioiThieuSanPham())); ?></p>
-                        <p><strong>Loại sản phẩm:</strong>
-                            <?php echo htmlspecialchars($sanPham->getLoaiSanPham($connection)); ?></p>
-                        <p><strong>Đối tượng:</strong>
-                            <?php echo htmlspecialchars($sanPham->getDoiTuong($connection)); ?></p>
-                        <p><strong>Chất liệu:</strong>
-                            <?php echo htmlspecialchars($sanPham->getChatLieu($connection)); ?></p>
-                        <p><strong>Hãng sản xuất:</strong>
-                            <?php echo htmlspecialchars($sanPham->getHangSanXuat($connection)); ?></p>
-                        <p><strong>Quốc gia sản xuất:</strong>
-                            <?php echo htmlspecialchars($sanPham->getNuocSanXuat($connection)); ?></p>
-                        <p><strong>Thời gian bảo hành:</strong>
-                            <?php echo htmlspecialchars($sanPham->getThoiGianBaoHanh()); ?> năm</p>
-                        <p><strong>Số lượng trong kho:</strong> <?php echo htmlspecialchars($sanPham->getSoLuong()); ?>
-                        </p>
-                    </div>
+                <table class="table-auto mt-4 w-full border-collapse">
+                    <tbody>
+                        <tr class="bg-gray-100">
+                            <td class="px-4 py-2 rounded-l-lg w-1/4">Mã sản phẩm</td>
+                            <td class="px-4 py-2 rounded-r-lg"><?php echo htmlspecialchars($sanPham->getMaSanPham()); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 rounded-l-lg">Giá</td>
+                            <td class="px-4 py-2 rounded-r-lg"><?php echo number_format($sanPham->getGia(), 0, ',', '.'); ?> VND</td>
+                        </tr>
+                        <tr class="bg-gray-100">
+                            <td class="px-4 py-2 rounded-l-lg">Cân nặng</td>
+                            <td class="px-4 py-2 rounded-r-lg"><?php echo htmlspecialchars($sanPham->getCanNang()); ?> Kg</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 rounded-l-lg">Loại sản phẩm</td>
+                            <td class="px-4 py-2 rounded-r-lg"><?php echo htmlspecialchars($sanPham->getLoaiSanPham($connection)); ?></td>
+                        </tr>
+                        <tr class="bg-gray-100">
+                            <td class="px-4 py-2 rounded-l-lg">Đối tượng</td>
+                            <td class="px-4 py-2 rounded-r-lg"><?php echo htmlspecialchars($sanPham->getDoiTuong($connection)); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 rounded-l-lg">Chất liệu</td>
+                            <td class="px-4 py-2 rounded-r-lg"><?php echo htmlspecialchars($sanPham->getChatLieu($connection)); ?></td>
+                        </tr>
+                        <tr class="bg-gray-100">
+                            <td class="px-4 py-2 rounded-l-lg">Hãng sản xuất</td>
+                            <td class="px-4 py-2 rounded-r-lg"><?php echo htmlspecialchars($sanPham->getHangSanXuat($connection)); ?></td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 rounded-l-lg">Quốc gia sản xuất</td>
+                            <td class="px-4 py-2 rounded-r-lg"><?php echo htmlspecialchars($sanPham->getNuocSanXuat($connection)); ?></td>
+                        </tr>
+                        <tr class="bg-gray-100">
+                            <td class="px-4 py-2 rounded-l-lg">Thời gian bảo hành</td>
+                            <td class="px-4 py-2 rounded-r-lg"><?php echo htmlspecialchars($sanPham->getThoiGianBaoHanh()); ?> năm</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-2 rounded-l-lg">Số lượng trong kho</td>
+                            <td class="px-4 py-2 rounded-r-lg"><?php echo htmlspecialchars($sanPham->getSoLuong()); ?></td>
+                        </tr>
+                        <tr class="bg-gray-100">
+                            <td class="px-4 py-2 rounded-l-lg">Mô tả</td>
+                            <td class="px-4 py-2 rounded-r-lg"><?php echo nl2br(htmlspecialchars($sanPham->getGioiThieuSanPham())); ?></td>
+                        </tr>
+                    </tbody>
+                </table>
                 </div>
             </div>
             <div class="flex justify-between w-full">

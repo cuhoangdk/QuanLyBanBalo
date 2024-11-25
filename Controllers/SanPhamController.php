@@ -324,6 +324,12 @@ class SanPhamController
             $targetFile = $targetDir . $fileName; // Đường dẫn file
             $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION)); // Lấy đuôi file
 
+            // Kiểm tra kích thước file
+            $maxFileSize = 5 * 1024 * 1024; // 10MB
+            if ($file["size"] > $maxFileSize) {
+                throw new Exception("Kích thước file phải nhỏ hơn 10MB.");
+            }
+
             // Kiểm tra định dạng file
             $allowedTypes = ['jpg', 'jpeg', 'png', 'gif']; // Các loại file ảnh cho phép
             if (in_array($fileType, $allowedTypes)) {

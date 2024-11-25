@@ -247,7 +247,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <img src="../Images/<?= htmlspecialchars($sanPham->getAnh()) ?>" alt="Ảnh sản phẩm"
                             class="h-36 mb-4 rounded border">
                         <div class="flex">
-                            <input type="file" value="<?= htmlspecialchars($sanPham->getAnh()) ?>" name="anh" class="w-full px-3 py-2 border rounded-lg">
+                        <input 
+                                type="file" 
+                                value="<?= htmlspecialchars($sanPham->getAnh()) ?>" 
+                                name="anh" 
+                                class="w-full px-3 py-2 border rounded-lg" 
+                                id="fileInput"
+                                accept="image/*" 
+                            >                        
                         </div>
                         <!-- Hiển thị thông báo lỗi nếu có -->
                         <?php if (!empty($error['anh'])): ?>
@@ -269,3 +276,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 
 </html>
+<script>
+    document.getElementById('fileInput').addEventListener('change', function (event) {
+        const file = event.target.files[0];
+        if (file && file.size > 10 * 1024 * 1024) { // 10MB = 10 * 1024 * 1024 bytes
+            alert("File quá lớn! Vui lòng chọn file nhỏ hơn 10MB.");
+            event.target.value = ""; // Reset lại input
+        }
+    });
+</script>
