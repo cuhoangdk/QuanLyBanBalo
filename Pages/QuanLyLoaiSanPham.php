@@ -13,7 +13,7 @@ include_once '../Controllers/LoaiSanPhamController.php';
 $loaiSanPhamController = new LoaiSanPhamController($connection);
 // Lấy trang hiện tại và số lượng sản phẩm trên mỗi trang
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1; // Trang hiện tại
-$limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : 15; // Số lượng sản phẩm trên mỗi trang
+$limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : 5; // Số lượng sản phẩm trên mỗi trang
 $offset = ($page - 1) * $limit; // Vị trí bắt đầu lấy sản phẩm
 
 // Tìm kiếm sản phẩm trong cơ sở dữ liệu trả về mảng chứa danh sách sản phẩm và tổng số sản phẩm

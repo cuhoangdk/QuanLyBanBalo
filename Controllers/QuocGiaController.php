@@ -36,12 +36,12 @@ class QuocGiaController{
         $maQuocGia = taoMaDai($tenQuocGia);
 
         // Kiểm tra tên quốc gia đã tồn tại hay chưa
-        $quocGia = $this->kiemTraTenQuocGiaTonTai($tenQuocGia);
+        $quocGia = $this->kiemTraMaQuocGiaTonTai($maQuocGia);
 
         if ($quocGia) {
             if ($quocGia['trang_thai'] == 0) {
                 // Nếu tên quốc gia đã tồn tại và trạng thái bằng 0 thì bật trạng thái thành 1
-                $sqlUpdate = "UPDATE tquocgia SET trang_thai = 1 WHERE ten_quoc_gia = ?";
+                $sqlUpdate = "UPDATE tquocgia SET trang_thai = 1 WHERE ma_quoc_gia = ?";
                 $stmtUpdate = $this->connection->prepare($sqlUpdate);
                 $stmtUpdate->bind_param("s", $tenQuocGia);
                 if ($stmtUpdate->execute()) {
@@ -119,6 +119,20 @@ class QuocGiaController{
         
         if ($result->num_rows > 0) {
             return $result->fetch_assoc(); // Trả về thông tin quốc gia nếu tồn tại
+        } else {
+            return false; // Trả về false nếu không tồn tại
+        }
+    }
+    private function kiemTraMaQuocGiaTonTai($maQuocGia)
+    {
+        $sql = "SELECT * FROM tquocgia WHERE ma_quoc_gia = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("s", $maQuocGia);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc(); // Trả về thông tin mã quốc gia nếu tồn tại
         } else {
             return false; // Trả về false nếu không tồn tại
         }
