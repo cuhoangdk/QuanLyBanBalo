@@ -35,12 +35,12 @@ class LoaiSanPhamController{
         $maLoaiSanPham = taoMaDai($tenLoaiSanPham);
 
         // Kiểm tra tên loại sản phẩm đã tồn tại hay chưa
-        $loaiSanPham = $this->kiemTraTenLoaiSanPhamTonTai($tenLoaiSanPham);
+        $loaiSanPham = $this->kiemTraMaLoaiSanPhamTonTai($maLoaiSanPham);
 
         if ($loaiSanPham) {
             if ($loaiSanPham['trang_thai'] == 0) {
                 // Nếu tên loại sản phẩm đã tồn tại và trạng thái bằng 0 thì bật trạng thái thành 1
-                $sqlUpdate = "UPDATE tloaisp SET trang_thai = 1 WHERE ten_loai_san_pham = ?";
+                $sqlUpdate = "UPDATE tloaisp SET trang_thai = 1 WHERE ma_loai_san_pham = ?";
                 $stmtUpdate = $this->connection->prepare($sqlUpdate);
                 $stmtUpdate->bind_param("s", $tenLoaiSanPham);
                 if ($stmtUpdate->execute()) {
@@ -113,6 +113,20 @@ class LoaiSanPhamController{
         $sql = "SELECT * FROM tloaisp WHERE ten_loai_san_pham = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param("s", $tenLoaiSanPham);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows > 0) {
+            return $result->fetch_assoc(); // Trả về thông tin loại sản phẩm nếu tồn tại
+        } else {
+            return false; // Trả về false nếu không tồn tại
+        }
+    }
+    public function kiemTraMaLoaiSanPhamTonTai($maLoaiSanPham)
+    {
+        $sql = "SELECT * FROM tloaisp WHERE ma_loai_san_pham = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("s", $maLoaiSanPham);
         $stmt->execute();
         $result = $stmt->get_result();
 

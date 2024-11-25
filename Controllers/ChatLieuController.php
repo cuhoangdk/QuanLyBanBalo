@@ -46,19 +46,33 @@ class ChatLieuController{
             return false; // Trả về false nếu không tồn tại
         }
     }
+    public function kiemTraMaChatLieuTonTai($maChatLieu)
+    {
+        // Kiểm tra tên chất liệu đã tồn tại hay chưa
+        $sqlCheck = "SELECT * FROM tchatlieu WHERE ma_chat_lieu = ?";
+        $stmtCheck = $this->connection->prepare($sqlCheck);
+        $stmtCheck->bind_param("s", $maChatLieu);
+        $stmtCheck->execute();
+        $resultCheck = $stmtCheck->get_result();
 
+        if ($resultCheck->num_rows > 0) {
+            return $resultCheck->fetch_assoc(); // Trả về thông tin chất liệu nếu tồn tại
+        } else {
+            return false; // Trả về false nếu không tồn tại
+        }
+    }
     public function themChatLieu($tenChatLieu)
     {
         // Tạo mã chất liệu từ tên chất liệu
         $maChatLieu = taoMaDai($tenChatLieu);
         
         // Kiểm tra tên chất liệu đã tồn tại hay chưa
-        $chatLieu = $this->kiemTraChatLieuTonTai($tenChatLieu);
+        $chatLieu = $this->kiemTraMaChatLieuTonTai($maChatLieu);
         
         if ($chatLieu) {
             if ($chatLieu['trang_thai'] == 0) {
                 // Nếu tên chất liệu đã tồn tại và trạng thái bằng 0 thì bật trạng thái thành 1
-                $sqlUpdate = "UPDATE tchatlieu SET trang_thai = 1 WHERE ten_chat_lieu = ?";
+                $sqlUpdate = "UPDATE tchatlieu SET trang_thai = 1 WHERE ma_chat_lieu = ?";
                 $stmtUpdate = $this->connection->prepare($sqlUpdate);
                 $stmtUpdate->bind_param("s", $tenChatLieu);
                 if ($stmtUpdate->execute()) {
