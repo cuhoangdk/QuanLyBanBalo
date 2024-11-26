@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p class="text-red-500 font-bold text-2xl">SẢN PHẨM SẼ BỊ XÓA VĨNH VIỄN</p>
             <div class="flex w-full">
                 <img src="../Images/<?= htmlspecialchars($sanPham->getAnh()) ?>"
-                    alt="<?php echo htmlspecialchars($sanPham->getTenSanPham()); ?>" class="w-5/12 h-auto rounded-lg">
+                    alt="<?php echo htmlspecialchars($sanPham->getTenSanPham()); ?>" class="w-5/12 h-auto object-contain rounded-lg">
                 <div class="pl-6 w-full">
                     <h2 class="text-2xl font-bold mb-4"><?php echo htmlspecialchars($sanPham->getTenSanPham()); ?></h2>
                     <table class="table-auto mt-4 w-full border-collapse">
