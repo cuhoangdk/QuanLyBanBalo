@@ -76,7 +76,9 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
                         <th class="px-3 pl-6 py-3 border-b text-left text-sm font-semibold text-gray-700">STT</th>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Mã chất liệu</th>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Tên chất liệu</th>
-                        <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Hành động</th>
+                        <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
+                            <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Hành động</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -91,27 +93,27 @@ $dsChatLieu = $chatLieuController->layDanhSachChatLieu();
 
                             <!-- Giá -->
                             <td class="px-3 py-2 text-gray-700"><?= htmlspecialchars(ucwords($chatLieu->getChatLieu())) ?></td>
-
+                            
+                            <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
                             <!-- Hành động -->
                             <td class="px-3 py-2">
                                 <!-- Nêu là quản trị viên thì hiển thị nút chỉnh sửa và xóa -->
-                                <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
-                                    <!-- Nút chỉnh sửa -->
-                                    <button 
-                                        onclick="showEditModal('<?= $chatLieu->getMaChatLieu() ?>', '<?= htmlspecialchars($chatLieu->getChatLieu()) ?>')" 
-                                        title="Chỉnh sửa chất liệu" 
-                                        class="text-blue-500 text-3xl ml-3 hover:text-blue-700">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </button>
-                                    <!-- Nút xóa -->
-                                    <button 
-                                        onclick="showDeleteModal('<?= $chatLieu->getMaChatLieu() ?>')" 
-                                        title="Xóa chất liệu" 
-                                        class="text-red-500 text-3xl ml-3 hover:text-red-700">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                <?php endif; ?>
+                                <!-- Nút chỉnh sửa -->
+                                <button 
+                                    onclick="showEditModal('<?= $chatLieu->getMaChatLieu() ?>', '<?= htmlspecialchars($chatLieu->getChatLieu()) ?>')" 
+                                    title="Chỉnh sửa chất liệu" 
+                                    class="text-blue-500 text-3xl ml-3 hover:text-blue-700">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <!-- Nút xóa -->
+                                <button 
+                                    onclick="showDeleteModal('<?= $chatLieu->getMaChatLieu() ?>')" 
+                                    title="Xóa chất liệu" 
+                                    class="text-red-500 text-3xl ml-3 hover:text-red-700">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

@@ -73,7 +73,9 @@ $dsQuocGia = $quocGiaController->layDanhSachQuocGia();
                         <th class="px-3 pl-6 py-3 border-b text-left text-sm font-semibold text-gray-700">STT</th>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Mã Quốc Gia</th>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Tên Quốc Gia</th>
+                        <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Hành động</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,27 +90,27 @@ $dsQuocGia = $quocGiaController->layDanhSachQuocGia();
 
                             <!-- Giá -->
                             <td class="px-3 py-2 text-gray-700"><?= htmlspecialchars(ucwords($quocGia->getQuocGia())) ?></td>
+                            <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
 
                             <!-- Hành động -->
                             <td class="px-3 py-2">
                                 <!-- Nêu là quản trị viên thì hiển thị nút chỉnh sửa và xóa -->
-                                <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
-                                    <!-- Nút chỉnh sửa -->
-                                    <button 
-                                        onclick="showEditModal('<?= $quocGia->getMaQuocGia() ?>', '<?= htmlspecialchars($quocGia->getQuocGia()) ?>')" 
-                                        title="Chỉnh sửa Quốc Gia" 
-                                        class="text-blue-500 text-3xl ml-3 hover:text-blue-700">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </button>
-                                    <!-- Nút xóa -->
-                                    <button 
-                                        onclick="showDeleteModal('<?= $quocGia->getMaQuocGia() ?>')" 
-                                        title="Xóa Quốc Gia" 
-                                        class="text-red-500 text-3xl ml-3 hover:text-red-700">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                <?php endif; ?>
+                                <!-- Nút chỉnh sửa -->
+                                <button 
+                                    onclick="showEditModal('<?= $quocGia->getMaQuocGia() ?>', '<?= htmlspecialchars($quocGia->getQuocGia()) ?>')" 
+                                    title="Chỉnh sửa Quốc Gia" 
+                                    class="text-blue-500 text-3xl ml-3 hover:text-blue-700">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <!-- Nút xóa -->
+                                <button 
+                                    onclick="showDeleteModal('<?= $quocGia->getMaQuocGia() ?>')" 
+                                    title="Xóa Quốc Gia" 
+                                    class="text-red-500 text-3xl ml-3 hover:text-red-700">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

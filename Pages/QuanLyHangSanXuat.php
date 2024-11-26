@@ -73,7 +73,9 @@ $dsHangSanXuat = $hangSanXuatController->layDanhSachHangSanXuat();
                         <th class="px-3 pl-6 py-3 border-b text-left text-sm font-semibold text-gray-700">STT</th>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Mã hãng sản xuất</th>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Tên hãng sản xuất</th>
+                        <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Hành động</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,11 +90,11 @@ $dsHangSanXuat = $hangSanXuatController->layDanhSachHangSanXuat();
 
                             <!-- Giá -->
                             <td class="px-3 py-2 text-gray-700"><?= htmlspecialchars(ucwords($hangSanXuat->getHangSanXuat())) ?></td>
+                            <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
 
                             <!-- Hành động -->
                             <td class="px-3 py-2">
                                 <!-- Nêu là quản trị viên thì hiển thị nút chỉnh sửa và xóa -->
-                                <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
                                     <!-- Nút chỉnh sửa -->
                                     <button 
                                         onclick="showEditModal('<?= $hangSanXuat->getMaHangSanXuat() ?>', '<?= htmlspecialchars($hangSanXuat->getHangSanXuat()) ?>')" 
@@ -107,8 +109,8 @@ $dsHangSanXuat = $hangSanXuatController->layDanhSachHangSanXuat();
                                         class="text-red-500 text-3xl ml-3 hover:text-red-700">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
-                                <?php endif; ?>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

@@ -73,7 +73,9 @@ $dsLoaiDoiTuong = $loaiDoiTuongController->layDanhSachLoaiDoiTuong();
                         <th class="px-3 pl-6 py-3 border-b text-left text-sm font-semibold text-gray-700">STT</th>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Mã loại đối tượng</th>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Tên loại đối tượng</th>
+                        <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Hành động</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -88,27 +90,27 @@ $dsLoaiDoiTuong = $loaiDoiTuongController->layDanhSachLoaiDoiTuong();
 
                             <!-- Giá -->
                             <td class="px-3 py-2 text-gray-700"><?= htmlspecialchars(ucwords($loaiDoiTuong->getDoiTuong())) ?></td>
+                            <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
 
                             <!-- Hành động -->
                             <td class="px-3 py-2">
                                 <!-- Nêu là quản trị viên thì hiển thị nút chỉnh sửa và xóa -->
-                                <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
-                                    <!-- Nút chỉnh sửa -->
-                                    <button 
-                                        onclick="showEditModal('<?= $loaiDoiTuong->getMaDoiTuong() ?>', '<?= htmlspecialchars($loaiDoiTuong->getDoiTuong()) ?>')" 
-                                        title="Chỉnh sửa loại đối tượng" 
-                                        class="text-blue-500 text-3xl ml-3 hover:text-blue-700">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </button>
-                                    <!-- Nút xóa -->
-                                    <button 
-                                        onclick="showDeleteModal('<?= $loaiDoiTuong->getMaDoiTuong() ?>')" 
-                                        title="Xóa loại đối tượng" 
-                                        class="text-red-500 text-3xl ml-3 hover:text-red-700">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                <?php endif; ?>
+                                <!-- Nút chỉnh sửa -->
+                                <button 
+                                    onclick="showEditModal('<?= $loaiDoiTuong->getMaDoiTuong() ?>', '<?= htmlspecialchars($loaiDoiTuong->getDoiTuong()) ?>')" 
+                                    title="Chỉnh sửa loại đối tượng" 
+                                    class="text-blue-500 text-3xl ml-3 hover:text-blue-700">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <!-- Nút xóa -->
+                                <button 
+                                    onclick="showDeleteModal('<?= $loaiDoiTuong->getMaDoiTuong() ?>')" 
+                                    title="Xóa loại đối tượng" 
+                                    class="text-red-500 text-3xl ml-3 hover:text-red-700">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

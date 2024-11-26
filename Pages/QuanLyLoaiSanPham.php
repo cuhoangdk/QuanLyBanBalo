@@ -13,7 +13,7 @@ include_once '../Controllers/LoaiSanPhamController.php';
 $loaiSanPhamController = new LoaiSanPhamController($connection);
 // Lấy trang hiện tại và số lượng sản phẩm trên mỗi trang
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int) $_GET['page'] : 1; // Trang hiện tại
-$limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : 5; // Số lượng sản phẩm trên mỗi trang
+$limit = isset($_GET['limit']) && is_numeric($_GET['limit']) ? (int) $_GET['limit'] : 15; // Số lượng sản phẩm trên mỗi trang
 $offset = ($page - 1) * $limit; // Vị trí bắt đầu lấy sản phẩm
 
 // Tìm kiếm sản phẩm trong cơ sở dữ liệu trả về mảng chứa danh sách sản phẩm và tổng số sản phẩm
@@ -80,7 +80,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <th class="px-3 pl-6 py-3 border-b text-left text-sm font-semibold text-gray-700">STT</th>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Mã loại sản phẩm</th>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Tên loại sản phẩm</th>
+                        <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
                         <th class="px-3 py-3 border-b text-left text-sm font-semibold text-gray-700">Hành động</th>
+                        <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -95,27 +97,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                             <!-- Giá -->
                             <td class="px-3 py-2 text-gray-700"><?= htmlspecialchars(ucwords($loaiSanPham->getLoaiSanPham())) ?></td>
+                            <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
 
                             <!-- Hành động -->
                             <td class="px-3 py-2">
                                 <!-- Nêu là quản trị viên thì hiển thị nút chỉnh sửa và xóa -->
-                                <?php if (isset($_SESSION['quyen']) && $_SESSION['quyen'] == 1): ?>
-                                    <!-- Nút chỉnh sửa -->
-                                    <button 
-                                        onclick="showEditModal('<?= $loaiSanPham->getMaLoaiSanPham() ?>', '<?= htmlspecialchars($loaiSanPham->getLoaiSanPham()) ?>')" 
-                                        title="Chỉnh sửa loại sản phẩm" 
-                                        class="text-blue-500 text-3xl ml-3 hover:text-blue-700">
-                                        <i class="fa-solid fa-pen-to-square"></i>
-                                    </button>
-                                    <!-- Nút xóa -->
-                                    <button 
-                                        onclick="showDeleteModal('<?= $loaiSanPham->getMaLoaiSanPham() ?>')" 
-                                        title="Xóa loại sản phẩm" 
-                                        class="text-red-500 text-3xl ml-3 hover:text-red-700">
-                                        <i class="fa-solid fa-trash"></i>
-                                    </button>
-                                <?php endif; ?>
+                                <!-- Nút chỉnh sửa -->
+                                <button 
+                                    onclick="showEditModal('<?= $loaiSanPham->getMaLoaiSanPham() ?>', '<?= htmlspecialchars($loaiSanPham->getLoaiSanPham()) ?>')" 
+                                    title="Chỉnh sửa loại sản phẩm" 
+                                    class="text-blue-500 text-3xl ml-3 hover:text-blue-700">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <!-- Nút xóa -->
+                                <button 
+                                    onclick="showDeleteModal('<?= $loaiSanPham->getMaLoaiSanPham() ?>')" 
+                                    title="Xóa loại sản phẩm" 
+                                    class="text-red-500 text-3xl ml-3 hover:text-red-700">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
                             </td>
+                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
